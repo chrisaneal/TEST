@@ -230,6 +230,52 @@ The [Indiana Private Lands Access Program](https://www.in.gov/dnr/fish-and-wildl
 2. Build toward buying land — use broker income to purchase reclaimed parcels
 3. Add services over time — food plots, guided hunts, lodging
 
+## AI Business Models for the Hunting Industry
+
+### AI-Powered Hunting Lease Marketplace
+"Zillow meets HLRBO" — AI scores property hunting quality from satellite imagery, terrain, timber, water, crop adjacency, and DNR harvest data. Auto-prices leases, matches hunters to properties by budget/species/style. Current platforms are manual — no one is using AI to value hunting land.
+
+### AI Trail Camera Analytics as a Service
+Bundle AI trail cam analysis with lease brokerage. Deploy cameras on landowner properties for free, use AI to inventory deer, then price and market leases at a premium with data-backed proof.
+- Existing companies: [HuntPro](https://www.huntpro.app/) (U.S. patent holder), [DeerLab](https://deerlab.com/), [BuckScience](https://buckscience.com/), [WiseEye](https://wiseeyetech.com/)
+
+### AI Deer Movement Prediction
+Regional model for SW Indiana reclaimed coal land, trained on DNR harvest data, local weather, terrain features, and trail cam data.
+- Leader: [Spartan Forge](https://spartanforge.ai/) — 65% accuracy predicting wild whitetail movement using neural networks
+
+### AI Property Scouting & Valuation Tool
+Automated "Hunting Property Report" from satellite imagery analysis — identifies timber corridors, food plot potential, water features, bedding areas. Scores properties for whitetail/turkey/waterfowl and estimates lease value.
+
+### AI Hunting Regulations Chatbot
+Indiana-specific AI assistant for season dates, bag limits, legal methods, license purchasing, county-specific rules, and lease legal requirements.
+- Existing: [Scout by IHEA](https://www.outdoorlife.com/hunting/scout-hunting-ai/) — covers all 50 states
+
+### AI Outfitter Booking Platform
+"Airbnb for guided hunts" with AI-optimized hunt date recommendations, auto-generated hunt plans, scheduling, payments, and insurance.
+- Existing: [Mallard Bay](https://techcrunch.com/2024/08/04/from-golf-to-hunting-a-new-crop-of-startups-want-to-make-these-experiences-even-better/) ($6M gross bookings), AnyCreek (SaaS for guides)
+
+### Existing AI Hunting Companies to Study
+
+| Company | What They Do |
+|---------|-------------|
+| [HuntPro](https://www.huntpro.app/) | AI trail cam image recognition (patented), wildlife management platform |
+| [Spartan Forge](https://spartanforge.ai/) | AI deer movement prediction using neural networks |
+| [DeerLab](https://deerlab.com/) | AI trail cam sorting, heatmaps, activity analysis |
+| [BuckScience](https://buckscience.com/) | Trail camera analytics, deer pattern tracking |
+| [WiseEye](https://wiseeyetech.com/) | AI animal recognition + deer movement forecasting |
+| [Scout (IHEA)](https://www.outdoorlife.com/hunting/scout-hunting-ai/) | AI hunting regulations assistant |
+| [Mallard Bay](https://techcrunch.com/2024/08/04/from-golf-to-hunting-a-new-crop-of-startups-want-to-make-these-experiences-even-better/) | AI booking platform for guided hunts |
+| [Cutwater Martin](https://cutwatermartin.com/ai-for-outdoors/) | AI marketing for outdoor industry |
+
+### Recommended AI + Lease Business Combo
+
+1. Deploy trail cameras on Gibson/Warrick landowner properties for free
+2. Use AI to analyze images and generate a property hunting quality report
+3. Use that data to price and list the lease on your platform
+4. Charge hunters a premium for data-backed leases showing proven deer activity
+
+Tech stack: Trail cam classification (YOLO/HuntPro API), satellite imagery (Google Earth Engine/Mapbox), web app for listings, Claude API for regulations chatbot.
+
 ## Where to Browse All Listings
 
 - [LandWatch - Indiana Hunting Property](https://www.landwatch.com/indiana-land-for-sale/hunting-property) — 117+ listings
