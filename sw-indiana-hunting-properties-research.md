@@ -84,7 +84,56 @@ The best southwestern Indiana counties for secluded hunting land:
 5. Hunting seasons run October through early January (archery, gun, muzzleloader)
 6. Affordable land prices compared to neighboring states
 
-## Where to Browse Listings
+## Reclaimed Coal Land — Gibson & Warrick County Deep Dive
+
+### Why Reclaimed Coal Land is Ideal for Hunting
+
+- Coal companies reclaim mined land back to near-original condition
+- These areas are extremely rural with almost no houses nearby
+- Mix of early-succession habitat, grasslands, timber, and water features
+- Creates ideal whitetail browse and bedding cover
+- SW Indiana reclaimed land is now known for trophy-class whitetail bucks
+
+### Reclaimed Coal Properties for Sale
+
+| Property | County | Acres | Details |
+|----------|--------|-------|---------|
+| "Big Buck Factory" | Gibson/Pike | 410 | Old reclaimed coal property, now crop farm. Dense cover, year-round water, very high deer density, good turkey population |
+| Secluded timber tract | Gibson | 353 | Crops in fields, large timber block, heavy deer sign |
+| Whitetail setup | Gibson | 80 | Set up for mature whitetail, turkey, and waterfowl |
+| Oakland City tract (CR 450 S) | Gibson | 375 | Frontage along four county roads |
+| Peabody Land Tract 50 | Warrick | — | Mature timber, excellent deer/turkey/waterfowl. Peabody is a coal company selling reclaimed land |
+| Kurtz Auction tracts (E of Elberfeld) | Warrick | 334 | Recreational tracts with woods, lakes, coal mineral rights addressed in sale |
+| "Deer, Fishing & Waterfowl Mecca" | Warrick | 2,347 | Private lake and forest sanctuary near Scalesville |
+| Boonville wetlands | Warrick | 49.5 | River/creek bottom wetlands outside Boonville, deer/turkey/waterfowl |
+
+### Reclaimed Coal Hunting Leases (Try Before You Buy)
+
+| Listing | Counties | Acres | Details |
+|---------|----------|-------|---------|
+| #INSO 0106 | Gibson/Warrick/Pike | 292 | Trophy deer, turkey, waterfowl, fishing. Reclaimed coal land — very rural, almost no houses |
+| #INSO 0107 | Gibson/Pike | 410 | "Big Buck Factory" — reclaimed property turned crop farm, extremely high deer density |
+
+### Gibson & Warrick County Market Data
+
+- **Gibson County:** ~$35M in rural property for sale, ~1,600 acres, average price ~$241,608
+- **Warrick County:** ~$117M in rural property, ~4,168 acres, 119 listings
+- **Warrick hunting land:** ~3,000 acres listed at ~$11M combined
+
+### Key Resources for Reclaimed Coal Land
+
+- [Peabody Land - Warrick County Hunting](https://peabodyland.com/properties/hunting-property-warrick-county) — Coal company selling reclaimed property directly
+- [Peabody Land - All Properties](https://peabodyland.com/properties) — Auctions and sales of reclaimed land
+- [Kurtz Auction - Warrick County](https://www.kurtzauction.com/auctions/huge-land-auction-warrick-county) — Land auctions including reclaimed tracts
+- [Hunting Lease Network](https://www.huntingleasenetwork.com/Land_for_Lease/viewlistings.asp?State=IN) — Lease reclaimed land
+- [Indiana DNR Surface Mine Maps - Warrick County (PDF)](https://www.in.gov/dnr/reclamation/files/countymaps/warrick_surface_mines_web.pdf) — Identify reclaimed areas
+- [LandWatch - Gibson County](https://www.landwatch.com/indiana-land-for-sale/gibson-county)
+- [LandWatch - Warrick County](https://www.landwatch.com/indiana-land-for-sale/warrick-county)
+- [Mossy Oak Properties - Gibson County](https://www.mossyoakproperties.com/land-for-sale/indiana/gibson-county/)
+- [Land.com - Warrick Hunting Land](https://www.land.com/Warrick-County-IN/hunting-land/)
+- [Base Camp Leasing - Indiana](https://www.basecampleasing.com/searchstates/indiana_map.htm) — Additional hunting lease options
+
+## Where to Browse All Listings
 
 - [LandWatch - Indiana Hunting Property](https://www.landwatch.com/indiana-land-for-sale/hunting-property) — 117+ listings
 - [Land.com - South Indiana Hunting Land](https://www.land.com/South-Indiana-Region/hunting-land/) — 38+ listings
