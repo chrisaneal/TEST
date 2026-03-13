@@ -133,6 +133,45 @@ The best southwestern Indiana counties for secluded hunting land:
 - [Land.com - Warrick Hunting Land](https://www.land.com/Warrick-County-IN/hunting-land/)
 - [Base Camp Leasing - Indiana](https://www.basecampleasing.com/searchstates/indiana_map.htm) — Additional hunting lease options
 
+## Hunting Leases Under $2,000 — Gibson & Warrick Focus
+
+### Lease Pricing in SW Indiana
+
+Indiana hunting leases run $5–$20/acre per year in the southwestern counties. Reclaimed coal land tends toward the cheaper end due to remoteness.
+
+| Budget | Approximate Acreage |
+|--------|---------------------|
+| $500 | 25–100 acres |
+| $1,000 | 50–200 acres |
+| $1,500 | 75–300 acres |
+| $2,000 | 100–400 acres |
+
+DIY approach (knocking on doors in reclaimed coal areas) can yield $2–5/acre deals.
+
+### Active Lease Listings in Gibson/Warrick Area
+
+| Listing | County | Acres | Notes |
+|---------|--------|-------|-------|
+| #INSO 0106 | Gibson/Warrick/Pike | 292 | Reclaimed coal land, trophy deer, turkey, waterfowl |
+| #INSO 0108 | Gibson | 353 | Secluded, crops + timber funnel, heavy deer travel |
+| #INSO 0071 | Gibson | — | Waterway + CRP, great deer travel route, waterfowl |
+| #INSO 0068 | Gibson | — | Wabash River Bottoms, proven deer producer, turkey |
+| #INSO 0107 | Gibson/Pike | 410 | "Big Buck Factory," reclaimed coal, high deer density |
+| Base Camp #3723 | Gibson | 135 | Adjacent to Patoka River NWR, lake + waterfowl (status: leased) |
+
+### Where to Find Leases Under $2K
+
+- [Hunting Lease Network](https://www.huntingleasenetwork.com/Land_for_Lease/viewlistings.asp?State=IN) — Auction-style bidding, call 402-496-3276 for pricing
+- [Base Camp Leasing - Indiana](https://www.basecampleasing.com/searchstates/indiana_map.htm) — Premium membership required for pricing
+- [HLRBO - Indiana](https://www.hlrbo.com/search/results/us/in) — Use code HLRBO25 for 25% off 2026 season
+- [HLRBO Lease Finder](https://www.hlrbo.com/LeaseFinder) — Set your budget and let them find a lease
+- [HuntingLocator - Indiana Leases](https://huntinglocator.com/leases/state/indiana)
+- [HUNTING INDIANA Forum - Lease Pricing](https://hunt-indiana.com/thread/72952/pay-hunting-lease) — Community lease discussions
+
+### Free Option: Indiana Private Lands Access Program (IPLA)
+
+The [Indiana Private Lands Access Program](https://www.in.gov/dnr/fish-and-wildlife/hunting-and-trapping/indiana-private-lands-access-program/) pays landowners to open their land for public hunting — hunt certain private land for free with a valid license. Check if Gibson/Warrick properties are enrolled.
+
 ## Where to Browse All Listings
 
 - [LandWatch - Indiana Hunting Property](https://www.landwatch.com/indiana-land-for-sale/hunting-property) — 117+ listings
