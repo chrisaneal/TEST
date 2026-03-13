@@ -172,6 +172,64 @@ DIY approach (knocking on doors in reclaimed coal areas) can yield $2–5/acre d
 
 The [Indiana Private Lands Access Program](https://www.in.gov/dnr/fish-and-wildlife/hunting-and-trapping/indiana-private-lands-access-program/) pays landowners to open their land for public hunting — hunt certain private land for free with a valid license. Check if Gibson/Warrick properties are enrolled.
 
+## Hunting Lease Business Opportunities
+
+### Business Model Options
+
+**1. Lease Broker (Base Camp Leasing Model)**
+- Find landowners, sign them up, find hunters, take 25% commission
+- Base Camp Leasing has paid $80M+ to landowners over 25 years
+- Hunt Club membership fees ($175/hunter/year) provide additional revenue
+- Franchise option: [Hunting Lease Network](https://www.vettedbiz.com/hunting-lease-network-franchise/) — $25K–$42.5K startup
+
+**2. Online Marketplace (HLRBO Model)**
+- Landowners list for free, hunters pay annual subscription
+- Scalable, recurring revenue
+- HLRBO Field Rep Program pays $150/verified property, $200/new landowner
+
+**3. Buy & Lease (Landlord Model)**
+- Buy reclaimed coal land, lease hunting rights at $10–$20/acre/year
+- Additional income: timber rights, mineral/coal royalties, farming tillable ground, IPLA payments ($3–$150/acre)
+- Best for long-term wealth building
+
+**4. Lease Management & Services Company**
+- Full-service management for landowners: property assessment, hunter screening, contracts, insurance, food plots, habitat improvement, trail cameras, scouting
+- Revenue from management fees and per-service charges
+
+**5. Hunting Outfitter / Guide Service**
+- Lease land at $5–$20/acre, sell guided hunts at $500–$2,000+ each
+- Add-ons: lodging, game processing, meals, ATV transport
+- Example: 300 acres leased for $3K/year → 20 guided hunts at $500 → $10K revenue
+
+**6. Hunting Insurance Provider**
+- Partner with underwriter, sell hunting lease liability insurance
+- Every lease requires insurance — built-in market
+- [American Hunting Lease Association](https://ahuntinglease.org/landowners) — example provider
+
+### Existing Companies to Study
+
+| Company | Model | Revenue Source |
+|---------|-------|----------------|
+| [Base Camp Leasing](https://www.basecampleasing.com/) | Full-service broker | 25% commission + $175/yr membership |
+| [HLRBO](https://www.hlrbo.com/) | Online marketplace | Hunter subscription fees |
+| [Hunting Lease Network](https://www.huntingleasenetwork.com/) | Auction/bid platform | Listing fees + commissions (franchise of Farmers National Co.) |
+| [Wing and Buck](https://wingandbuck.com/) | Direct lease operator | Leases land from owners, sublicenses to hunters |
+| [American Hunting Lease Association](https://ahuntinglease.org/) | Insurance + association | Liability policy premiums |
+
+### Legal Considerations (Indiana-Specific)
+
+- Charging fees makes hunters "business invitees" under Indiana law — higher duty of care than free access
+- Written lease agreements required — signed by all parties
+- $2M–$5M hunting lease liability insurance policy required per property
+- [Plews Shadley Racher & Braun](https://www.psrb.com/2017/11/leasing-property-hunting-ask-lawyer/) — Indiana attorneys specializing in hunting lease law
+- Mineral rights and coal royalties should be addressed in any land purchase
+
+### Recommended Strategy for SW Indiana Reclaimed Coal Land
+
+1. Start as a lease broker — low startup cost, immediate revenue. Target landowners on reclaimed coal land who don't know its hunting value
+2. Build toward buying land — use broker income to purchase reclaimed parcels
+3. Add services over time — food plots, guided hunts, lodging
+
 ## Where to Browse All Listings
 
 - [LandWatch - Indiana Hunting Property](https://www.landwatch.com/indiana-land-for-sale/hunting-property) — 117+ listings
