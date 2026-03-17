@@ -606,17 +606,38 @@
     height: calc(var(--safe-bottom) + 20px);
   }
 
-  .list-footer-link {
-    display: block;
-    text-align: center;
-    padding: 16px 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--gold-dim);
+  /* ── Spreadsheet header button ── */
+  .spreadsheet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
     cursor: pointer;
-    transition: color 0.2s;
+    min-height: 32px;
+    min-width: 32px;
+    justify-content: center;
+    transition: background 0.2s;
+    color: var(--text-secondary);
+    text-decoration: none;
   }
-  .list-footer-link:active { color: var(--gold); }
+  .spreadsheet-btn:active { background: rgba(255,255,255,0.08); }
+  .spreadsheet-btn svg { flex-shrink: 0; }
+  .spreadsheet-btn-text {
+    display: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  @media (min-width: 769px) {
+    .spreadsheet-btn {
+      padding: 6px 12px;
+    }
+    .spreadsheet-btn-text { display: inline; }
+  }
 
   /* ── Spreadsheet View ── */
   .spreadsheet-container {
@@ -797,7 +818,19 @@
       <button class="back-btn" id="backBtn" onclick="showListView()"><span class="back-arrow">&#8249;</span> List</button>
       <h1 id="headerTitle">Belle Meade</h1>
     </div>
-    <span class="progress-text" id="progressText">1 / 80</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="progress-text" id="progressText">1 / 80</span>
+      <button class="spreadsheet-btn" id="spreadsheetBtn" onclick="openSpreadsheet()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1.5" y="1.5" width="13" height="13" rx="2"/>
+          <line x1="1.5" y1="5.5" x2="14.5" y2="5.5"/>
+          <line x1="1.5" y1="10" x2="14.5" y2="10"/>
+          <line x1="5.5" y1="1.5" x2="5.5" y2="14.5"/>
+          <line x1="10.5" y1="1.5" x2="10.5" y2="14.5"/>
+        </svg>
+        <span class="spreadsheet-btn-text">Spreadsheet</span>
+      </button>
+    </div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="filter-bar" id="filterBar">
@@ -844,7 +877,7 @@
 const shots = [
   // ===== FARM OUTDOOR - Everyday Man =====
   {
-    id: "farm-01", time: "7:00 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-01", time: "7:00 AM", type: "video", section: "farm-outdoor",
     location: "Front Porch", title: "Ep 1 - Work: Front Porch",
     series: "The Most Everyday Man In The World",
     description: "Chappy pushes open the front door. He holds a full pot of coffee and takes a sip from it.",
@@ -856,7 +889,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 1: Work"
   },
   {
-    id: "farm-02", time: "7:15 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-02", time: "7:15 AM", type: "video", section: "farm-outdoor",
     location: "Barn", title: "Ep 1 - Work: Barn",
     series: "The Most Everyday Man In The World",
     description: "Chappy pushes a wheelbarrow with a hay bale in it. It's hard work.",
@@ -868,7 +901,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 1: Work"
   },
   {
-    id: "farm-03", time: "7:30 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-03", time: "7:30 AM", type: "video", section: "farm-outdoor",
     location: "Driveway", title: "Ep 2 - Old School: Driveway",
     series: "The Most Everyday Man In The World",
     description: "Chappy works on his truck (hood up, sleeves rolled). Grimaces at elbow pain. Spots WD-40 on the ground, sprays his elbow, bends it — good as new.",
@@ -880,7 +913,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 2: Old School"
   },
   {
-    id: "farm-04", time: "7:50 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-04", time: "7:50 AM", type: "video", section: "farm-outdoor",
     location: "Pool / Pond", title: "Ep 2 - Old School: Pool / Pond",
     series: "The Most Everyday Man In The World",
     description: "Chappy in swim trunks and Hawaiian shirt walks right past the pool (or covered pool), drops towel at the pond, takes off shirt, heads straight for the pond.",
@@ -892,7 +925,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 2: Old School"
   },
   {
-    id: "farm-05", time: "8:10 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-05", time: "8:10 AM", type: "video", section: "farm-outdoor",
     location: "Fire Pit", title: "Ep 3 - Play: Fire Pit",
     series: "The Most Everyday Man In The World",
     description: "Chappy walks up to an empty fire pit, no supplies in hand. Claps his hands twice. There's a full fire in the pit. Puts hands up to warm them.",
@@ -904,7 +937,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 3: Play"
   },
   {
-    id: "farm-06", time: "8:25 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-06", time: "8:25 AM", type: "video", section: "farm-outdoor",
     location: "Field", title: "Ep 3 - Play: Banjo in the Field",
     series: "The Most Everyday Man In The World",
     description: "Chappy plays the banjo passionately. The cattle and goats across the street are his audience. He sings like a country star.",
@@ -916,7 +949,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 3: Play"
   },
   {
-    id: "farm-07", time: "8:40 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-07", time: "8:40 AM", type: "video", section: "farm-outdoor",
     location: "Creek", title: "Ep 3 - Play: Excalibur at the Creek",
     series: "The Most Everyday Man In The World",
     description: "Chappy strolls along the creek, stops when he sees the perfect stick stuck in mud angled like the Sword in the Stone. Pulls it out with all his might. Stares at muddy tip like it's Excalibur. Holds it up like a sword.",
@@ -928,7 +961,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 3: Play"
   },
   {
-    id: "farm-08", time: "8:55 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-08", time: "8:55 AM", type: "video", section: "farm-outdoor",
     location: "Field", title: "Ep 4 - Routine: Chasing June",
     series: "The Most Everyday Man In The World",
     description: "June bolts across the field. Chappy chases after her. June looks elated. Chappy looks gassed.",
@@ -940,7 +973,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 4: Routine"
   },
   {
-    id: "farm-09", time: "9:05 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-09", time: "9:05 AM", type: "video", section: "farm-outdoor",
     location: "Chicken Coop", title: "Ep 5 - Family: Empty Coop",
     series: "The Most Everyday Man In The World",
     description: "Chappy stares ahead, forlorn. He's looking at an empty chicken coop. Glances away, fights back tears.",
@@ -952,7 +985,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 5: Family"
   },
   {
-    id: "farm-10", time: "9:15 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-10", time: "9:15 AM", type: "video", section: "farm-outdoor",
     location: "Truck (cab)", title: "Ep 5 - Family: June in the Truck",
     series: "The Most Everyday Man In The World",
     description: "Chappy flips open sun visor mirror with a portrait of June taped to it. Grins. Turns to passenger seat where June sits. Gives her cheek rubs and makes baby noises.",
@@ -964,7 +997,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 5: Family"
   },
   {
-    id: "farm-11", time: "9:25 AM", type: "photo", section: "farm-outdoor",
+    id: "farm-11", time: "9:25 AM", type: "video", section: "farm-outdoor",
     location: "Field", title: "Ep 5 - Family: Horse the Donkey",
     series: "The Most Everyday Man In The World",
     description: "Chappy takes a picture of something on his phone (logo covered). Smiles ear to ear. A donkey stands before him. A horse stands beside them, just staring.",
@@ -978,7 +1011,7 @@ const shots = [
 
   // ===== FARM INDOOR - Everyday Man =====
   {
-    id: "farm-12", time: "9:40 AM", type: "photo", section: "farm-indoor",
+    id: "farm-12", time: "9:40 AM", type: "video", section: "farm-indoor",
     location: "Bedroom", title: "Ep 1 - Work: 4:59 AM",
     series: "The Most Everyday Man In The World",
     description: "Chappy takes off work jacket, yawns, gets in bed. Sees 4:59 AM on digital alarm clock. Gets back out of bed, puts jacket on, and leaves.",
@@ -990,7 +1023,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 1: Work"
   },
   {
-    id: "farm-13", time: "9:55 AM", type: "photo", section: "farm-indoor",
+    id: "farm-13", time: "9:55 AM", type: "video", section: "farm-indoor",
     location: "Bedroom", title: "Ep 2 - Old School: The Hat",
     series: "The Most Everyday Man In The World",
     description: "Chappy puts on work jacket. Turns to two baseball caps (no logos) on a hanging shelf. One brand new, one old and worn-in. Picks the old one.",
@@ -1002,7 +1035,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 2: Old School"
   },
   {
-    id: "farm-14", time: "10:10 AM", type: "photo", section: "farm-indoor",
+    id: "farm-14", time: "10:10 AM", type: "video", section: "farm-indoor",
     location: "Kitchen", title: "Ep 4 - Routine: Eggs on the Go",
     series: "The Most Everyday Man In The World",
     description: "Chappy mixes raw eggs in a bowl. Ham, mushrooms, peppers, and spinach on cutting board next to him. Tosses fork in sink, drinks 'eggs' (water) right out of the bowl, grabs ingredients and stuffs them in his mouth heading out the door.",
@@ -1014,7 +1047,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 4: Routine"
   },
   {
-    id: "farm-15", time: "10:25 AM", type: "photo", section: "farm-indoor",
+    id: "farm-15", time: "10:25 AM", type: "video", section: "farm-indoor",
     location: "Sun Room", title: "Ep 4 - Routine: The Nap",
     series: "The Most Everyday Man In The World",
     description: "Chappy naps in a lounge chair, conked out. Snores really loud.",
@@ -1026,7 +1059,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 4: Routine"
   },
   {
-    id: "farm-16", time: "10:40 AM", type: "photo", section: "farm-indoor",
+    id: "farm-16", time: "10:40 AM", type: "video", section: "farm-indoor",
     location: "Basement", title: "Eps 1-5: The Armchair Toast",
     series: "The Most Everyday Man In The World",
     description: "Chappy sits in a luxurious armchair in his decked-out basement. Pours Belle Meade Bourbon into a nice glass and raises it. 'To those interested in not being the most interesting.' Takes a long sip. SAME SETUP, 5 TAKES WITH WARDROBE CHANGES.",
@@ -2501,7 +2534,6 @@ function renderList() {
     });
   }
 
-  html += '<div class="list-footer-link" onclick="openSpreadsheet()">Open Spreadsheet View</div>';
   html += '<div class="list-spacer"></div>';
   container.innerHTML = html;
 }
