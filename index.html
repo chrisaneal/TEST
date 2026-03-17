@@ -2,28 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Belle Meade - Shot List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   :root {
-    --bg: #0f0f0f;
-    --card: #1a1a1a;
-    --card-border: #2a2a2a;
-    --gold: #c9a84c;
-    --gold-dim: #8a7033;
+    --bg: #0a0a08;
+    --card: #141412;
+    --card-border: #1e1e1a;
+    --card-elevated: #1a1a16;
+    --gold: #CA8A04;
+    --gold-soft: #d4a52a;
+    --gold-dim: #6b5a1e;
+    --gold-bg: rgba(202,138,4,0.08);
     --text: #e8e4dc;
-    --text-dim: #8a8578;
-    --green: #4a7c59;
-    --green-bright: #5fa672;
-    --red: #7c4a4a;
-    --photo: #4a6a7c;
-    --video: #7c5a4a;
+    --text-secondary: #a8a295;
+    --text-dim: #6b6560;
+    --green: #22c55e;
+    --green-bg: rgba(34,197,94,0.12);
+    --green-border: rgba(34,197,94,0.25);
+    --photo-bg: rgba(56,189,248,0.1);
+    --photo-text: #38bdf8;
+    --photo-border: rgba(56,189,248,0.2);
+    --video-bg: rgba(251,146,60,0.1);
+    --video-text: #fb923c;
+    --video-border: rgba(251,146,60,0.2);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     overflow: hidden;
@@ -32,77 +47,86 @@
     position: fixed;
     top: 0;
     left: 0;
+    -webkit-font-smoothing: antialiased;
   }
 
+  /* ── Header ── */
   .header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
-    background: var(--bg);
-    border-bottom: 1px solid var(--card-border);
-    padding: 12px 16px 8px;
+    background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 85%, transparent 100%);
+    padding: calc(var(--safe-top) + 10px) 20px 14px;
   }
 
   .header-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
+    align-items: baseline;
+    margin-bottom: 10px;
   }
 
   .header h1 {
-    font-size: 15px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 22px;
     font-weight: 700;
     color: var(--gold);
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     text-transform: uppercase;
   }
 
   .progress-text {
     font-size: 12px;
+    font-weight: 600;
     color: var(--text-dim);
     font-variant-numeric: tabular-nums;
   }
 
   .progress-bar {
     width: 100%;
-    height: 3px;
+    height: 2px;
     background: var(--card-border);
-    border-radius: 2px;
+    border-radius: 1px;
     overflow: hidden;
+    margin-bottom: 10px;
   }
 
   .progress-fill {
     height: 100%;
     background: var(--gold);
-    border-radius: 2px;
+    border-radius: 1px;
     transition: width 0.3s ease;
   }
 
   .filter-bar {
     display: flex;
     gap: 6px;
-    margin-top: 8px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 4px;
+    padding-bottom: 2px;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
   .filter-bar::-webkit-scrollbar { display: none; }
 
   .filter-btn {
     flex-shrink: 0;
-    padding: 4px 10px;
-    border-radius: 20px;
+    padding: 6px 14px;
+    border-radius: 100px;
     border: 1px solid var(--card-border);
     background: transparent;
     color: var(--text-dim);
+    font-family: 'Montserrat', sans-serif;
     font-size: 11px;
     font-weight: 600;
+    letter-spacing: 0.3px;
     cursor: pointer;
     transition: all 0.2s;
+    min-height: 32px;
   }
   .filter-btn.active {
     background: var(--gold);
@@ -110,13 +134,14 @@
     border-color: var(--gold);
   }
 
+  /* ── Card container ── */
   .swipe-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    padding-top: 95px;
+    padding-top: calc(var(--safe-top) + 88px);
     overflow: hidden;
   }
 
@@ -133,10 +158,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 12px 16px 16px;
+    padding: 6px 12px calc(var(--safe-bottom) + 8px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease;
     will-change: transform, opacity;
   }
 
@@ -148,160 +173,249 @@
   .card-inner {
     background: var(--card);
     border: 1px solid var(--card-border);
-    border-radius: 16px;
+    border-radius: 20px;
     overflow: hidden;
+    min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 108px);
+    display: flex;
+    flex-direction: column;
   }
 
+  /* ── Card Hero ── */
   .card-hero {
     padding: 20px 20px 16px;
+    background: linear-gradient(135deg, var(--card-elevated) 0%, var(--card) 100%);
     border-bottom: 1px solid var(--card-border);
-    position: relative;
   }
 
-  .card-badges {
+  .card-meta {
     display: flex;
-    gap: 6px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .card-number {
+    font-family: 'Cormorant', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-right: 4px;
+    min-width: 28px;
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 4px 10px;
+    border-radius: 100px;
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    border: 1px solid transparent;
   }
 
-  .badge-photo { background: var(--photo); color: #d4e4ee; }
-  .badge-video { background: var(--video); color: #eedcd4; }
-  .badge-time { background: var(--card-border); color: var(--text-dim); }
-  .badge-location { background: #3a3530; color: var(--gold); }
+  .badge-photo {
+    background: var(--photo-bg);
+    color: var(--photo-text);
+    border-color: var(--photo-border);
+  }
+  .badge-video {
+    background: var(--video-bg);
+    color: var(--video-text);
+    border-color: var(--video-border);
+  }
+  .badge-time {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    border-color: var(--card-border);
+  }
+  .badge-location {
+    background: var(--gold-bg);
+    color: var(--gold-soft);
+    border-color: rgba(202,138,4,0.2);
+  }
+  .badge-done {
+    background: var(--green-bg);
+    color: var(--green);
+    border-color: var(--green-border);
+  }
 
   .card-title {
-    font-size: 20px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 26px;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.2;
     margin-bottom: 4px;
+    color: #fff;
   }
 
   .card-subtitle {
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 500;
     color: var(--text-dim);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── Card Sections ── */
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .card-section {
-    padding: 16px 20px;
+    padding: 14px 20px;
     border-bottom: 1px solid var(--card-border);
   }
   .card-section:last-child { border-bottom: none; }
 
   .section-label {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     color: var(--gold-dim);
     margin-bottom: 6px;
   }
 
   .section-text {
-    font-size: 14px;
-    line-height: 1.55;
+    font-size: 15px;
+    line-height: 1.6;
     color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ── Actors & Props row ── */
+  .meta-row {
+    display: flex;
+    gap: 12px;
+  }
+  .meta-col {
+    flex: 1;
+    min-width: 0;
   }
 
   .tag-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 4px;
   }
 
   .tag {
     padding: 4px 10px;
-    background: #252520;
-    border-radius: 8px;
-    font-size: 12px;
-    color: var(--text);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .tag-actor {
+    border-color: rgba(202,138,4,0.15);
+    color: var(--gold-soft);
+    background: rgba(202,138,4,0.05);
   }
 
+  /* ── Description highlight ── */
+  .description-section {
+    background: rgba(255,255,255,0.02);
+  }
+  .description-section .section-text {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #fff;
+  }
+
+  /* ── Dialogue ── */
+  .dialogue-text {
+    font-family: 'Cormorant', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--gold-soft);
+  }
+
+  /* ── Script link ── */
   .script-link {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
-    margin: 0 20px 0;
-    background: #1f1f18;
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
+    padding: 14px 16px;
+    background: var(--gold-bg);
+    border: 1px solid rgba(202,138,4,0.15);
+    border-radius: 12px;
     text-decoration: none;
     color: var(--gold);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+    min-height: 48px;
+    transition: background 0.2s;
   }
-  .script-link:active { background: #2a2a22; }
-  .script-link span { opacity: 0.5; }
+  .script-link:active { background: rgba(202,138,4,0.15); }
+  .script-link-arrow {
+    font-size: 18px;
+    opacity: 0.4;
+  }
 
+  /* ── Done Button ── */
   .done-section {
-    padding: 16px 20px 24px;
+    margin-top: auto;
+    padding: 16px 20px calc(var(--safe-bottom) + 8px);
   }
 
   .done-btn {
     width: 100%;
-    padding: 16px;
+    padding: 18px;
     border: none;
-    border-radius: 12px;
-    font-size: 15px;
+    border-radius: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    min-height: 56px;
   }
 
   .done-btn.undone {
-    background: var(--green);
-    color: #e8f0eb;
+    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(34,197,94,0.2);
   }
   .done-btn.undone:active {
-    background: var(--green-bright);
     transform: scale(0.98);
+    box-shadow: 0 2px 12px rgba(34,197,94,0.15);
   }
 
   .done-btn.is-done {
-    background: var(--card-border);
-    color: var(--text-dim);
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid var(--green-border);
+    box-shadow: none;
   }
 
+  /* ── Nav dots ── */
   .nav-hint {
     text-align: center;
-    padding: 0 0 8px;
+    padding: 8px 0 4px;
     font-size: 11px;
+    font-weight: 500;
     color: var(--text-dim);
-    opacity: 0.5;
   }
 
-  .section-divider {
-    padding: 20px 20px 12px;
-    text-align: center;
-  }
-  .section-divider h2 {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--gold-dim);
-  }
-
-  /* Script modal */
+  /* ── Script modal ── */
   .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.8);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     z-index: 200;
     justify-content: center;
     align-items: flex-end;
@@ -311,11 +425,20 @@
   .modal {
     width: 100%;
     max-height: 80dvh;
-    background: var(--card);
-    border-radius: 16px 16px 0 0;
+    background: var(--card-elevated);
+    border: 1px solid var(--card-border);
+    border-radius: 20px 20px 0 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 20px;
+    padding: 24px 20px calc(var(--safe-bottom) + 20px);
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--card-border);
+    border-radius: 2px;
+    margin: 0 auto 16px;
   }
 
   .modal-close {
@@ -325,30 +448,40 @@
     margin-bottom: 16px;
   }
   .modal-close h3 {
-    font-size: 16px;
+    font-family: 'Cormorant', serif;
+    font-size: 20px;
+    font-weight: 700;
     color: var(--gold);
   }
   .modal-close button {
-    background: var(--card-border);
-    border: none;
-    color: var(--text);
-    font-size: 14px;
-    padding: 6px 14px;
-    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 100px;
     cursor: pointer;
+    min-height: 36px;
   }
 
   .modal-body {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.7;
     color: var(--text);
     white-space: pre-wrap;
   }
 
-  /* Desktop nav arrows */
+  /* ── Desktop ── */
   @media (min-width: 769px) {
-    .card { padding: 12px calc((100vw - 500px) / 2) 16px; }
-    .header { padding: 12px calc((100vw - 500px) / 2) 8px; }
+    .card { padding: 6px calc((100vw - 420px) / 2) 8px; }
+    .header { padding: 10px calc((100vw - 420px) / 2) 14px; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .card, .progress-fill, .done-btn { transition: none; }
   }
 </style>
 </head>
@@ -380,6 +513,7 @@
 
 <div class="modal-overlay" id="scriptModal">
   <div class="modal">
+    <div class="modal-handle"></div>
     <div class="modal-close">
       <h3 id="modalTitle">Script</h3>
       <button onclick="closeModal()">Close</button>
@@ -1615,76 +1749,79 @@ function applyFilter(filter) {
 function renderCard() {
   const wrapper = document.getElementById('cardsWrapper');
   if (filteredShots.length === 0) {
-    wrapper.innerHTML = '<div class="card active" style="display:flex;align-items:center;justify-content:center;"><div style="text-align:center;color:var(--text-dim);"><p style="font-size:18px;margin-bottom:8px;">No shots</p><p style="font-size:13px;">Try a different filter</p></div></div>';
+    wrapper.innerHTML = '<div class="card active" style="display:flex;align-items:center;justify-content:center;"><div style="text-align:center;color:var(--text-dim);"><p style="font-family:Cormorant,serif;font-size:24px;margin-bottom:8px;color:var(--text-secondary);">No shots</p><p style="font-size:13px;">Try a different filter</p></div></div>';
     return;
   }
   const shot = filteredShots[currentIndex];
   const isDone = doneShots[shot.id];
+  const shotNum = String(currentIndex + 1).padStart(2, '0');
 
   wrapper.innerHTML = `
     <div class="card active" id="activeCard">
       <div class="card-inner">
         <div class="card-hero">
-          <div class="card-badges">
+          <div class="card-meta">
+            <span class="card-number">${shotNum}</span>
             <span class="badge badge-time">${shot.time}</span>
             <span class="badge badge-${shot.type}">${shot.type.toUpperCase()}</span>
             <span class="badge badge-location">${shot.location}</span>
-            ${isDone ? '<span class="badge" style="background:#2a3a2a;color:var(--green-bright);">DONE</span>' : ''}
+            ${isDone ? '<span class="badge badge-done">DONE</span>' : ''}
           </div>
           <div class="card-title">${shot.title}</div>
           <div class="card-subtitle">${shot.series}</div>
         </div>
 
-        <div class="card-section">
-          <div style="display:flex;gap:16px;flex-wrap:wrap;">
-            <div style="flex:1;min-width:0;">
-              <div class="section-label">Actors</div>
-              <div class="tag-list">
-                ${shot.actors.length ? shot.actors.map(a => `<span class="tag">${a}</span>`).join('') : '<span class="tag" style="opacity:0.4;">None</span>'}
+        <div class="card-body">
+          <div class="card-section">
+            <div class="meta-row">
+              <div class="meta-col">
+                <div class="section-label">Actors</div>
+                <div class="tag-list">
+                  ${shot.actors.length ? shot.actors.map(a => `<span class="tag tag-actor">${a}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
+                </div>
               </div>
-            </div>
-            <div style="flex:1;min-width:0;">
-              <div class="section-label">Props</div>
-              <div class="tag-list">
-                ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.4;">None</span>'}
+              <div class="meta-col">
+                <div class="section-label">Props</div>
+                <div class="tag-list">
+                  ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
+                </div>
               </div>
             </div>
           </div>
+
+          <div class="card-section description-section">
+            <div class="section-label">Shot Description</div>
+            <div class="section-text">${shot.description}</div>
+          </div>
+
+          ${shot.emotion ? `<div class="card-section">
+            <div class="section-label">Emotion / Tone</div>
+            <div class="section-text">${shot.emotion}</div>
+          </div>` : ''}
+
+          ${shot.blocking ? `<div class="card-section">
+            <div class="section-label">Blocking</div>
+            <div class="section-text">${shot.blocking}</div>
+          </div>` : ''}
+
+          ${shot.dialogue ? `<div class="card-section">
+            <div class="section-label">Dialogue</div>
+            <div class="dialogue-text">${shot.dialogue}</div>
+          </div>` : ''}
+
+          ${shot.script ? `<div class="card-section">
+            <a class="script-link" onclick="openModal('${shot.script}', '${shot.episode.replace(/'/g, "\\'")}')">
+              View Full Script <span class="script-link-arrow">&#8250;</span>
+            </a>
+          </div>` : ''}
+
+          <div class="done-section">
+            <button class="done-btn ${isDone ? 'is-done' : 'undone'}" onclick="toggleDone('${shot.id}')">
+              ${isDone ? 'COMPLETED' : 'MARK AS DONE'}
+            </button>
+            <div class="nav-hint">${currentIndex + 1} of ${filteredShots.length}</div>
+          </div>
         </div>
-
-        <div class="card-section">
-          <div class="section-label">Shot Description</div>
-          <div class="section-text">${shot.description}</div>
-        </div>
-
-        ${shot.emotion ? `<div class="card-section">
-          <div class="section-label">Emotion / Tone</div>
-          <div class="section-text">${shot.emotion}</div>
-        </div>` : ''}
-
-        ${shot.blocking ? `<div class="card-section">
-          <div class="section-label">Blocking</div>
-          <div class="section-text">${shot.blocking}</div>
-        </div>` : ''}
-
-        ${shot.dialogue ? `<div class="card-section">
-          <div class="section-label">Dialogue</div>
-          <div class="section-text">${shot.dialogue}</div>
-        </div>` : ''}
-
-        ${shot.script ? `<div class="card-section">
-          <a class="script-link" onclick="openModal('${shot.script}', '${shot.episode.replace(/'/g, "\\'")}')">
-            View Full Script <span>→</span>
-          </a>
-        </div>` : ''}
-
-        <div class="done-section">
-          <button class="done-btn ${isDone ? 'is-done' : 'undone'}" onclick="toggleDone('${shot.id}')">
-            ${isDone ? '✓ COMPLETED — TAP TO UNDO' : 'MARK AS DONE'}
-          </button>
-        </div>
-
-        <div class="nav-hint">Swipe left / right · ${currentIndex + 1} of ${filteredShots.length}</div>
       </div>
     </div>
   `;
