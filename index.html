@@ -1636,6 +1636,23 @@ function renderCard() {
         </div>
 
         <div class="card-section">
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:0;">
+              <div class="section-label">Actors</div>
+              <div class="tag-list">
+                ${shot.actors.length ? shot.actors.map(a => `<span class="tag">${a}</span>`).join('') : '<span class="tag" style="opacity:0.4;">None</span>'}
+              </div>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div class="section-label">Props</div>
+              <div class="tag-list">
+                ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.4;">None</span>'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-section">
           <div class="section-label">Shot Description</div>
           <div class="section-text">${shot.description}</div>
         </div>
@@ -1654,20 +1671,6 @@ function renderCard() {
           <div class="section-label">Dialogue</div>
           <div class="section-text">${shot.dialogue}</div>
         </div>` : ''}
-
-        <div class="card-section">
-          <div class="section-label">Actors</div>
-          <div class="tag-list">
-            ${shot.actors.length ? shot.actors.map(a => `<span class="tag">${a}</span>`).join('') : '<span class="tag" style="opacity:0.4;">None</span>'}
-          </div>
-        </div>
-
-        <div class="card-section">
-          <div class="section-label">Props</div>
-          <div class="tag-list">
-            ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.4;">None</span>'}
-          </div>
-        </div>
 
         ${shot.script ? `<div class="card-section">
           <a class="script-link" onclick="openModal('${shot.script}', '${shot.episode.replace(/'/g, "\\'")}')">
