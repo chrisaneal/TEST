@@ -473,6 +473,173 @@
     white-space: pre-wrap;
   }
 
+  /* ── View Toggle ── */
+  .view-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 2px;
+    gap: 2px;
+  }
+  .view-toggle-btn {
+    flex: 1;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 28px;
+  }
+  .view-toggle-btn.active {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  /* ── List View ── */
+  .list-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: calc(var(--safe-top) + 88px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+  }
+  .list-container.visible { display: block; }
+
+  .list-section-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 10px 20px 8px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--card-border);
+    font-family: 'Cormorant', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: background 0.15s;
+    min-height: 64px;
+  }
+  .list-item:active {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .list-item-time {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    min-width: 52px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .list-item-type {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .list-item-type-photo { background: var(--photo-text); }
+  .list-item-type-video { background: var(--video-text); }
+
+  .list-item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .list-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-chevron {
+    color: var(--text-dim);
+    font-size: 16px;
+    opacity: 0.3;
+    flex-shrink: 0;
+  }
+
+  .list-item.is-done .list-item-title {
+    color: var(--text-dim);
+    text-decoration: line-through;
+    text-decoration-color: var(--card-border);
+  }
+  .list-item.is-done .list-item-meta {
+    opacity: 0.5;
+  }
+
+  .list-done-header {
+    padding: 16px 20px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--green);
+    border-top: 1px solid var(--card-border);
+    margin-top: 8px;
+  }
+
+  .list-spacer {
+    height: calc(var(--safe-bottom) + 20px);
+  }
+
+  /* ── Card view back button ── */
+  .back-btn {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px 6px 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 32px;
+    transition: background 0.2s;
+  }
+  .back-btn:active { background: rgba(255,255,255,0.08); }
+  .back-btn.visible { display: inline-flex; }
+  .back-arrow { font-size: 16px; }
+
   /* ── Desktop ── */
   @media (min-width: 769px) {
     .card { padding: 6px calc((100vw - 420px) / 2) 8px; }
@@ -489,8 +656,17 @@
 
 <div class="header">
   <div class="header-top">
-    <h1>Belle Meade</h1>
-    <span class="progress-text" id="progressText">1 / 80</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="back-btn" id="backBtn" onclick="showListView()"><span class="back-arrow">&#8249;</span> List</button>
+      <h1 id="headerTitle">Belle Meade</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="view-toggle" id="viewToggle">
+        <button class="view-toggle-btn" data-view="list" onclick="showListView()">List</button>
+        <button class="view-toggle-btn active" data-view="card" onclick="showCardView()">Cards</button>
+      </div>
+      <span class="progress-text" id="progressText">1 / 80</span>
+    </div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="filter-bar" id="filterBar">
@@ -507,9 +683,11 @@
   </div>
 </div>
 
-<div class="swipe-container">
+<div class="swipe-container" id="swipeContainer">
   <div class="cards-wrapper" id="cardsWrapper"></div>
 </div>
+
+<div class="list-container" id="listContainer"></div>
 
 <div class="modal-overlay" id="scriptModal">
   <div class="modal">
@@ -1706,14 +1884,256 @@ const shots = [
 
 // Script content for modal
 const scripts = {
-  "everyday-man": "The Most Everyday Man In The World\n\nSee full script in:\nThe Most Everyday Man In The World.md",
-  "carousels": "Party Carousels\n\nSee full script in:\nParty Carousels-bar.md",
-  "vignettes": "Product Vignettes\n\nSee full script in:\nProduct Vignettes.md",
-  "psb-farm": "Pour Some Bourbon On It - Farm\n\nSee full script in:\nPour Some Bourbon On It - farm.md",
-  "psb-bar": "Pour Some Bourbon On It - Bar\n\nSee full script in:\nPour Some Bourbon On It - bar.md"
+  "everyday-man": `EPISODE 1: WORK
+FRONT PORCH - DAY
+Chappy pushes open the front door. He holds a full pot of coffee. He takes a sip from it.
+NARRATOR (V.O.): He works 5 to 5. (beat) And then 5 to 9.
+
+BARN - DAY
+Chappy pushes a wheelbarrow with a hay bale in it. It's hard work.
+NARRATOR (V.O.): He works from barn.
+
+BEDROOM - NIGHT
+Chappy takes off his work jacket. He yawns. Gets in bed. But then he sees the time on his digital alarm clock: 4:59 AM.
+NARRATOR (V.O.): He always clocks in early.
+Chappy gets out of bed. Puts his work jacket back on and leaves.
+NARRATOR (V.O.): He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+Chappy sits in a luxurious armchair. He pours Belle Meade Bourbon into a nice glass and raises it.
+CHAPPY: To those interested in not being the most interesting.
+Chappy takes a long sip.
+
+─────────────────────────────
+
+EPISODE 2: OLD SCHOOL
+BEDROOM - DAY
+Chappy puts on a work jacket. Two baseball caps on a shelf — one brand new, one old and worn-in. He picks the old one.
+NARRATOR (V.O.): If it ain't broke, he doesn't fix it.
+
+DRIVEWAY - DAY
+Chappy works on his truck, hood up. He grimaces — a twinge in his elbow. He spots WD-40 on the ground, sprays his elbow. It bends good as new.
+NARRATOR (V.O.): A little elbow grease goes a very long way for him.
+
+POOL / POND - DAY
+Chappy in swim trunks and Hawaiian shirt walks right past the pool. He drops his towel at the pond, takes off his shirt, heads for the pond.
+NARRATOR (V.O.): He has never swam in his pool. He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending as Episode 1)
+
+─────────────────────────────
+
+EPISODE 3: PLAY
+FIRE PIT - DAY
+Chappy walks up to an empty fire pit. He claps his hands twice. There's a full fire.
+NARRATOR (V.O.): He's more tech-savvy than you think.
+
+FIELD - DAY
+Chappy plays the banjo. The cattle and goats are his audience.
+NARRATOR (V.O.): He has an artistic side.
+
+CREEK - DAY
+Chappy finds the perfect stick stuck in mud like the Sword in the Stone. He pulls it out.
+NARRATOR (V.O.): He has a healthy inner child.
+CHAPPY: I AM YOUR KING!!!
+
+BASEMENT - DAY
+(Same ending)
+
+─────────────────────────────
+
+EPISODE 4: ROUTINE
+KITCHEN - DAY
+Chappy mixes raw eggs. Tosses fork in sink. Drinks the eggs from the bowl. Grabs ingredients and stuffs them in his mouth heading out.
+NARRATOR (V.O.): He eats on the go.
+
+FIELD - DAY
+June bolts across the field. Chappy chases after her.
+NARRATOR (V.O.): Work is his workout.
+CHAPPY: June! Get back here!
+
+SUN ROOM - DAY
+Chappy naps in a lounge chair, conked out.
+NARRATOR (V.O.): It ain't much. But it's honest work for him. He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending)
+
+─────────────────────────────
+
+EPISODE 5: FAMILY
+CHICKEN COOP - DAY
+Chappy stares at an empty chicken coop. Fights back tears.
+NARRATOR (V.O.): He hates coyotes.
+
+TRUCK - DAY
+Chappy flips open sun visor mirror — portrait of June taped to it. Turns to passenger seat where June sits.
+NARRATOR (V.O.): He's got that dog in him. But only when his dog isn't around.
+CHAPPY: You're such a sweet girl, you know that??
+
+FIELD - DAY
+Chappy photographs his donkey.
+NARRATOR (V.O.): He has a donkey named Horse. He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending)`,
+
+  "carousels": `CARD NIGHT
+Slide 1: Texas hold 'em. Drinks, folded cards, money on table. Dealer flips the river card. Text: "Card night"
+Slide 2: Man pretends to look at woman's cards. She playfully shoos him away.
+Slide 3: Woman pushes tiny amount of money into pot. "I'm all in, baby." Everyone laughs.
+Slide 4: Man in sunglasses looks at his cards. Smirks.
+Slide 5: Man and woman reveal cards. Woman wins huge pot. Everyone cheers.
+
+─────────────────────────────
+
+DINNER PARTY
+Slide 1: Large table, great food & drink. Electric atmosphere. Text: "Dinner party"
+Slide 2: Man's food arrives. "Oofs" in satisfaction. Double finger purse with both hands.
+Slide 3: Woman sips drink. "OH MY GOD." Hands it to friend.
+Slide 4: Woman ends toast. Everyone clinks glasses, drinks.
+Slide 5: Drinks flowing. Uproarious laughter. People taking selfies.
+
+─────────────────────────────
+
+POOL NIGHT
+Slide 1: Two men, two women chalk pool sticks. Text: "Pool night"
+Slide 2: Wicked break shot.
+Slide 3: Time-lapse of shots from each player.
+Slide 4: Someone scratches embarrassingly. Everyone laughs.
+Slide 5: Killer trick shot. Opponents high-five them.
+
+─────────────────────────────
+
+DATE NIGHT
+Slide 1: Push in on back of man and woman side by side. Text: "Date night"
+Slide 2: Nice dinner, bourbon. Steamy convo, lingering eye contact. Someone jokes, they laugh.
+Slide 3: Below table — knees touching. His hand on her thigh. Her hand on his.
+Slide 4: She feeds some of her meal to him.
+Slide 5: They kiss.
+
+─────────────────────────────
+
+BIRTHDAY BASH
+Slide 1: Mini cupcake with lit candle and bourbon shot on bar. Hands grab both. Text: "Birthday bash"
+Slide 2: Group sings Happy Birthday. Woman brings cupcake and shot to birthday girl.
+Slide 3: Birthday girl rips the shot, chases with cupcake bite. Friends cheer.
+Slide 4: Birthday girl busts a move in dance circle. Friends hype her up.
+Slide 5: Bathroom selfie with her girlies. 1,000 likes on IG.`,
+
+  "vignettes": `5:01 PM
+Slide 1: 3 coworkers in booth, old fashioneds. Belle Meade bottle on table. Text: "5:01 PM"
+Slide 2: All three look at middle man's phone. Anxious faces.
+Slide 3: Close up of phone — boss text: "Need all hands to hop on a working call."
+Slide 4: Phone face down. Back to shooting the shit. Boss ignored.
+
+─────────────────────────────
+
+SOMETHING FOR THE NERVES
+Slide 1: Guy at bar, captivated by woman at other end. Text: "Something for the nerves"
+Slide 2: She looks over and smiles.
+Slide 3: He looks straight ahead, scared shitless.
+Slide 4: Looks at his nearly empty bourbon.
+Slide 5: Empty glass foreground, Belle Meade mid, he's sitting next to her in background.
+
+─────────────────────────────
+
+LAST CALL
+Slide 1: Couple in booth, one light isolating them. Text: "Last call"
+Slide 2: Bar lights turn on. Spell broken.
+Slide 3: She grabs his hand, pulls him to bar.
+Slide 4: Eyes locked, glasses raised, fingers barely touching.
+Slide 5: Half-empty Belle Meade foreground. Couple silhouetted walking out hand in hand.
+
+─────────────────────────────
+
+DANCE OFF
+Slide 1: 10-12 people line dancing, shot from behind. Text: "Dance off"
+Slide 2: Flip angle. One woman holding glass high, dancing like no tomorrow.
+Slide 3: Man joins, meets her in stride. Belle Meade glass in hand.
+Slide 4: Both at bar. Bartender pours Belle Meade into two glasses.
+
+─────────────────────────────
+
+HE'S GOT THE MOVES
+Slide 1: Man and woman dancing, both with bourbon. She leads. Text: "He's got the moves"
+Slide 2: She spins him. She's the alpha.
+Slide 3: He's spiraling out of control, hanging on by one hand. Shocked face.
+Slide 4: He reestablishes footing, starts twerking. She laughs her head off.
+
+─────────────────────────────
+
+LAST CIG
+Slide 1: Man steps to patio for a cigarette break. Text: "Last cig"
+Slide 2: Opens pack — completely empty.
+Slide 3: Another man approaches with same brand.
+Slide 4: Tight shot — hands passing cigarette and lighter.
+Slide 5: Both smoking, chatting. Belle Meade on outdoor table.
+
+─────────────────────────────
+
+CORNER POCKET
+Slide 1: Woman at pool table corner. Belle Meade beside her. Eyes laser-focused. Text: "Corner Pocket"
+Slide 2: Only 8-ball left. She's chalking her cue.
+Slide 2.5: Man helps align her shot.
+Slide 3: She strikes. Cue ball blur across table.
+Slide 4: 8-ball sunk. She holds cue like a sword, bourbon in left hand.
+
+─────────────────────────────
+
+THE MIXOLOGIST
+Slide 1: Bartender leans in to hear order. Bar packed. Text: "The Master of Mixology"
+Slide 2: Grips Belle Meade, precisely pours into jigger.
+Slide 3: Vigorously shakes — interpretive dancer. Blur motion.
+Slide 4: Pours from shaker into glass 2 feet below. Steady stream.
+Slide 5: Hand outstretched with Buck & A Half cocktail, lime garnish. Belle Meade in background.`,
+
+  "psb-farm": `POUR SOME BOURBON ON IT — FARM
+
+TIER 1
+• Farmer looking down at 11 broken eggs on grass. 1 egg left in carton.
+• Farmer looks at back of jeans — double mud handprint on his ass.
+• Farmer at firepit with friends. Smoke only blows in his face.
+• Farmer cleans hands with hose. Hose is kinked, sprays water all over him.
+
+TIER 2
+• Back of farmer, hands on hips. Gate wide open. No livestock.
+• Most important tool missing from toolbox.
+• Low angle — keys stuck between seat and console. Farmer reaching desperately.
+• Farmer steps outside eager to start day. Steps in animal shit.
+• Farmer hand to forehead. Coffee grounds spilled all over kitchen floor.`,
+
+  "psb-bar": `POUR SOME BOURBON ON IT — BAR
+
+TIER 1
+• Two guys talk to a girl at the same time, one in each ear. She's in hell.
+• Girl waiting in the back of the 12-person bathroom line.
+• Aerial shot — man with drink looking down at white shoes with shoe prints on them.
+• Guy stares at freshly tattooed shoulder in horror. It reads "I Heart Burbon".
+
+TIER 2
+• Man taking pool shot, knocking drink out of girl's hand.
+• Guy gets bumped. Horror face as drink about to spill all over him.
+• Guy holds two old fashioneds, distraught. Girl in front making out with another guy.
+• Man outside bar with one cig left in his pack.`
 };
 
+// Section labels for list view
+const sectionLabels = {
+  'farm-outdoor': 'Farm — Outdoor',
+  'farm-indoor': 'Farm — Indoor',
+  'farm-psb': 'Farm — Pour Some Bourbon',
+  'bar-cocktails': 'Bar — Cocktail Recipes',
+  'bar-carousels': 'Bar — Party Carousels',
+  'bar-vignettes': 'Bar — Product Vignettes',
+  'bar-psb': 'Bar — Pour Some Bourbon'
+};
+
+const sectionOrder = ['farm-outdoor','farm-indoor','farm-psb','bar-cocktails','bar-carousels','bar-vignettes','bar-psb'];
+
 // State
+let currentView = 'list'; // start on list
 let currentFilter = 'all';
 let filteredShots = [...shots];
 let currentIndex = 0;
@@ -1721,6 +2141,7 @@ let doneShots = JSON.parse(localStorage.getItem('bellemeade-done') || '{}');
 let touchStartX = 0;
 let touchStartY = 0;
 let touchMoved = false;
+let openedFromList = false;
 
 function saveDone() {
   localStorage.setItem('bellemeade-done', JSON.stringify(doneShots));
@@ -1738,7 +2159,8 @@ function applyFilter(filter) {
     filteredShots = shots.filter(s => s.section === filter);
   }
   currentIndex = 0;
-  renderCard();
+  if (currentView === 'card') renderCard();
+  if (currentView === 'list') renderList();
   updateProgress();
 
   document.querySelectorAll('.filter-btn').forEach(b => {
@@ -1845,7 +2267,8 @@ function toggleDone(id) {
     doneShots[id] = true;
   }
   saveDone();
-  renderCard();
+  if (currentView === 'card') renderCard();
+  renderList();
   updateProgress();
 }
 
@@ -1876,7 +2299,96 @@ function closeModal() {
   document.getElementById('scriptModal').classList.remove('open');
 }
 
-// Touch handling
+// ── View Switching ──
+function showListView() {
+  currentView = 'list';
+  openedFromList = false;
+  document.getElementById('swipeContainer').style.display = 'none';
+  document.getElementById('listContainer').classList.add('visible');
+  document.getElementById('backBtn').classList.remove('visible');
+  document.getElementById('viewToggle').style.display = 'flex';
+  document.getElementById('headerTitle').textContent = 'Belle Meade';
+  document.querySelectorAll('.view-toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === 'list');
+  });
+  renderList();
+  updateProgress();
+}
+
+function showCardView(fromList) {
+  currentView = 'card';
+  if (fromList) openedFromList = true;
+  document.getElementById('swipeContainer').style.display = '';
+  document.getElementById('listContainer').classList.remove('visible');
+  document.getElementById('viewToggle').style.display = fromList ? 'none' : 'flex';
+  document.getElementById('backBtn').classList.toggle('visible', !!fromList);
+  document.querySelectorAll('.view-toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === 'card');
+  });
+  renderCard();
+  updateProgress();
+}
+
+function openShotFromList(shotId) {
+  const idx = filteredShots.findIndex(s => s.id === shotId);
+  if (idx >= 0) {
+    currentIndex = idx;
+    showCardView(true);
+  }
+}
+
+// ── List Rendering ──
+function renderList() {
+  const container = document.getElementById('listContainer');
+  const active = filteredShots.filter(s => !doneShots[s.id]);
+  const done = filteredShots.filter(s => doneShots[s.id]);
+
+  let html = '';
+
+  // Group active shots by section
+  const grouped = {};
+  active.forEach(s => {
+    if (!grouped[s.section]) grouped[s.section] = [];
+    grouped[s.section].push(s);
+  });
+
+  sectionOrder.forEach(section => {
+    if (!grouped[section] || grouped[section].length === 0) return;
+    html += `<div class="list-section-header">${sectionLabels[section] || section}</div>`;
+    grouped[section].forEach(shot => {
+      html += renderListItem(shot, false);
+    });
+  });
+
+  // Done section
+  if (done.length > 0) {
+    html += `<div class="list-done-header">Completed — ${done.length} shot${done.length !== 1 ? 's' : ''}</div>`;
+    done.forEach(shot => {
+      html += renderListItem(shot, true);
+    });
+  }
+
+  html += '<div class="list-spacer"></div>';
+  container.innerHTML = html;
+}
+
+function renderListItem(shot, isDone) {
+  const actorStr = shot.actors.length ? shot.actors.join(', ') : '';
+  const meta = [shot.location, actorStr].filter(Boolean).join(' · ');
+  return `
+    <div class="list-item ${isDone ? 'is-done' : ''}" onclick="openShotFromList('${shot.id}')">
+      <div class="list-item-time">${shot.time.replace(' AM','a').replace(' PM','p')}</div>
+      <div class="list-item-type list-item-type-${shot.type}"></div>
+      <div class="list-item-content">
+        <div class="list-item-title">${shot.title}</div>
+        <div class="list-item-meta">${meta}</div>
+      </div>
+      <div class="list-item-chevron">&#8250;</div>
+    </div>
+  `;
+}
+
+// ── Touch handling ──
 const wrapper = document.getElementById('cardsWrapper');
 
 wrapper.addEventListener('touchstart', (e) => {
@@ -1906,6 +2418,7 @@ wrapper.addEventListener('touchend', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') goNext();
   if (e.key === 'ArrowLeft') goPrev();
+  if (e.key === 'Escape' && openedFromList) showListView();
 });
 
 // Filter bar
@@ -1920,9 +2433,8 @@ document.getElementById('scriptModal').addEventListener('click', (e) => {
   if (e.target === document.getElementById('scriptModal')) closeModal();
 });
 
-// Init
-renderCard();
-updateProgress();
+// ── Init: start on list view ──
+showListView();
 </script>
 </body>
 </html>
