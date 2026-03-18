@@ -840,7 +840,7 @@
     <button class="filter-btn" data-filter="farm-psb">Farm PSBO</button>
     <button class="filter-btn" data-filter="bar-cocktails">Cocktails</button>
     <button class="filter-btn" data-filter="bar-carousels">Carousels</button>
-    <button class="filter-btn" data-filter="bar-psb">Bar PSBO</button>
+    <button class="filter-btn" data-filter="bar-vignettes">Vignettes</button>
     <button class="filter-btn" data-filter="done">Done</button>
     <button class="filter-btn" data-filter="remaining">Remaining</button>
   </div>
@@ -1499,102 +1499,458 @@ const shots = [
     script: "carousels", episode: "Birthday Bash"
   },
 
-  // ===== BAR - Pour Some Bourbon On It =====
+  // ===== BAR - Product Vignettes =====
+  // 5:01 PM
   {
-    id: "bar-64", time: "5:30 PM", type: "photo", section: "bar-psb",
-    location: "Bar", title: "PSBO Bar T1: Two Guys, One Girl",
-    series: "Pour Some Bourbon On It",
-    description: "Two guys talk to a girl at the same time, one in each ear. She's in hell.",
-    actors: ["2 Men", "1 Woman"],
-    props: ["Drinks"],
-    emotion: "Trapped, miserable — the worst bar experience",
-    blocking: "Woman in center, both men leaned in from either side. Her expression: save me. Their expressions: oblivious confidence.",
+    id: "bar-27", time: "5:30 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "5:01 PM: Slide 1 - The Booth",
+    series: "Product Vignettes — 5:01 PM",
+    description: 'A group of coworkers shooting the shit in a booth. All drinking old fashioneds. A Belle Meade Bourbon bottle on the table. Text: "5:01 PM"',
+    actors: ["3 coworker actors"],
+    props: ["Booth", "3 old fashioneds", "Belle Meade bottle"],
+    emotion: "Relief, camaraderie — clock-out freedom",
+    blocking: "Three in booth, drinks in hand, mid-conversation. Belle Meade bottle centered on table.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "5:01 PM"
   },
   {
-    id: "bar-65", time: "5:40 PM", type: "photo", section: "bar-psb",
-    location: "Bathroom hallway", title: "PSBO Bar T1: Bathroom Line",
-    series: "Pour Some Bourbon On It",
-    description: "Girl waiting in the back of the 12-person bathroom line.",
-    actors: ["1 Woman", "11 extras"],
-    props: [],
-    emotion: "Resigned suffering — the eternal wait",
-    blocking: "Long line stretching from bathroom door. Featured woman at the very end, looking defeated.",
+    id: "bar-28", time: "5:31 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "5:01 PM: Slide 2 - The Phone",
+    series: "Product Vignettes — 5:01 PM",
+    description: "The three coworkers sit looking at the phone of the man in the middle. The phone casts a glow on their anxious faces.",
+    actors: ["3 coworker actors"],
+    props: ["Phone (screen glowing)"],
+    emotion: "Anxious, dread — the boss is texting",
+    blocking: "All three lean toward center man's phone. Phone glow on faces. Expressions tense.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "5:01 PM"
   },
   {
-    id: "bar-66", time: "5:50 PM", type: "photo", section: "bar-psb",
-    location: "Bar (aerial)", title: "PSBO Bar T1: Dirty White Shoes",
-    series: "Pour Some Bourbon On It",
-    description: "Aerial shot of a man with a drink looking down at white shoes with other shoe prints on them.",
-    actors: ["Man"],
-    props: ["White shoes (scuffed/dirty with shoe prints)", "Bourbon drink"],
-    emotion: "Devastated — brand new kicks, ruined",
-    blocking: "Top-down shot. Man's POV looking at his own feet. White shoes covered in scuffs and footprints. Drink in one hand.",
+    id: "bar-29", time: "5:32 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth (insert)", title: "5:01 PM: Slide 3 - The Text",
+    series: "Product Vignettes — 5:01 PM",
+    description: 'Close up of phone screen showing text/Slack/Teams message from boss: "Need all hands to hop on a working call."',
+    actors: [],
+    props: ["Phone with message on screen"],
+    emotion: "The universal dread — boss text after hours",
+    blocking: "Insert shot of phone screen. Message clearly readable.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "5:01 PM"
   },
   {
-    id: "bar-67", time: "6:00 PM", type: "photo", section: "bar-psb",
-    location: "Bar", title: "PSBO Bar T1: Bad Tattoo",
-    series: "Pour Some Bourbon On It",
-    description: 'A guy stares at his freshly tattooed shoulder in horror. It reads "I Heart Burbon".',
-    actors: ["Man"],
-    props: ['Temporary tattoo reading "I Heart Burbon"'],
-    emotion: "Pure horror — permanent mistake, can't even spell it right",
-    blocking: "Man turns to look at his own shoulder. Close-up of tattoo. Back to his face: abject horror.",
+    id: "bar-30", time: "5:33 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "5:01 PM: Slide 4 - Ignored",
+    series: "Product Vignettes — 5:01 PM",
+    description: "The phone sits face down on the table. All of them shooting the shit again. As if their boss just didn't text them.",
+    actors: ["3 coworker actors"],
+    props: ["Phone (face down)", "Drinks"],
+    emotion: "Defiant joy — choosing life over work",
+    blocking: "Phone face down on table. Group back to laughing, drinking. Zero acknowledgment of the text.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "5:01 PM"
   },
+  // Something For The Nerves
   {
-    id: "bar-68", time: "6:10 PM", type: "photo", section: "bar-psb",
-    location: "Pool table area", title: "PSBO Bar T2: Knocked Drink",
-    series: "Pour Some Bourbon On It",
-    description: "Man taking pool shot, knocking drink out of girl's hand.",
+    id: "bar-31", time: "5:35 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 1 - The Spot",
+    series: "Product Vignettes — Something For The Nerves",
+    description: 'A guy at the bar, looking to his left/right. He\'s captivated by a beautiful woman at the other end. Text: "Something for the nerves"',
     actors: ["Man", "Woman"],
-    props: ["Pool cue", "Bourbon drink (breakaway glass or practical)"],
-    emotion: "Accidental chaos — the follow-through disaster",
-    blocking: "Man mid-stroke on pool shot. Cue follow-through catches woman's glass. Freeze at moment of impact/spill.",
+    props: ["Bar", "Bourbon drinks"],
+    emotion: "Longing, nervous — mustering up the courage",
+    blocking: "Man at one end of bar. POV shot toward woman at other end. She's luminous, unaware.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "Something For The Nerves"
   },
   {
-    id: "bar-69", time: "6:20 PM", type: "photo", section: "bar-psb",
-    location: "Bar", title: "PSBO Bar T2: About to Spill",
-    series: "Pour Some Bourbon On It",
-    description: "A guy gets bumped in the shoulder. A look of horror on his face as his drink is about to spill all over him.",
-    actors: ["Man", "Bumper extra"],
-    props: ["Bourbon drink"],
-    emotion: "Slow-motion dread — seeing the disaster unfold",
-    blocking: "Man holding drink. Extra bumps his shoulder from behind. Drink sloshing, about to go. His face: nooooo.",
+    id: "bar-32", time: "5:36 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 2 - The Smile",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "The woman looks over toward the man and smiles at him.",
+    actors: ["Woman"],
+    props: [],
+    emotion: "Warm, inviting — she noticed him",
+    blocking: "From man's POV: woman turns, makes eye contact, smiles.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "Something For The Nerves"
   },
   {
-    id: "bar-70", time: "6:30 PM", type: "photo", section: "bar-psb",
-    location: "Bar", title: "PSBO Bar T2: Two Old Fashioneds",
-    series: "Pour Some Bourbon On It",
-    description: "A guy holds two old fashioneds, a distraught look on his face. The girl in front of him is making out with another guy.",
-    actors: ["Man with drinks", "Kissing couple"],
-    props: ["2 old fashioneds"],
-    emotion: "Crushed, humiliated — brought her a drink and she moved on",
-    blocking: "Man in foreground holding two drinks, staring in disbelief. Couple making out in mid-ground, oblivious.",
-    dialogue: "",
-    script: "psb-bar", episode: ""
-  },
-  {
-    id: "bar-71", time: "6:45 PM", type: "photo", section: "bar-psb",
-    location: "Bar patio", title: "PSBO Bar T2: Last Cig in the Pack",
-    series: "Pour Some Bourbon On It",
-    description: "Man outside the bar with one cig left in his pack.",
+    id: "bar-33", time: "5:37 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 3 - Scared Shitless",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "The man looks straight ahead, scared shitless.",
     actors: ["Man"],
-    props: ["Cigarette pack with 1 cigarette"],
-    emotion: "Bittersweet — savoring the last one",
-    blocking: "Man on patio, opens pack, sees one cigarette left. Close-up of the lone cig in the pack.",
+    props: [],
+    emotion: "Frozen, terrified — she smiled and now he can't move",
+    blocking: "Close-up of man facing forward. Wide eyes. Deer in headlights.",
     dialogue: "",
-    script: "psb-bar", episode: ""
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  {
+    id: "bar-34", time: "5:38 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 4 - Liquid Courage",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "The man looks at the drink in his hand. A bourbon neat/on the rocks. Only a little bit left.",
+    actors: ["Man"],
+    props: ["Bourbon glass (nearly empty)"],
+    emotion: "Deciding — one more sip and he's going in",
+    blocking: "Man looks down at glass. Close-up of glass with a finger of bourbon left.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  {
+    id: "bar-35", time: "5:39 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 5 - He Did It",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "Foreground (out of focus): empty drink on bar. Middle: Belle Meade bottle. Background: guy sitting next to the girl at the bar. Alt: close-up of two glasses clinking.",
+    actors: ["Man", "Woman"],
+    props: ["Empty glass", "Belle Meade bottle", "2 glasses"],
+    emotion: "Victory, connection — bourbon gave him the push",
+    blocking: "Rack focus shot: empty glass foreground, Belle Meade mid, couple together in background. Or: tight on two glasses clinking, hands at edge of frame.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  // Last Call
+  {
+    id: "bar-36", time: "5:42 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "Last Call: Slide 1 - The Spotlight",
+    series: "Product Vignettes — Last Call",
+    description: 'A man and a woman hitting it off in a booth, sitting close. Dark with one light shining down, isolating them from the bar. Text: "Last call"',
+    actors: ["Man", "Woman"],
+    props: ["Booth", "Drinks", "Overhead light (practical)"],
+    emotion: "Intimate, cinematic — their own world in a crowded bar",
+    blocking: "Overhead spot on booth. Everything around them dark. They're close, leaning in.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-37", time: "5:43 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "Last Call: Slide 2 - Lights On",
+    series: "Product Vignettes — Last Call",
+    description: "The man looks up at the bar lights as they turn on. The woman looks over toward the bar.",
+    actors: ["Man", "Woman"],
+    props: ["Bar lights (practical)"],
+    emotion: "Jarring, bittersweet — reality breaking the spell",
+    blocking: "Man looks up as house lights flip on. Woman turns toward bar. The mood shifts.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-38", time: "5:44 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Last Call: Slide 3 - One More",
+    series: "Product Vignettes — Last Call",
+    description: "The woman grabs the man's hand and pulls him toward the bar for a final drink.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Spontaneous, defiant — not ready for the night to end",
+    blocking: "Woman slides out of booth, grabs his hand, pulls him. He follows willingly.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-39", time: "5:45 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Last Call: Slide 4 - Fingers Touch",
+    series: "Product Vignettes — Last Call",
+    description: "Man and woman look into each other's eyes with a flirtatious grin. Their fingers barely touch as they hold glasses up to one another.",
+    actors: ["Man", "Woman"],
+    props: ["2 bourbon glasses"],
+    emotion: "Electric, almost-touching — the tension is everything",
+    blocking: "Face to face at bar. Glasses raised. Fingers barely making contact on the glass stems. Eye lock.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-40", time: "5:46 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar top / entrance", title: "Last Call: Slide 5 - The Walk Out",
+    series: "Product Vignettes — Last Call",
+    description: "Long shot of bar top: half-empty Belle Meade bottle in foreground. Silhouettes of both holding hands walking out the bar entrance in background.",
+    actors: ["Man", "Woman"],
+    props: ["Belle Meade bottle (half-empty)"],
+    emotion: "Romantic, cinematic — the perfect exit",
+    blocking: "Foreground: Belle Meade bottle on bar, half-empty. Background: couple silhouetted against entrance light, hand in hand, walking out.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  // Dance Off
+  {
+    id: "bar-41", time: "5:50 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 1 - The Line",
+    series: "Product Vignettes — Dance Off",
+    description: 'A group of 10-12 people line dancing in the middle of the bar floor. Shot from the back. Text: "Dance off"',
+    actors: ["10-12 actors"],
+    props: ["Drinks"],
+    emotion: "Communal energy — everyone moving together",
+    blocking: "Camera behind the group. All in sync (or trying). Movement filling the frame.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-42", time: "5:52 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 2 - She's On Fire",
+    series: "Product Vignettes — Dance Off",
+    description: "Flip camera to opposite side. Zoom into one woman in the crowd, holding her glass high and dancing like there's no tomorrow.",
+    actors: ["Featured woman", "Group"],
+    props: ["Bourbon glass"],
+    emotion: "Uninhibited joy — she's the star and she knows it",
+    blocking: "Reverse angle. Camera finds the woman in the crowd. She's elevated by her energy, glass held high.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-43", time: "5:54 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 3 - He Joins In",
+    series: "Product Vignettes — Dance Off",
+    description: "A man joins the line dancing, meeting her in stride. He holds a Belle Meade Bourbon glass.",
+    actors: ["Featured man", "Featured woman", "Group"],
+    props: ["Belle Meade bourbon glass"],
+    emotion: "Chemistry through movement — they match each other's energy",
+    blocking: "Man slides into line next to her. They lock into the same rhythm. His Belle Meade glass in hand.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-44", time: "5:56 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Dance Off: Slide 4 - The Pour",
+    series: "Product Vignettes — Dance Off",
+    description: "The man and woman at the bar together. The bartender pours a bottle of Belle Meade Bourbon into two glasses.",
+    actors: ["Man", "Woman", "Bartender"],
+    props: ["Belle Meade bottle", "2 glasses"],
+    emotion: "Reward, connection — the dance led them here",
+    blocking: "Couple at bar, catching their breath. Bartender pours Belle Meade into two glasses between them.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  // He's Got The Moves
+  {
+    id: "bar-45", time: "5:58 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 1 - The Dance",
+    series: "Product Vignettes — He's Got The Moves",
+    description: 'Man and woman dancing with one another. Both holding bourbon glasses. Woman is leading, he\'s just following along. Text: "He\'s got the moves"',
+    actors: ["Man", "Woman"],
+    props: ["2 bourbon glasses"],
+    emotion: "Fun, role-reversal — she leads, he vibes",
+    blocking: "Two-shot on dance floor. Woman clearly leading. Man happily along for the ride. Both holding glasses.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-46", time: "6:00 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 2 - The Spin",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The woman starts to spin the man as if she is the alpha.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Dominant feminine energy — she's in control",
+    blocking: "Woman grips his hand, spins him out. She's planted, he's rotating.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-47", time: "6:02 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 3 - Out of Control",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The man is spiraling out of control, hanging on by just one of the woman's hands. His face is shocked.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Comedic chaos — he's in over his head",
+    blocking: "Man extended at arm's length, centrifugal force pulling him out. One hand gripping hers. Face: pure shock.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-48", time: "6:04 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 4 - The Twerk",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The man reestablishes footing, returns from the twirl, and starts twerking on her. She laughs her head off.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Hilarious, confident — he recovered and doubled down",
+    blocking: "Man plants feet, immediately starts twerking. Woman doubled over laughing. Pure chaos.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  // Last Cig
+  {
+    id: "bar-49", time: "6:06 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 1 - The Breather",
+    series: "Product Vignettes — Last Cig",
+    description: 'Man steps outside to the bar patio, catching a breather. Looking forward to a cigarette break. Text: "Last cig"',
+    actors: ["Man 1"],
+    props: [],
+    emotion: "Relief, anticipation — escaping the noise for a moment",
+    blocking: "Man pushes patio door open, steps out. Takes a deep breath. Reaches for pocket.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-50", time: "6:08 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 2 - Empty Pack",
+    series: "Product Vignettes — Last Cig",
+    description: "The man opens his pack of cigarettes, only to find it's completely empty.",
+    actors: ["Man 1"],
+    props: ["Empty cigarette pack"],
+    emotion: "Disappointment — the one thing he wanted, gone",
+    blocking: "Close on hands opening pack. Flip the lid: empty. His face falls.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-51", time: "6:10 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 3 - The Stranger",
+    series: "Product Vignettes — Last Cig",
+    description: "Another man on the patio makes his way over, same brand of cigarettes in hand.",
+    actors: ["Man 1", "Man 2"],
+    props: ["Cigarette pack (same brand)"],
+    emotion: "Unexpected kindness — strangers becoming friends",
+    blocking: "Man 2 approaches from background, pack visible in hand. Man 1 looks up hopefully.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-52", time: "6:12 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 4 - The Offer",
+    series: "Product Vignettes — Last Cig",
+    description: "Tight shot of the man handing the other a cigarette and his personal lighter.",
+    actors: ["Man 1 (hands)", "Man 2 (hands)"],
+    props: ["Cigarette", "Lighter"],
+    emotion: "Generosity, brotherhood — no words needed",
+    blocking: "Tight on hands. Man 2's hand extends cigarette and lighter. Man 1's hand receives.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-53", time: "6:14 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 5 - New Friends",
+    series: "Product Vignettes — Last Cig",
+    description: "The two men drag on their cigarettes, chatting about life. Belle Meade bottle on the outdoor table next to them.",
+    actors: ["Man 1", "Man 2"],
+    props: ["2 cigarettes (lit)", "Belle Meade bottle", "Outdoor table"],
+    emotion: "Easy connection — bourbon and a smoke with a new friend",
+    blocking: "Two-shot on patio. Both leaning on railing or seated. Smoke drifting. Belle Meade bottle on table between them.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  // Corner Pocket
+  {
+    id: "bar-54", time: "6:16 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 1 - The Focus",
+    series: "Product Vignettes — Corner Pocket",
+    description: 'Woman hunched over the back left corner of a pool table. Belle Meade bourbon on the rocks beside her. Only her eyes visible, laser-focused. Text: "Corner Pocket"',
+    actors: ["Woman"],
+    props: ["Pool table", "Belle Meade bourbon on the rocks"],
+    emotion: "Intense focus, deadly confidence — she's about to end this",
+    blocking: "Low angle from across table. Woman's eyes peer over the rail, locked on target. Glass beside her on the rail.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-55", time: "6:18 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 2 - Chalking Up",
+    series: "Product Vignettes — Corner Pocket",
+    description: "Zoom out. Only the 8-ball is left on the table. The woman is chalking her pool cue. Eyes analyzing the shot.",
+    actors: ["Woman"],
+    props: ["Pool table", "8-ball", "Cue", "Chalk"],
+    emotion: "Calculating, composed — she sees the geometry",
+    blocking: "Wider shot showing table with only 8-ball remaining. Woman standing, chalking cue slowly, studying angles.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-56", time: "6:19 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 2.5 - The Assist",
+    series: "Product Vignettes — Corner Pocket",
+    description: "A man helps align her shot.",
+    actors: ["Woman", "Man"],
+    props: ["Pool cue"],
+    emotion: "Teamwork, flirtatious — he leans in to help",
+    blocking: "Man behind/beside her, guiding the cue angle. Close proximity.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-57", time: "6:20 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 3 - The Strike",
+    series: "Product Vignettes — Corner Pocket",
+    description: "She hits the cue ball and we see it in a blur effect, moving across the table.",
+    actors: ["Woman"],
+    props: ["Pool cue", "Cue ball"],
+    emotion: "Power, precision — the moment of truth",
+    blocking: "Action shot. Cue strikes ball. Motion blur across the felt.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-58", time: "6:22 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 4 - Victory",
+    series: "Product Vignettes — Corner Pocket",
+    description: "The 8-ball has disappeared into the pocket. Cue ball rests just shy of the same pocket. Woman holds pool cue like a sword in right hand, cold Belle Meade on the rocks in left.",
+    actors: ["Woman"],
+    props: ["Pool cue", "Belle Meade bourbon on the rocks"],
+    emotion: "Triumphant, badass — she called it and nailed it",
+    blocking: "Table with cue ball near pocket, 8-ball gone. Woman standing tall — cue in right hand like a sword, bourbon in left, owning the moment.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  // The Mixologist
+  {
+    id: "bar-59", time: "6:24 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 1 - The Crowd",
+    series: "Product Vignettes — The Mixologist",
+    description: 'Bartender leans in to hear a customer\'s order. Bar packed with people pining for his attention. Text: "The Master of Mixology"',
+    actors: ["Bartender", "8-10 extras"],
+    props: ["Packed bar"],
+    emotion: "In demand, commanding — everyone wants his attention",
+    blocking: "Bartender leans across bar toward one customer. Others reaching, waving, trying to get his eye.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-60", time: "6:26 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 2 - The Pour",
+    series: "Product Vignettes — The Mixologist",
+    description: "Bartender grips a bottle of Belle Meade bourbon, precisely pouring 1 shot into the jigger.",
+    actors: ["Bartender"],
+    props: ["Belle Meade bottle", "Jigger"],
+    emotion: "Precision, craftsmanship — every drop counts",
+    blocking: "Close on bartender's hands. Belle Meade bottle angled into jigger. Steady, precise pour.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-61", time: "6:27 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 3 - The Shake",
+    series: "Product Vignettes — The Mixologist",
+    description: "Takes the shaker and vigorously shakes the concoction, looking like an interpretive dancer. Blur motion all over the frame.",
+    actors: ["Bartender"],
+    props: ["Cocktail shaker"],
+    emotion: "Showmanship, artistry — this is performance",
+    blocking: "Bartender shaking with full body. Motion blur on shaker/hands. His expression: focused, theatrical.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-62", time: "6:28 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 4 - The Stream",
+    series: "Product Vignettes — The Mixologist",
+    description: "Pours the drink from the shaker into the glass 2 feet below. Steady stream of bourbon flowing from the shaker.",
+    actors: ["Bartender"],
+    props: ["Shaker", "Glass"],
+    emotion: "Gravity-defying elegance — the payoff pour",
+    blocking: "Shaker held high, glass on bar. Continuous stream of liquid falling 2 feet. Capture the arc.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-63", time: "6:30 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 5 - The Serve",
+    series: "Product Vignettes — The Mixologist",
+    description: "Bartender's hand outstretched with a fresh Buck & A Half cocktail garnished with a lime. Belle Meade bourbon bottle faintly in background.",
+    actors: ["Bartender"],
+    props: ["Buck & A Half cocktail", "Lime garnish", "Belle Meade bottle"],
+    emotion: "Pride, presentation — masterpiece complete",
+    blocking: "Bartender's arm extended toward camera with finished cocktail. Shallow depth of field. Belle Meade bottle soft in background.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
   }
 ];
 
@@ -1842,10 +2198,10 @@ const sectionLabels = {
   'farm-psb': 'Farm — Pour Some Bourbon',
   'bar-cocktails': 'Bar — Cocktail Recipes',
   'bar-carousels': 'Bar — Party Carousels',
-  'bar-psb': 'Bar — Pour Some Bourbon'
+  'bar-vignettes': 'Bar — Product Vignettes'
 };
 
-const sectionOrder = ['farm-outdoor','farm-indoor','farm-psb','bar-cocktails','bar-carousels','bar-psb'];
+const sectionOrder = ['farm-outdoor','farm-indoor','farm-psb','bar-cocktails','bar-carousels','bar-vignettes'];
 
 // State
 let currentView = 'list'; // start on list
