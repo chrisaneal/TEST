@@ -606,6 +606,32 @@
     height: calc(var(--safe-bottom) + 20px);
   }
 
+  /* ── Sort toggle button ── */
+  .sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 32px;
+    min-width: 32px;
+    justify-content: center;
+    transition: background 0.2s;
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .sort-btn:active { background: rgba(255,255,255,0.08); }
+  .sort-btn-text { display: none; }
+  @media (min-width: 769px) {
+    .sort-btn { padding: 6px 12px; }
+    .sort-btn-text { display: inline; }
+  }
+
   /* ── Spreadsheet header button ── */
   .spreadsheet-btn {
     display: inline-flex;
@@ -820,6 +846,12 @@
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="progress-text" id="progressText">1 / 80</span>
+      <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 4l4-3 4 3"/><path d="M3 10l4 3 4-3"/>
+        </svg>
+        <span class="sort-btn-text" id="sortBtnText">Sort: Time</span>
+      </button>
       <button class="spreadsheet-btn" id="spreadsheetBtn" onclick="openSpreadsheet()">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="1.5" y="1.5" width="13" height="13" rx="2"/>
@@ -960,7 +992,7 @@ const shots = [
     script: "psb-farm", episode: ""
   },
   {
-    id: "farm-03", time: "8:40 AM", type: "video", section: "farm-outdoor",
+    id: "farm-03", time: "8:30 AM", type: "video", section: "farm-outdoor",
     location: "Driveway", title: "Ep 2 - Old School: Driveway",
     series: "The Most Everyday Man In The World",
     description: "Chappy works on his truck (hood up, sleeves rolled). Grimaces at elbow pain. Spots WD-40 on the ground, sprays his elbow, massages it in. Bends it — good as new.",
@@ -968,11 +1000,11 @@ const shots = [
     props: ["Truck (hood up)", "WD-40 canister (logo covered)"],
     emotion: "Practical, resourceful — old-school problem solving",
     blocking: "Chappy under hood. Straightens up grimacing, spots WD-40 on ground. Picks it up, sprays elbow, massages it in. Flexes arm with satisfaction.",
-    dialogue: 'NARRATOR (V.O.): "A little elbow grease goes a very long way for him."',
+    dialogue: 'NARRATOR (V.O.): "Elbow grease has a literal meaning to him."',
     script: "everyday-man", episode: "Episode 2: Old School"
   },
   {
-    id: "farm-10", time: "8:50 AM", type: "video", section: "farm-outdoor",
+    id: "farm-10", time: "8:40 AM", type: "video", section: "farm-outdoor",
     location: "Truck (cab)", title: "Ep 5 - Family: June in the Truck",
     series: "The Most Everyday Man In The World",
     description: "Chappy flips open sun visor mirror with a portrait of June taped to it. Grins. Turns to passenger seat where June sits. Gives her cheek rubs and makes baby noises.",
@@ -984,7 +1016,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 5: Family"
   },
   {
-    id: "farm-23", time: "9:00 AM", type: "photo", section: "farm-psb",
+    id: "farm-23", time: "8:50 AM", type: "photo", section: "farm-psb",
     location: "Truck / Car", title: "PSBO Farm T2: Keys in the Seat",
     series: "Pour Some Bourbon On It",
     description: "Low angle shot of keys stuck between seat and console of a car. The face/eyes of the farmer and outstretched hand squeeze into the gap to reach for keys.",
@@ -996,7 +1028,7 @@ const shots = [
     script: "psb-farm", episode: ""
   },
   {
-    id: "farm-05", time: "9:10 AM", type: "video", section: "farm-outdoor",
+    id: "farm-05", time: "9:00 AM", type: "video", section: "farm-outdoor",
     location: "Fire Pit", title: "Ep 3 - Play: Fire Pit",
     series: "The Most Everyday Man In The World",
     description: "Chappy is down on one knee, struggling to get a fire going. Charlie walks into view and hands him lighter fluid (logo covered). Chappy smacks it out of Charlie's hand, shoves Charlie out of view. Gets back down on one knee.",
@@ -1008,7 +1040,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 3: Play"
   },
   {
-    id: "farm-19", time: "9:20 AM", type: "photo", section: "farm-psb",
+    id: "farm-19", time: "9:10 AM", type: "photo", section: "farm-psb",
     location: "Fire Pit", title: "PSBO Farm T1: Smoke in Face",
     series: "Pour Some Bourbon On It",
     description: "Farmer sits around the firepit with friends. But the smoke only blows in his face.",
@@ -1028,7 +1060,7 @@ const shots = [
     props: ["Banjo"],
     emotion: "Joyful, passionate — lost in the music",
     blocking: "Chappy seated or standing in open field, playing banjo. Cattle/goats visible in background across fence line.",
-    dialogue: 'NARRATOR (V.O.): "He has an artistic side."',
+    dialogue: 'NARRATOR (V.O.): "He once turned down a record deal because his cattle needed feed."',
     script: "everyday-man", episode: "Episode 3: Play"
   },
   {
@@ -1040,11 +1072,11 @@ const shots = [
     props: [],
     emotion: "Tender routine — a decade of love in one pat",
     blocking: "June on porch wagging tail. Chappy walks past, stops, leans down. Pats her hard on ribs. Then gentle ear scratches. June melts.",
-    dialogue: 'NARRATOR (V.O.): "His dog has been sturdy for a decade straight."',
+    dialogue: 'NARRATOR (V.O.): "She\'s sturdy."',
     script: "everyday-man", episode: "Episode 4: Routine"
   },
   {
-    id: "farm-11", time: "9:50 AM", type: "video", section: "farm-outdoor",
+    id: "farm-11", time: "9:45 AM", type: "video", section: "farm-outdoor",
     location: "Field", title: "Ep 5 - Family: Horse the Donkey",
     series: "The Most Everyday Man In The World",
     description: "Chappy takes a picture of something with his camera. Smiles ear to ear. A donkey stands before him. Chappy pans his camera over to a horse. Takes its picture. Smiles ear to ear again.",
@@ -1056,7 +1088,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 5: Family"
   },
   {
-    id: "farm-21", time: "10:00 AM", type: "photo", section: "farm-psb",
+    id: "farm-21", time: "9:50 AM", type: "photo", section: "farm-psb",
     location: "Field / Gate", title: "PSBO Farm T2: Open Gate",
     series: "Pour Some Bourbon On It",
     description: "The back of a farmer with his hands on his hips. A gate is wide open. No livestock in the field.",
@@ -1068,7 +1100,7 @@ const shots = [
     script: "psb-farm", episode: ""
   },
   {
-    id: "farm-09", time: "10:10 AM", type: "video", section: "farm-outdoor",
+    id: "farm-09", time: "10:00 AM", type: "video", section: "farm-outdoor",
     location: "Chicken Coop", title: "Ep 5 - Family: Empty Coop",
     series: "The Most Everyday Man In The World",
     description: "Chappy stares ahead, forlorn. He's looking at an empty chicken coop. Glances away, fights back tears.",
@@ -1080,7 +1112,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 5: Family"
   },
   {
-    id: "farm-04", time: "10:20 AM", type: "video", section: "farm-outdoor",
+    id: "farm-04", time: "10:15 AM", type: "video", section: "farm-outdoor",
     location: "Pool / Pond", title: "Ep 2 - Old School: Pool / Pond",
     series: "The Most Everyday Man In The World",
     description: "Chappy in swim trunks and Hawaiian shirt walks right past the pool (or covered pool), drops towel at the pond, takes off shirt, heads straight for the pond.",
@@ -1106,7 +1138,7 @@ const shots = [
 
   // ===== FARM INDOOR - Everyday Man & PSBO =====
   {
-    id: "farm-12", time: "10:50 AM", type: "video", section: "farm-indoor",
+    id: "farm-12", time: "11:00 AM", type: "video", section: "farm-indoor",
     location: "Bedroom", title: "Ep 1 - Work: 4:59 AM",
     series: "The Most Everyday Man In The World",
     description: "Chappy takes off work jacket, yawns, gets in bed. Sees 4:59 AM on digital alarm clock. Gets back out of bed, puts jacket on, and leaves.",
@@ -1118,7 +1150,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 1: Work"
   },
   {
-    id: "farm-13", time: "11:00 AM", type: "video", section: "farm-indoor",
+    id: "farm-13", time: "11:10 AM", type: "video", section: "farm-indoor",
     location: "Bedroom", title: "Ep 2 - Old School: The Hat",
     series: "The Most Everyday Man In The World",
     description: "Chappy puts on work jacket. Turns to two baseball caps (no logos) on a hanging shelf. One brand new, one old and worn-in. Picks the old one.",
@@ -1130,7 +1162,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 2: Old School"
   },
   {
-    id: "farm-14", time: "11:10 AM", type: "video", section: "farm-indoor",
+    id: "farm-14", time: "11:30 AM", type: "video", section: "farm-indoor",
     location: "Kitchen", title: "Ep 4 - Routine: Eggs on the Go",
     series: "The Most Everyday Man In The World",
     description: "Chappy mixes raw eggs in a frying pan. Looks at the cutting board — ham, mushrooms, peppers, spinach. Chuckles, shakes his head. Scrapes the veggies off the cutting board into the trash. Tosses the ham in with the eggs.",
@@ -1142,7 +1174,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 4: Routine"
   },
   {
-    id: "farm-25", time: "11:20 AM", type: "photo", section: "farm-psb",
+    id: "farm-25", time: "11:40 AM", type: "photo", section: "farm-psb",
     location: "Kitchen", title: "PSBO Farm T2: Coffee Grounds",
     series: "Pour Some Bourbon On It",
     description: "Farmer puts hand to forehead in disbelief. His coffee grounds are spilled all over the kitchen floor.",
@@ -1154,7 +1186,7 @@ const shots = [
     script: "psb-farm", episode: ""
   },
   {
-    id: "farm-15", time: "11:30 AM", type: "video", section: "farm-indoor",
+    id: "farm-15", time: "11:50 AM", type: "video", section: "farm-indoor",
     location: "Sun Room", title: "Ep 4 - Routine: The Nap",
     series: "The Most Everyday Man In The World",
     description: "Chappy snores on a lounge chair, ball cap over his face. Work gloves in his lap. A wrench in his left hand, a hammer in his right. He twitches, smacking the hammer against the end table. It startles him awake.",
@@ -1166,7 +1198,7 @@ const shots = [
     script: "everyday-man", episode: "Episode 4: Routine"
   },
   {
-    id: "farm-16", time: "11:45 AM", type: "video", section: "farm-indoor",
+    id: "farm-16", time: "12:00 PM", type: "video", section: "farm-indoor",
     location: "Basement", title: "Eps 1-5: The Armchair Toast",
     series: "The Most Everyday Man In The World",
     description: "Chappy sits in a luxurious armchair in his decked-out basement. Pours Belle Meade Bourbon into a nice glass and raises it. 'Here's to those interested in not being the most interesting.' Takes a long sip. SAME SETUP, 5 TAKES WITH WARDROBE CHANGES.",
@@ -1500,9 +1532,70 @@ const shots = [
   },
 
   // ===== BAR - Product Vignettes =====
+  // Last Cig
+  {
+    id: "bar-49", time: "5:00 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 1 - The Breather",
+    series: "Product Vignettes — Last Cig",
+    description: 'Man steps outside to the bar patio, catching a breather. Looking forward to a cigarette break. Text: "Last cig"',
+    actors: ["Man 1"],
+    props: [],
+    emotion: "Relief, anticipation — escaping the noise for a moment",
+    blocking: "Man pushes patio door open, steps out. Takes a deep breath. Reaches for pocket.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-50", time: "5:02 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 2 - Empty Pack",
+    series: "Product Vignettes — Last Cig",
+    description: "The man opens his pack of cigarettes, only to find it's completely empty.",
+    actors: ["Man 1"],
+    props: ["Empty cigarette pack"],
+    emotion: "Disappointment — the one thing he wanted, gone",
+    blocking: "Close on hands opening pack. Flip the lid: empty. His face falls.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-51", time: "5:04 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 3 - The Stranger",
+    series: "Product Vignettes — Last Cig",
+    description: "Another man on the patio makes his way over, same brand of cigarettes in hand.",
+    actors: ["Man 1", "Man 2"],
+    props: ["Cigarette pack (same brand)"],
+    emotion: "Unexpected kindness — strangers becoming friends",
+    blocking: "Man 2 approaches from background, pack visible in hand. Man 1 looks up hopefully.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-52", time: "5:06 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 4 - The Offer",
+    series: "Product Vignettes — Last Cig",
+    description: "Tight shot of the man handing the other a cigarette and his personal lighter.",
+    actors: ["Man 1 (hands)", "Man 2 (hands)"],
+    props: ["Cigarette", "Lighter"],
+    emotion: "Generosity, brotherhood — no words needed",
+    blocking: "Tight on hands. Man 2's hand extends cigarette and lighter. Man 1's hand receives.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-53", time: "5:08 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 5 - New Friends",
+    series: "Product Vignettes — Last Cig",
+    description: "The two men drag on their cigarettes, chatting about life. Belle Meade bottle on the outdoor table next to them.",
+    actors: ["Man 1", "Man 2"],
+    props: ["2 cigarettes (lit)", "Belle Meade bottle", "Outdoor table"],
+    emotion: "Easy connection — bourbon and a smoke with a new friend",
+    blocking: "Two-shot on patio. Both leaning on railing or seated. Smoke drifting. Belle Meade bottle on table between them.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
   // 5:01 PM
   {
-    id: "bar-27", time: "5:30 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-27", time: "5:20 PM", type: "photo", section: "bar-vignettes",
     location: "Booth", title: "5:01 PM: Slide 1 - The Booth",
     series: "Product Vignettes — 5:01 PM",
     description: 'A group of coworkers shooting the shit in a booth. All drinking old fashioneds. A Belle Meade Bourbon bottle on the table. Text: "5:01 PM"',
@@ -1514,7 +1607,7 @@ const shots = [
     script: "vignettes", episode: "5:01 PM"
   },
   {
-    id: "bar-28", time: "5:31 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-28", time: "5:22 PM", type: "photo", section: "bar-vignettes",
     location: "Booth", title: "5:01 PM: Slide 2 - The Phone",
     series: "Product Vignettes — 5:01 PM",
     description: "The three coworkers sit looking at the phone of the man in the middle. The phone casts a glow on their anxious faces.",
@@ -1526,7 +1619,7 @@ const shots = [
     script: "vignettes", episode: "5:01 PM"
   },
   {
-    id: "bar-29", time: "5:32 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-29", time: "5:24 PM", type: "photo", section: "bar-vignettes",
     location: "Booth (insert)", title: "5:01 PM: Slide 3 - The Text",
     series: "Product Vignettes — 5:01 PM",
     description: 'Close up of phone screen showing text/Slack/Teams message from boss: "Need all hands to hop on a working call."',
@@ -1538,7 +1631,7 @@ const shots = [
     script: "vignettes", episode: "5:01 PM"
   },
   {
-    id: "bar-30", time: "5:33 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-30", time: "5:26 PM", type: "photo", section: "bar-vignettes",
     location: "Booth", title: "5:01 PM: Slide 4 - Ignored",
     series: "Product Vignettes — 5:01 PM",
     description: "The phone sits face down on the table. All of them shooting the shit again. As if their boss just didn't text them.",
@@ -1551,7 +1644,7 @@ const shots = [
   },
   // Something For The Nerves
   {
-    id: "bar-31", time: "5:35 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-31", time: "5:40 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Something For The Nerves: Slide 1 - The Spot",
     series: "Product Vignettes — Something For The Nerves",
     description: 'A guy at the bar, looking to his left/right. He\'s captivated by a beautiful woman at the other end. Text: "Something for the nerves"',
@@ -1563,7 +1656,7 @@ const shots = [
     script: "vignettes", episode: "Something For The Nerves"
   },
   {
-    id: "bar-32", time: "5:36 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-32", time: "5:42 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Something For The Nerves: Slide 2 - The Smile",
     series: "Product Vignettes — Something For The Nerves",
     description: "The woman looks over toward the man and smiles at him.",
@@ -1575,7 +1668,7 @@ const shots = [
     script: "vignettes", episode: "Something For The Nerves"
   },
   {
-    id: "bar-33", time: "5:37 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-33", time: "5:44 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Something For The Nerves: Slide 3 - Scared Shitless",
     series: "Product Vignettes — Something For The Nerves",
     description: "The man looks straight ahead, scared shitless.",
@@ -1587,7 +1680,7 @@ const shots = [
     script: "vignettes", episode: "Something For The Nerves"
   },
   {
-    id: "bar-34", time: "5:38 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-34", time: "5:46 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Something For The Nerves: Slide 4 - Liquid Courage",
     series: "Product Vignettes — Something For The Nerves",
     description: "The man looks at the drink in his hand. A bourbon neat/on the rocks. Only a little bit left.",
@@ -1599,7 +1692,7 @@ const shots = [
     script: "vignettes", episode: "Something For The Nerves"
   },
   {
-    id: "bar-35", time: "5:39 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-35", time: "5:48 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Something For The Nerves: Slide 5 - He Did It",
     series: "Product Vignettes — Something For The Nerves",
     description: "Foreground (out of focus): empty drink on bar. Middle: Belle Meade bottle. Background: guy sitting next to the girl at the bar. Alt: close-up of two glasses clinking.",
@@ -1612,7 +1705,7 @@ const shots = [
   },
   // Last Call
   {
-    id: "bar-36", time: "5:42 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-36", time: "6:00 PM", type: "photo", section: "bar-vignettes",
     location: "Booth", title: "Last Call: Slide 1 - The Spotlight",
     series: "Product Vignettes — Last Call",
     description: 'A man and a woman hitting it off in a booth, sitting close. Dark with one light shining down, isolating them from the bar. Text: "Last call"',
@@ -1624,7 +1717,7 @@ const shots = [
     script: "vignettes", episode: "Last Call"
   },
   {
-    id: "bar-37", time: "5:43 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-37", time: "6:02 PM", type: "photo", section: "bar-vignettes",
     location: "Booth", title: "Last Call: Slide 2 - Lights On",
     series: "Product Vignettes — Last Call",
     description: "The man looks up at the bar lights as they turn on. The woman looks over toward the bar.",
@@ -1636,7 +1729,7 @@ const shots = [
     script: "vignettes", episode: "Last Call"
   },
   {
-    id: "bar-38", time: "5:44 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-38", time: "6:04 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Last Call: Slide 3 - One More",
     series: "Product Vignettes — Last Call",
     description: "The woman grabs the man's hand and pulls him toward the bar for a final drink.",
@@ -1648,7 +1741,7 @@ const shots = [
     script: "vignettes", episode: "Last Call"
   },
   {
-    id: "bar-39", time: "5:45 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-39", time: "6:06 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "Last Call: Slide 4 - Fingers Touch",
     series: "Product Vignettes — Last Call",
     description: "Man and woman look into each other's eyes with a flirtatious grin. Their fingers barely touch as they hold glasses up to one another.",
@@ -1660,7 +1753,7 @@ const shots = [
     script: "vignettes", episode: "Last Call"
   },
   {
-    id: "bar-40", time: "5:46 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-40", time: "6:08 PM", type: "photo", section: "bar-vignettes",
     location: "Bar top / entrance", title: "Last Call: Slide 5 - The Walk Out",
     series: "Product Vignettes — Last Call",
     description: "Long shot of bar top: half-empty Belle Meade bottle in foreground. Silhouettes of both holding hands walking out the bar entrance in background.",
@@ -1671,168 +1764,9 @@ const shots = [
     dialogue: "",
     script: "vignettes", episode: "Last Call"
   },
-  // Dance Off
-  {
-    id: "bar-41", time: "5:50 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "Dance Off: Slide 1 - The Line",
-    series: "Product Vignettes — Dance Off",
-    description: 'A group of 10-12 people line dancing in the middle of the bar floor. Shot from the back. Text: "Dance off"',
-    actors: ["10-12 actors"],
-    props: ["Drinks"],
-    emotion: "Communal energy — everyone moving together",
-    blocking: "Camera behind the group. All in sync (or trying). Movement filling the frame.",
-    dialogue: "",
-    script: "vignettes", episode: "Dance Off"
-  },
-  {
-    id: "bar-42", time: "5:52 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "Dance Off: Slide 2 - She's On Fire",
-    series: "Product Vignettes — Dance Off",
-    description: "Flip camera to opposite side. Zoom into one woman in the crowd, holding her glass high and dancing like there's no tomorrow.",
-    actors: ["Featured woman", "Group"],
-    props: ["Bourbon glass"],
-    emotion: "Uninhibited joy — she's the star and she knows it",
-    blocking: "Reverse angle. Camera finds the woman in the crowd. She's elevated by her energy, glass held high.",
-    dialogue: "",
-    script: "vignettes", episode: "Dance Off"
-  },
-  {
-    id: "bar-43", time: "5:54 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "Dance Off: Slide 3 - He Joins In",
-    series: "Product Vignettes — Dance Off",
-    description: "A man joins the line dancing, meeting her in stride. He holds a Belle Meade Bourbon glass.",
-    actors: ["Featured man", "Featured woman", "Group"],
-    props: ["Belle Meade bourbon glass"],
-    emotion: "Chemistry through movement — they match each other's energy",
-    blocking: "Man slides into line next to her. They lock into the same rhythm. His Belle Meade glass in hand.",
-    dialogue: "",
-    script: "vignettes", episode: "Dance Off"
-  },
-  {
-    id: "bar-44", time: "5:56 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar", title: "Dance Off: Slide 4 - The Pour",
-    series: "Product Vignettes — Dance Off",
-    description: "The man and woman at the bar together. The bartender pours a bottle of Belle Meade Bourbon into two glasses.",
-    actors: ["Man", "Woman", "Bartender"],
-    props: ["Belle Meade bottle", "2 glasses"],
-    emotion: "Reward, connection — the dance led them here",
-    blocking: "Couple at bar, catching their breath. Bartender pours Belle Meade into two glasses between them.",
-    dialogue: "",
-    script: "vignettes", episode: "Dance Off"
-  },
-  // He's Got The Moves
-  {
-    id: "bar-45", time: "5:58 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "He's Got The Moves: Slide 1 - The Dance",
-    series: "Product Vignettes — He's Got The Moves",
-    description: 'Man and woman dancing with one another. Both holding bourbon glasses. Woman is leading, he\'s just following along. Text: "He\'s got the moves"',
-    actors: ["Man", "Woman"],
-    props: ["2 bourbon glasses"],
-    emotion: "Fun, role-reversal — she leads, he vibes",
-    blocking: "Two-shot on dance floor. Woman clearly leading. Man happily along for the ride. Both holding glasses.",
-    dialogue: "",
-    script: "vignettes", episode: "He's Got The Moves"
-  },
-  {
-    id: "bar-46", time: "6:00 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "He's Got The Moves: Slide 2 - The Spin",
-    series: "Product Vignettes — He's Got The Moves",
-    description: "The woman starts to spin the man as if she is the alpha.",
-    actors: ["Man", "Woman"],
-    props: [],
-    emotion: "Dominant feminine energy — she's in control",
-    blocking: "Woman grips his hand, spins him out. She's planted, he's rotating.",
-    dialogue: "",
-    script: "vignettes", episode: "He's Got The Moves"
-  },
-  {
-    id: "bar-47", time: "6:02 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "He's Got The Moves: Slide 3 - Out of Control",
-    series: "Product Vignettes — He's Got The Moves",
-    description: "The man is spiraling out of control, hanging on by just one of the woman's hands. His face is shocked.",
-    actors: ["Man", "Woman"],
-    props: [],
-    emotion: "Comedic chaos — he's in over his head",
-    blocking: "Man extended at arm's length, centrifugal force pulling him out. One hand gripping hers. Face: pure shock.",
-    dialogue: "",
-    script: "vignettes", episode: "He's Got The Moves"
-  },
-  {
-    id: "bar-48", time: "6:04 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar floor", title: "He's Got The Moves: Slide 4 - The Twerk",
-    series: "Product Vignettes — He's Got The Moves",
-    description: "The man reestablishes footing, returns from the twirl, and starts twerking on her. She laughs her head off.",
-    actors: ["Man", "Woman"],
-    props: [],
-    emotion: "Hilarious, confident — he recovered and doubled down",
-    blocking: "Man plants feet, immediately starts twerking. Woman doubled over laughing. Pure chaos.",
-    dialogue: "",
-    script: "vignettes", episode: "He's Got The Moves"
-  },
-  // Last Cig
-  {
-    id: "bar-49", time: "6:06 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar patio", title: "Last Cig: Slide 1 - The Breather",
-    series: "Product Vignettes — Last Cig",
-    description: 'Man steps outside to the bar patio, catching a breather. Looking forward to a cigarette break. Text: "Last cig"',
-    actors: ["Man 1"],
-    props: [],
-    emotion: "Relief, anticipation — escaping the noise for a moment",
-    blocking: "Man pushes patio door open, steps out. Takes a deep breath. Reaches for pocket.",
-    dialogue: "",
-    script: "vignettes", episode: "Last Cig"
-  },
-  {
-    id: "bar-50", time: "6:08 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar patio", title: "Last Cig: Slide 2 - Empty Pack",
-    series: "Product Vignettes — Last Cig",
-    description: "The man opens his pack of cigarettes, only to find it's completely empty.",
-    actors: ["Man 1"],
-    props: ["Empty cigarette pack"],
-    emotion: "Disappointment — the one thing he wanted, gone",
-    blocking: "Close on hands opening pack. Flip the lid: empty. His face falls.",
-    dialogue: "",
-    script: "vignettes", episode: "Last Cig"
-  },
-  {
-    id: "bar-51", time: "6:10 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar patio", title: "Last Cig: Slide 3 - The Stranger",
-    series: "Product Vignettes — Last Cig",
-    description: "Another man on the patio makes his way over, same brand of cigarettes in hand.",
-    actors: ["Man 1", "Man 2"],
-    props: ["Cigarette pack (same brand)"],
-    emotion: "Unexpected kindness — strangers becoming friends",
-    blocking: "Man 2 approaches from background, pack visible in hand. Man 1 looks up hopefully.",
-    dialogue: "",
-    script: "vignettes", episode: "Last Cig"
-  },
-  {
-    id: "bar-52", time: "6:12 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar patio", title: "Last Cig: Slide 4 - The Offer",
-    series: "Product Vignettes — Last Cig",
-    description: "Tight shot of the man handing the other a cigarette and his personal lighter.",
-    actors: ["Man 1 (hands)", "Man 2 (hands)"],
-    props: ["Cigarette", "Lighter"],
-    emotion: "Generosity, brotherhood — no words needed",
-    blocking: "Tight on hands. Man 2's hand extends cigarette and lighter. Man 1's hand receives.",
-    dialogue: "",
-    script: "vignettes", episode: "Last Cig"
-  },
-  {
-    id: "bar-53", time: "6:14 PM", type: "photo", section: "bar-vignettes",
-    location: "Bar patio", title: "Last Cig: Slide 5 - New Friends",
-    series: "Product Vignettes — Last Cig",
-    description: "The two men drag on their cigarettes, chatting about life. Belle Meade bottle on the outdoor table next to them.",
-    actors: ["Man 1", "Man 2"],
-    props: ["2 cigarettes (lit)", "Belle Meade bottle", "Outdoor table"],
-    emotion: "Easy connection — bourbon and a smoke with a new friend",
-    blocking: "Two-shot on patio. Both leaning on railing or seated. Smoke drifting. Belle Meade bottle on table between them.",
-    dialogue: "",
-    script: "vignettes", episode: "Last Cig"
-  },
   // Corner Pocket
   {
-    id: "bar-54", time: "6:16 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-54", time: "6:20 PM", type: "photo", section: "bar-vignettes",
     location: "Pool table", title: "Corner Pocket: Slide 1 - The Focus",
     series: "Product Vignettes — Corner Pocket",
     description: 'Woman hunched over the back left corner of a pool table. Belle Meade bourbon on the rocks beside her. Only her eyes visible, laser-focused. Text: "Corner Pocket"',
@@ -1844,7 +1778,7 @@ const shots = [
     script: "vignettes", episode: "Corner Pocket"
   },
   {
-    id: "bar-55", time: "6:18 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-55", time: "6:22 PM", type: "photo", section: "bar-vignettes",
     location: "Pool table", title: "Corner Pocket: Slide 2 - Chalking Up",
     series: "Product Vignettes — Corner Pocket",
     description: "Zoom out. Only the 8-ball is left on the table. The woman is chalking her pool cue. Eyes analyzing the shot.",
@@ -1856,7 +1790,7 @@ const shots = [
     script: "vignettes", episode: "Corner Pocket"
   },
   {
-    id: "bar-56", time: "6:19 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-56", time: "6:24 PM", type: "photo", section: "bar-vignettes",
     location: "Pool table", title: "Corner Pocket: Slide 2.5 - The Assist",
     series: "Product Vignettes — Corner Pocket",
     description: "A man helps align her shot.",
@@ -1868,7 +1802,7 @@ const shots = [
     script: "vignettes", episode: "Corner Pocket"
   },
   {
-    id: "bar-57", time: "6:20 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-57", time: "6:26 PM", type: "photo", section: "bar-vignettes",
     location: "Pool table", title: "Corner Pocket: Slide 3 - The Strike",
     series: "Product Vignettes — Corner Pocket",
     description: "She hits the cue ball and we see it in a blur effect, moving across the table.",
@@ -1880,7 +1814,7 @@ const shots = [
     script: "vignettes", episode: "Corner Pocket"
   },
   {
-    id: "bar-58", time: "6:22 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-58", time: "6:28 PM", type: "photo", section: "bar-vignettes",
     location: "Pool table", title: "Corner Pocket: Slide 4 - Victory",
     series: "Product Vignettes — Corner Pocket",
     description: "The 8-ball has disappeared into the pocket. Cue ball rests just shy of the same pocket. Woman holds pool cue like a sword in right hand, cold Belle Meade on the rocks in left.",
@@ -1893,7 +1827,7 @@ const shots = [
   },
   // The Mixologist
   {
-    id: "bar-59", time: "6:24 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-59", time: "6:40 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "The Mixologist: Slide 1 - The Crowd",
     series: "Product Vignettes — The Mixologist",
     description: 'Bartender leans in to hear a customer\'s order. Bar packed with people pining for his attention. Text: "The Master of Mixology"',
@@ -1905,7 +1839,7 @@ const shots = [
     script: "vignettes", episode: "The Mixologist"
   },
   {
-    id: "bar-60", time: "6:26 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-60", time: "6:42 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "The Mixologist: Slide 2 - The Pour",
     series: "Product Vignettes — The Mixologist",
     description: "Bartender grips a bottle of Belle Meade bourbon, precisely pouring 1 shot into the jigger.",
@@ -1917,7 +1851,7 @@ const shots = [
     script: "vignettes", episode: "The Mixologist"
   },
   {
-    id: "bar-61", time: "6:27 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-61", time: "6:44 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "The Mixologist: Slide 3 - The Shake",
     series: "Product Vignettes — The Mixologist",
     description: "Takes the shaker and vigorously shakes the concoction, looking like an interpretive dancer. Blur motion all over the frame.",
@@ -1929,7 +1863,7 @@ const shots = [
     script: "vignettes", episode: "The Mixologist"
   },
   {
-    id: "bar-62", time: "6:28 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-62", time: "6:46 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "The Mixologist: Slide 4 - The Stream",
     series: "Product Vignettes — The Mixologist",
     description: "Pours the drink from the shaker into the glass 2 feet below. Steady stream of bourbon flowing from the shaker.",
@@ -1941,7 +1875,7 @@ const shots = [
     script: "vignettes", episode: "The Mixologist"
   },
   {
-    id: "bar-63", time: "6:30 PM", type: "photo", section: "bar-vignettes",
+    id: "bar-63", time: "6:48 PM", type: "photo", section: "bar-vignettes",
     location: "Bar", title: "The Mixologist: Slide 5 - The Serve",
     series: "Product Vignettes — The Mixologist",
     description: "Bartender's hand outstretched with a fresh Buck & A Half cocktail garnished with a lime. Belle Meade bourbon bottle faintly in background.",
@@ -1951,6 +1885,104 @@ const shots = [
     blocking: "Bartender's arm extended toward camera with finished cocktail. Shallow depth of field. Belle Meade bottle soft in background.",
     dialogue: "",
     script: "vignettes", episode: "The Mixologist"
+  },
+  // Dance Off
+  {
+    id: "bar-41", time: "6:50 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 1 - The Line",
+    series: "Product Vignettes — Dance Off",
+    description: 'A group of 10-12 people line dancing in the middle of the bar floor. Shot from the back. Text: "Dance off"',
+    actors: ["10-12 actors"],
+    props: ["Drinks"],
+    emotion: "Communal energy — everyone moving together",
+    blocking: "Camera behind the group. All in sync (or trying). Movement filling the frame.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-42", time: "6:52 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 2 - She's On Fire",
+    series: "Product Vignettes — Dance Off",
+    description: "Flip camera to opposite side. Zoom into one woman in the crowd, holding her glass high and dancing like there's no tomorrow.",
+    actors: ["Featured woman", "Group"],
+    props: ["Bourbon glass"],
+    emotion: "Uninhibited joy — she's the star and she knows it",
+    blocking: "Reverse angle. Camera finds the woman in the crowd. She's elevated by her energy, glass held high.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-43", time: "6:54 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 3 - He Joins In",
+    series: "Product Vignettes — Dance Off",
+    description: "A man joins the line dancing, meeting her in stride. He holds a Belle Meade Bourbon glass.",
+    actors: ["Featured man", "Featured woman", "Group"],
+    props: ["Belle Meade bourbon glass"],
+    emotion: "Chemistry through movement — they match each other's energy",
+    blocking: "Man slides into line next to her. They lock into the same rhythm. His Belle Meade glass in hand.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-44", time: "6:56 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Dance Off: Slide 4 - The Pour",
+    series: "Product Vignettes — Dance Off",
+    description: "The man and woman at the bar together. The bartender pours a bottle of Belle Meade Bourbon into two glasses.",
+    actors: ["Man", "Woman", "Bartender"],
+    props: ["Belle Meade bottle", "2 glasses"],
+    emotion: "Reward, connection — the dance led them here",
+    blocking: "Couple at bar, catching their breath. Bartender pours Belle Meade into two glasses between them.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  // He's Got The Moves
+  {
+    id: "bar-45", time: "6:58 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 1 - The Dance",
+    series: "Product Vignettes — He's Got The Moves",
+    description: 'Man and woman dancing with one another. Both holding bourbon glasses. Woman is leading, he\'s just following along. Text: "He\'s got the moves"',
+    actors: ["Man", "Woman"],
+    props: ["2 bourbon glasses"],
+    emotion: "Fun, role-reversal — she leads, he vibes",
+    blocking: "Two-shot on dance floor. Woman clearly leading. Man happily along for the ride. Both holding glasses.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-46", time: "7:00 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 2 - The Spin",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The woman starts to spin the man as if she is the alpha.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Dominant feminine energy — she's in control",
+    blocking: "Woman grips his hand, spins him out. She's planted, he's rotating.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-47", time: "7:02 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 3 - Out of Control",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The man is spiraling out of control, hanging on by just one of the woman's hands. His face is shocked.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Comedic chaos — he's in over his head",
+    blocking: "Man extended at arm's length, centrifugal force pulling him out. One hand gripping hers. Face: pure shock.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-48", time: "7:04 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 4 - The Twerk",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The man reestablishes footing, returns from the twirl, and starts twerking on her. She laughs her head off.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Hilarious, confident — he recovered and doubled down",
+    blocking: "Man plants feet, immediately starts twerking. Woman doubled over laughing. Pure chaos.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
   }
 ];
 
@@ -2205,6 +2237,7 @@ const sectionLabels = {
 const sectionOrder = ['farm-outdoor','farm-indoor','farm-psb','bar-cocktails','bar-carousels','bar-vignettes'];
 
 // State
+let sortMode = 'time';
 let currentView = 'list'; // start on list
 let currentFilter = 'all';
 let filteredShots = [...shots];
@@ -2402,6 +2435,69 @@ function openShotFromList(shotId) {
   }
 }
 
+// ── Sort Toggle ──
+function toggleSort() {
+  sortMode = sortMode === 'time' ? 'scene' : 'time';
+  document.getElementById('sortBtnText').textContent = sortMode === 'time' ? 'Sort: Time' : 'Sort: Scene';
+  renderList();
+}
+
+// Scene order for "By Scene" mode
+const sceneOrder = [
+  "The Most Everyday Man In The World||Episode 1: Work",
+  "The Most Everyday Man In The World||Episode 2: Old School",
+  "The Most Everyday Man In The World||Episode 3: Play",
+  "The Most Everyday Man In The World||Episode 4: Routine",
+  "The Most Everyday Man In The World||Episode 5: Family",
+  "The Most Everyday Man In The World||Episodes 1-5 (recurring ending)",
+  "Pour Some Bourbon On It",
+  "Cocktail Recipes",
+  "Party Carousels — Card Night",
+  "Party Carousels — Dinner Party",
+  "Party Carousels — Pool Night",
+  "Party Carousels — Date Night",
+  "Party Carousels — Birthday Bash",
+  "Product Vignettes — Last Cig",
+  "Product Vignettes — 5:01 PM",
+  "Product Vignettes — Something For The Nerves",
+  "Product Vignettes — Last Call",
+  "Product Vignettes — Corner Pocket",
+  "Product Vignettes — The Mixologist",
+  "Product Vignettes — Dance Off",
+  "Product Vignettes — He's Got The Moves"
+];
+
+const sceneLabels = {
+  "The Most Everyday Man In The World||Episode 1: Work": "Everyday Man — Episode 1: Work",
+  "The Most Everyday Man In The World||Episode 2: Old School": "Everyday Man — Episode 2: Old School",
+  "The Most Everyday Man In The World||Episode 3: Play": "Everyday Man — Episode 3: Play",
+  "The Most Everyday Man In The World||Episode 4: Routine": "Everyday Man — Episode 4: Routine",
+  "The Most Everyday Man In The World||Episode 5: Family": "Everyday Man — Episode 5: Family",
+  "The Most Everyday Man In The World||Episodes 1-5 (recurring ending)": "Everyday Man — Episodes 1-5 (Armchair Toast)",
+  "Pour Some Bourbon On It": "Pour Some Bourbon On It",
+  "Cocktail Recipes": "Cocktail Recipes",
+  "Party Carousels — Card Night": "Party Carousels — Card Night",
+  "Party Carousels — Dinner Party": "Party Carousels — Dinner Party",
+  "Party Carousels — Pool Night": "Party Carousels — Pool Night",
+  "Party Carousels — Date Night": "Party Carousels — Date Night",
+  "Party Carousels — Birthday Bash": "Party Carousels — Birthday Bash",
+  "Product Vignettes — Last Cig": "Product Vignettes — Last Cig",
+  "Product Vignettes — 5:01 PM": "Product Vignettes — 5:01 PM",
+  "Product Vignettes — Something For The Nerves": "Product Vignettes — Something For The Nerves",
+  "Product Vignettes — Last Call": "Product Vignettes — Last Call",
+  "Product Vignettes — Corner Pocket": "Product Vignettes — Corner Pocket",
+  "Product Vignettes — The Mixologist": "Product Vignettes — The Mixologist",
+  "Product Vignettes — Dance Off": "Product Vignettes — Dance Off",
+  "Product Vignettes — He's Got The Moves": "Product Vignettes — He's Got The Moves"
+};
+
+function getSceneKey(shot) {
+  if (shot.series === "The Most Everyday Man In The World" && shot.episode) {
+    return shot.series + "||" + shot.episode;
+  }
+  return shot.series || shot.section;
+}
+
 // ── List Rendering ──
 function renderList() {
   const container = document.getElementById('listContainer');
@@ -2410,20 +2506,48 @@ function renderList() {
 
   let html = '';
 
-  // Group active shots by section
-  const grouped = {};
-  active.forEach(s => {
-    if (!grouped[s.section]) grouped[s.section] = [];
-    grouped[s.section].push(s);
-  });
-
-  sectionOrder.forEach(section => {
-    if (!grouped[section] || grouped[section].length === 0) return;
-    html += `<div class="list-section-header">${sectionLabels[section] || section}</div>`;
-    grouped[section].forEach(shot => {
-      html += renderListItem(shot, false);
+  if (sortMode === 'scene') {
+    // Group active shots by scene
+    const grouped = {};
+    active.forEach(s => {
+      const key = getSceneKey(s);
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(s);
     });
-  });
+
+    sceneOrder.forEach(key => {
+      if (!grouped[key] || grouped[key].length === 0) return;
+      html += `<div class="list-section-header">${sceneLabels[key] || key}</div>`;
+      grouped[key].forEach(shot => {
+        html += renderListItem(shot, false);
+      });
+    });
+
+    // Any remaining groups not in sceneOrder
+    Object.keys(grouped).forEach(key => {
+      if (sceneOrder.includes(key)) return;
+      if (grouped[key].length === 0) return;
+      html += `<div class="list-section-header">${sceneLabels[key] || key}</div>`;
+      grouped[key].forEach(shot => {
+        html += renderListItem(shot, false);
+      });
+    });
+  } else {
+    // Group active shots by section (time mode - default)
+    const grouped = {};
+    active.forEach(s => {
+      if (!grouped[s.section]) grouped[s.section] = [];
+      grouped[s.section].push(s);
+    });
+
+    sectionOrder.forEach(section => {
+      if (!grouped[section] || grouped[section].length === 0) return;
+      html += `<div class="list-section-header">${sectionLabels[section] || section}</div>`;
+      grouped[section].forEach(shot => {
+        html += renderListItem(shot, false);
+      });
+    });
+  }
 
   // Done section
   if (done.length > 0) {
