@@ -282,8 +282,8 @@
   }
 
   .section-text {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.45;
     color: var(--text);
     font-weight: 400;
   }
@@ -301,17 +301,25 @@
   .tag-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 3px;
+  }
+  .tag-list-props {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
   }
 
   .tag {
-    padding: 4px 10px;
+    padding: 3px 8px;
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--card-border);
     border-radius: 100px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .tag-actor {
     border-color: rgba(202,138,4,0.15);
@@ -324,17 +332,17 @@
     background: rgba(255,255,255,0.02);
   }
   .description-section .section-text {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.45;
     color: #fff;
   }
 
   /* ── Dialogue ── */
   .dialogue-text {
     font-family: 'Cormorant', serif;
-    font-size: 16px;
+    font-size: 14px;
     font-style: italic;
-    line-height: 1.4;
+    line-height: 1.35;
     color: var(--gold-soft);
   }
 
@@ -2314,7 +2322,7 @@ function renderCard() {
               </div>
               <div class="meta-col">
                 <div class="section-label">Props</div>
-                <div class="tag-list">
+                <div class="tag-list-props">
                   ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
                 </div>
               </div>
