@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Bourbon Co. - Shot List</title>
+<title>Bourbon - Shot List</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -158,7 +158,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 6px 12px calc(var(--safe-bottom) + 8px);
+    padding: 4px 12px calc(var(--safe-bottom) + 4px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease;
@@ -182,7 +182,7 @@
 
   /* ── Card Hero ── */
   .card-hero {
-    padding: 20px 20px 16px;
+    padding: 14px 20px 10px;
     background: linear-gradient(135deg, var(--card-elevated) 0%, var(--card) 100%);
     border-bottom: 1px solid var(--card-border);
   }
@@ -191,12 +191,12 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .card-number {
     font-family: 'Cormorant', serif;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
     color: var(--gold);
     line-height: 1;
@@ -244,10 +244,10 @@
 
   .card-title {
     font-family: 'Cormorant', Georgia, serif;
-    font-size: 26px;
+    font-size: 23px;
     font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 4px;
+    line-height: 1.15;
+    margin-bottom: 2px;
     color: #fff;
   }
 
@@ -267,7 +267,7 @@
   }
 
   .card-section {
-    padding: 14px 20px;
+    padding: 10px 20px;
     border-bottom: 1px solid var(--card-border);
   }
   .card-section:last-child { border-bottom: none; }
@@ -278,12 +278,12 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: var(--gold-dim);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .section-text {
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.5;
     color: var(--text);
     font-weight: 400;
   }
@@ -291,7 +291,7 @@
   /* ── Actors & Props row ── */
   .meta-row {
     display: flex;
-    gap: 12px;
+    gap: 8px;
   }
   .meta-col {
     flex: 1;
@@ -324,17 +324,17 @@
     background: rgba(255,255,255,0.02);
   }
   .description-section .section-text {
-    font-size: 16px;
-    line-height: 1.65;
+    font-size: 14px;
+    line-height: 1.5;
     color: #fff;
   }
 
   /* ── Dialogue ── */
   .dialogue-text {
     font-family: 'Cormorant', serif;
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.4;
     color: var(--gold-soft);
   }
 
@@ -343,7 +343,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 16px;
+    padding: 10px 16px;
     background: var(--gold-bg);
     border: 1px solid rgba(202,138,4,0.15);
     border-radius: 12px;
@@ -364,22 +364,22 @@
   /* ── Done Button ── */
   .done-section {
     margin-top: auto;
-    padding: 16px 20px calc(var(--safe-bottom) + 8px);
+    padding: 10px 20px calc(var(--safe-bottom) + 4px);
   }
 
   .done-btn {
     width: 100%;
-    padding: 18px;
+    padding: 14px;
     border: none;
     border-radius: 14px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    min-height: 56px;
+    min-height: 48px;
   }
 
   .done-btn.undone {
@@ -842,7 +842,7 @@
   <div class="header-top">
     <div style="display:flex;align-items:center;gap:12px;">
       <button class="back-btn" id="backBtn" onclick="showListView()"><span class="back-arrow">&#8249;</span> List</button>
-      <h1 id="headerTitle">Bourbon Co.</h1>
+      <h1 id="headerTitle">Bourbon</h1>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="progress-text" id="progressText">1 / 80</span>
@@ -2416,7 +2416,7 @@ function showListView() {
   document.getElementById('swipeContainer').style.display = 'none';
   document.getElementById('listContainer').classList.add('visible');
   document.getElementById('backBtn').classList.remove('visible');
-  document.getElementById('headerTitle').textContent = 'Bourbon Co.';
+  document.getElementById('headerTitle').textContent = 'Bourbon';
   renderList();
   updateProgress();
 }
