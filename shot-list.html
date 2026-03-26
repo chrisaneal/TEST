@@ -1,0 +1,2750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Bourbon Co. - Shot List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #0a0a08;
+    --card: #141412;
+    --card-border: #1e1e1a;
+    --card-elevated: #1a1a16;
+    --gold: #CA8A04;
+    --gold-soft: #d4a52a;
+    --gold-dim: #6b5a1e;
+    --gold-bg: rgba(202,138,4,0.08);
+    --text: #e8e4dc;
+    --text-secondary: #a8a295;
+    --text-dim: #6b6560;
+    --green: #22c55e;
+    --green-bg: rgba(34,197,94,0.12);
+    --green-border: rgba(34,197,94,0.25);
+    --photo-bg: rgba(56,189,248,0.1);
+    --photo-text: #38bdf8;
+    --photo-border: rgba(56,189,248,0.2);
+    --video-bg: rgba(251,146,60,0.1);
+    --video-text: #fb923c;
+    --video-border: rgba(251,146,60,0.2);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  body {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100dvh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 85%, transparent 100%);
+    padding: calc(var(--safe-top) + 10px) 20px 14px;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 2px;
+    background: var(--card-border);
+    border-radius: 1px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 1px;
+    transition: width 0.3s ease;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--card-border);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 32px;
+  }
+  .filter-btn.active {
+    background: var(--gold);
+    color: var(--bg);
+    border-color: var(--gold);
+  }
+
+  /* ── Card container ── */
+  .swipe-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: calc(var(--safe-top) + 100px);
+    overflow: hidden;
+  }
+
+  .cards-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    touch-action: pan-y;
+  }
+
+  .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 6px 12px calc(var(--safe-bottom) + 8px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease;
+    will-change: transform, opacity;
+  }
+
+  .card.prev { transform: translateX(-100%); opacity: 0; }
+  .card.active { transform: translateX(0); opacity: 1; }
+  .card.next { transform: translateX(100%); opacity: 0; }
+  .card.hidden { display: none; }
+
+  .card-inner {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 108px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Card Hero ── */
+  .card-hero {
+    padding: 20px 20px 16px;
+    background: linear-gradient(135deg, var(--card-elevated) 0%, var(--card) 100%);
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .card-number {
+    font-family: 'Cormorant', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-right: 4px;
+    min-width: 28px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border: 1px solid transparent;
+  }
+
+  .badge-photo {
+    background: var(--photo-bg);
+    color: var(--photo-text);
+    border-color: var(--photo-border);
+  }
+  .badge-video {
+    background: var(--video-bg);
+    color: var(--video-text);
+    border-color: var(--video-border);
+  }
+  .badge-time {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    border-color: var(--card-border);
+  }
+  .badge-location {
+    background: var(--gold-bg);
+    color: var(--gold-soft);
+    border-color: rgba(202,138,4,0.2);
+  }
+  .badge-done {
+    background: var(--green-bg);
+    color: var(--green);
+    border-color: var(--green-border);
+  }
+
+  .card-title {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    color: #fff;
+  }
+
+  .card-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── Card Sections ── */
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-section {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .card-section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold-dim);
+    margin-bottom: 6px;
+  }
+
+  .section-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ── Actors & Props row ── */
+  .meta-row {
+    display: flex;
+    gap: 12px;
+  }
+  .meta-col {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .tag-actor {
+    border-color: rgba(202,138,4,0.15);
+    color: var(--gold-soft);
+    background: rgba(202,138,4,0.05);
+  }
+
+  /* ── Description highlight ── */
+  .description-section {
+    background: rgba(255,255,255,0.02);
+  }
+  .description-section .section-text {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #fff;
+  }
+
+  /* ── Dialogue ── */
+  .dialogue-text {
+    font-family: 'Cormorant', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--gold-soft);
+  }
+
+  /* ── Script link ── */
+  .script-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--gold-bg);
+    border: 1px solid rgba(202,138,4,0.15);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 48px;
+    transition: background 0.2s;
+  }
+  .script-link:active { background: rgba(202,138,4,0.15); }
+  .script-link-arrow {
+    font-size: 18px;
+    opacity: 0.4;
+  }
+
+  /* ── Done Button ── */
+  .done-section {
+    margin-top: auto;
+    padding: 16px 20px calc(var(--safe-bottom) + 8px);
+  }
+
+  .done-btn {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    min-height: 56px;
+  }
+
+  .done-btn.undone {
+    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(34,197,94,0.2);
+  }
+  .done-btn.undone:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 12px rgba(34,197,94,0.15);
+  }
+
+  .done-btn.is-done {
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid var(--green-border);
+    box-shadow: none;
+  }
+
+  /* ── Nav dots ── */
+  .nav-hint {
+    text-align: center;
+    padding: 8px 0 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-dim);
+  }
+
+  /* ── Script modal ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    width: 100%;
+    max-height: 80dvh;
+    background: var(--card-elevated);
+    border: 1px solid var(--card-border);
+    border-radius: 20px 20px 0 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 24px 20px calc(var(--safe-bottom) + 20px);
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--card-border);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  .modal-close {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .modal-close h3 {
+    font-family: 'Cormorant', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .modal-close button {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    min-height: 36px;
+  }
+
+  .modal-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+
+  /* ── View Toggle (removed) ── */
+
+  /* ── List View ── */
+  .list-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: calc(var(--safe-top) + 100px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+  }
+  .list-container.visible { display: block; }
+
+  .list-section-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 10px 20px 8px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--card-border);
+    font-family: 'Cormorant', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: background 0.15s;
+    min-height: 64px;
+  }
+  .list-item:active {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .list-item-time {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    min-width: 52px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .list-item-type {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    min-width: 38px;
+    text-align: center;
+  }
+  .list-item-type-photo {
+    background: var(--photo-bg);
+    color: var(--photo-text);
+    border: 1px solid var(--photo-border);
+  }
+  .list-item-type-video {
+    background: var(--video-bg);
+    color: var(--video-text);
+    border: 1px solid var(--video-border);
+  }
+
+  .list-item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .list-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-chevron {
+    color: var(--text-dim);
+    font-size: 16px;
+    opacity: 0.3;
+    flex-shrink: 0;
+  }
+
+  .list-item.is-done .list-item-title {
+    color: var(--text-dim);
+    text-decoration: line-through;
+    text-decoration-color: var(--card-border);
+  }
+  .list-item.is-done .list-item-meta {
+    opacity: 0.5;
+  }
+
+  .list-done-header {
+    padding: 16px 20px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--green);
+    border-top: 1px solid var(--card-border);
+    margin-top: 8px;
+  }
+
+  .list-spacer {
+    height: calc(var(--safe-bottom) + 20px);
+  }
+
+  /* ── Sort toggle button ── */
+  .sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 32px;
+    min-width: 32px;
+    justify-content: center;
+    transition: background 0.2s;
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .sort-btn:active { background: rgba(255,255,255,0.08); }
+  .sort-btn-text { display: none; }
+  @media (min-width: 769px) {
+    .sort-btn { padding: 6px 12px; }
+    .sort-btn-text { display: inline; }
+  }
+
+  /* ── Spreadsheet header button ── */
+  .spreadsheet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 32px;
+    min-width: 32px;
+    justify-content: center;
+    transition: background 0.2s;
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+  .spreadsheet-btn:active { background: rgba(255,255,255,0.08); }
+  .spreadsheet-btn svg { flex-shrink: 0; }
+  .spreadsheet-btn-text {
+    display: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  @media (min-width: 769px) {
+    .spreadsheet-btn {
+      padding: 6px 12px;
+    }
+    .spreadsheet-btn-text { display: inline; }
+  }
+
+  /* ── Spreadsheet View ── */
+  .spreadsheet-container {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 150;
+    display: none;
+    flex-direction: column;
+  }
+  .spreadsheet-container.visible { display: flex; }
+
+  .spreadsheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--safe-top) + 10px) 16px 10px;
+    border-bottom: 1px solid var(--card-border);
+    background: var(--card);
+    flex-shrink: 0;
+  }
+  .spreadsheet-header h2 {
+    font-family: 'Cormorant', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .spreadsheet-close {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 36px;
+  }
+
+  .spreadsheet-scroll {
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .spreadsheet-table {
+    border-collapse: collapse;
+    width: max-content;
+    min-width: 100%;
+    font-size: 13px;
+  }
+
+  .spreadsheet-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  .spreadsheet-table th {
+    background: var(--card-elevated);
+    color: var(--gold-dim);
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 12px;
+    border: 1px solid var(--card-border);
+    text-align: left;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+
+  .spreadsheet-table td {
+    padding: 6px 10px;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    color: var(--text);
+    vertical-align: top;
+    min-width: 80px;
+    max-width: 300px;
+  }
+
+  .spreadsheet-table td[contenteditable] {
+    cursor: text;
+    outline: none;
+  }
+  .spreadsheet-table td[contenteditable]:focus {
+    background: var(--card-elevated);
+    box-shadow: inset 0 0 0 2px var(--gold-dim);
+  }
+
+  .spreadsheet-table td.col-id {
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 60px;
+    max-width: 60px;
+  }
+  .spreadsheet-table td.col-time { min-width: 70px; max-width: 80px; }
+  .spreadsheet-table td.col-type { min-width: 60px; max-width: 70px; }
+  .spreadsheet-table td.col-location { min-width: 100px; max-width: 150px; }
+  .spreadsheet-table td.col-title { min-width: 180px; max-width: 250px; font-weight: 600; }
+  .spreadsheet-table td.col-description { min-width: 250px; max-width: 400px; }
+  .spreadsheet-table td.col-actors { min-width: 120px; max-width: 200px; }
+  .spreadsheet-table td.col-props { min-width: 150px; max-width: 300px; }
+  .spreadsheet-table td.col-emotion { min-width: 150px; max-width: 250px; }
+  .spreadsheet-table td.col-blocking { min-width: 200px; max-width: 350px; }
+  .spreadsheet-table td.col-dialogue { min-width: 150px; max-width: 300px; }
+
+  .spreadsheet-table tr.section-row td {
+    background: var(--gold-bg);
+    color: var(--gold);
+    font-family: 'Cormorant', serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 12px;
+  }
+
+  .spreadsheet-save-toast {
+    position: fixed;
+    bottom: calc(var(--safe-bottom) + 20px);
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green);
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 160;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+  }
+  .spreadsheet-save-toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── Card view back button ── */
+  .back-btn {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px 6px 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 32px;
+    transition: background 0.2s;
+  }
+  .back-btn:active { background: rgba(255,255,255,0.08); }
+  .back-btn.visible { display: inline-flex; }
+  .back-arrow { font-size: 16px; }
+
+  /* ── Desktop ── */
+  @media (min-width: 769px) {
+    .card { padding: 6px calc((100vw - 420px) / 2) 8px; }
+    .header { padding: 10px calc((100vw - 420px) / 2) 14px; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .card, .progress-fill, .done-btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="back-btn" id="backBtn" onclick="showListView()"><span class="back-arrow">&#8249;</span> List</button>
+      <h1 id="headerTitle">Bourbon Co.</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="progress-text" id="progressText">1 / 80</span>
+      <button class="sort-btn" id="sortBtn" onclick="toggleSort()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 4l4-3 4 3"/><path d="M3 10l4 3 4-3"/>
+        </svg>
+        <span class="sort-btn-text" id="sortBtnText">Sort: Time</span>
+      </button>
+      <button class="spreadsheet-btn" id="spreadsheetBtn" onclick="openSpreadsheet()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1.5" y="1.5" width="13" height="13" rx="2"/>
+          <line x1="1.5" y1="5.5" x2="14.5" y2="5.5"/>
+          <line x1="1.5" y1="10" x2="14.5" y2="10"/>
+          <line x1="5.5" y1="1.5" x2="5.5" y2="14.5"/>
+          <line x1="10.5" y1="1.5" x2="10.5" y2="14.5"/>
+        </svg>
+        <span class="spreadsheet-btn-text">Spreadsheet</span>
+      </button>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="farm-outdoor">Farm Outdoor</button>
+    <button class="filter-btn" data-filter="farm-indoor">Farm Indoor</button>
+    <button class="filter-btn" data-filter="farm-psb">Farm PSBO</button>
+    <button class="filter-btn" data-filter="bar-cocktails">Cocktails</button>
+    <button class="filter-btn" data-filter="bar-carousels">Carousels</button>
+    <button class="filter-btn" data-filter="bar-vignettes">Vignettes</button>
+    <button class="filter-btn" data-filter="done">Done</button>
+    <button class="filter-btn" data-filter="remaining">Remaining</button>
+  </div>
+</div>
+
+<div class="swipe-container" id="swipeContainer">
+  <div class="cards-wrapper" id="cardsWrapper"></div>
+</div>
+
+<div class="list-container" id="listContainer"></div>
+
+<div class="spreadsheet-container" id="spreadsheetContainer">
+  <div class="spreadsheet-header">
+    <h2>Spreadsheet</h2>
+    <button class="spreadsheet-close" onclick="closeSpreadsheet()">Done</button>
+  </div>
+  <div class="spreadsheet-scroll" id="spreadsheetScroll"></div>
+  <div class="spreadsheet-save-toast" id="saveToast">Saved</div>
+</div>
+
+<div class="modal-overlay" id="scriptModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-close">
+      <h3 id="modalTitle">Script</h3>
+      <button onclick="closeModal()">Close</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const shots = [
+  // ===== FARM INDOOR - Everyday Man (Video) =====
+  {
+    id: "farm-00", time: "7:00 AM", type: "video", section: "farm-indoor",
+    location: "Bathroom", title: "Ep 4 - Routine: Morning Soak",
+    series: "The Bourbon Man",
+    description: "Chap lies in a bathtub, fully at peace. One hand rests on the rim holding a glass of Bourbon on the rocks. He takes a slow sip, closes his eyes, exhales. The day hasn't started yet — and he's already won.",
+    actors: ["Chap"],
+    props: ["Bourbon bottle", "Bourbon glass (rocks)", "Towel draped over tub edge"],
+    emotion: "Relief — the only quiet moment before the world wakes up",
+    blocking: "Wide shot of bathroom. Chap sunk low in tub, only head and hand visible. Close-up of bourbon glass resting on porcelain rim. Cut to his face — eyes closed, slow exhale. He sips, sets the glass back down gently.",
+    dialogue: 'NARRATOR (V.O.): "His morning routine starts where most people\'s ends."',
+    script: "everyday-man", episode: "Episode 4: Routine"
+  },
+
+  // ===== FARM OUTDOOR - Everyday Man (Video) =====
+  {
+    id: "farm-01", time: "7:30 AM", type: "video", section: "farm-outdoor",
+    location: "Front Porch", title: "Ep 1 - Work: Front Porch",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy walks out onto the front porch. He's shirtless in jeans, barefoot. He holds a full pot of coffee and takes a sip. Then he yawns and raises his hands in the air, triumphant.",
+    actors: ["Chappy"],
+    props: ["Full pot of coffee", "Jeans (no shirt, barefoot)"],
+    emotion: "Triumphant, primal — the rooster before the rooster",
+    blocking: "Chappy walks out onto porch shirtless and barefoot. Pauses, lifts pot to lips, sips. Yawns big, raises hands triumphantly.",
+    dialogue: 'NARRATOR (V.O.): "He is the rooster for his rooster."',
+    script: "everyday-man", episode: "Episode 1: Work"
+  },
+  {
+    id: "farm-03", time: "7:45 AM", type: "video", section: "farm-outdoor",
+    location: "Driveway", title: "Ep 2 - Old School: Driveway",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy works on his truck (hood up, sleeves rolled). Grimaces at elbow pain. Spots WD-40 on the ground, sprays his elbow, massages it in. Bends it — good as new.",
+    actors: ["Chappy"],
+    props: ["Truck (hood up)", "WD-40 canister (logo covered)"],
+    emotion: "Practical, resourceful — old-school problem solving",
+    blocking: "Chappy under hood. Straightens up grimacing, spots WD-40 on ground. Picks it up, sprays elbow, massages it in. Flexes arm with satisfaction.",
+    dialogue: 'NARRATOR (V.O.): "Elbow grease has a literal meaning to him."',
+    script: "everyday-man", episode: "Episode 2: Old School"
+  },
+  {
+    id: "farm-10", time: "8:00 AM", type: "video", section: "farm-outdoor",
+    location: "Truck (cab)", title: "Ep 5 - Family: June in the Truck",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy flips open sun visor mirror with a portrait of June taped to it. Grins. Turns to passenger seat where June sits. Gives her cheek rubs and makes baby noises.",
+    actors: ["Chappy", "June (dog)"],
+    props: ["Truck", "Printed portrait of June", "Tape"],
+    emotion: "Pure love, tenderness — man and his best friend",
+    blocking: "Interior truck. Chappy flips visor, we see photo. He turns right to June in passenger seat. Leans in for cheek rubs.",
+    dialogue: 'NARRATOR (V.O.): "He\'s got that dog in him. But only when his dog isn\'t around." CHAPPY: "You\'re such a sweet girl, you know that??"',
+    script: "everyday-man", episode: "Episode 5: Family"
+  },
+  {
+    id: "farm-08", time: "8:15 AM", type: "video", section: "farm-outdoor",
+    location: "Porch", title: "Ep 4 - Routine: June on the Porch",
+    series: "The Most Everyday Man In The World",
+    description: "June wags her tail on the porch. Chappy walks past her, then stops. He leans over and pats her hard on the ribs. Then pets her behind the ears. June loves it.",
+    actors: ["Chappy", "June (dog)"],
+    props: [],
+    emotion: "Tender routine — a decade of love in one pat",
+    blocking: "June on porch wagging tail. Chappy walks past, stops, leans down. Pats her hard on ribs. Then gentle ear scratches. June melts.",
+    dialogue: 'NARRATOR (V.O.): "She\'s sturdy."',
+    script: "everyday-man", episode: "Episode 4: Routine"
+  },
+  {
+    id: "farm-04", time: "8:30 AM", type: "video", section: "farm-outdoor",
+    location: "Pool / Pond", title: "Ep 2 - Old School: Pool / Pond",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy in swim trunks and Hawaiian shirt walks right past the pool (or covered pool), drops towel at the pond, takes off shirt, heads straight for the pond.",
+    actors: ["Chappy"],
+    props: ["Swim trunks", "Hawaiian shirt", "Towel", "Pool cover (optional)"],
+    emotion: "Carefree, authentic — he prefers the real thing",
+    blocking: "Chappy walks from patio past pool without looking at it. Arrives at pond, drops towel, removes shirt, heads in.",
+    dialogue: 'NARRATOR (V.O.): "He cleans his own pool. But he has never swam in it."',
+    script: "everyday-man", episode: "Episode 2: Old School"
+  },
+  {
+    id: "farm-09", time: "8:45 AM", type: "video", section: "farm-outdoor",
+    location: "Chicken Coop", title: "Ep 5 - Family: Empty Coop",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy stares ahead, forlorn. He's looking at an empty chicken coop. Glances away, fights back tears.",
+    actors: ["Chappy"],
+    props: ["Empty chicken coop"],
+    emotion: "Heartbroken, tender — loss is real even for a tough farmer",
+    blocking: "Medium shot of Chappy facing coop. Reverse to show empty coop. Back to Chappy, who looks away and blinks hard.",
+    dialogue: 'NARRATOR (V.O.): "He hates coyotes."',
+    script: "everyday-man", episode: "Episode 5: Family"
+  },
+  {
+    id: "farm-05", time: "9:00 AM", type: "video", section: "farm-outdoor",
+    location: "Fire Pit", title: "Ep 3 - Play: Fire Pit",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy is down on one knee, struggling to get a fire going. Charlie walks into view and hands him lighter fluid (logo covered). Chappy smacks it out of Charlie's hand, shoves Charlie out of view. Gets back down on one knee.",
+    actors: ["Chappy", "Charlie"],
+    props: ["Fire pit", "Lighter fluid container (logo covered)"],
+    emotion: "Stubborn, purist — he'll do it the hard way or not at all",
+    blocking: "Chappy on one knee working on fire. Charlie enters with lighter fluid. Chappy smacks it away, shoves Charlie out of frame. Returns to one knee.",
+    dialogue: 'NARRATOR (V.O.): "Absolutely not."',
+    script: "everyday-man", episode: "Episode 3: Play"
+  },
+  {
+    id: "farm-16", time: "9:15 AM", type: "video", section: "farm-outdoor",
+    location: "Barrels", title: "Eps 1-5: The Close Out",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy sits in a chair surrounded by bourbon barrels. Pours Belle Meade Bourbon into a nice glass and raises it. 'Here's to those interested in not being the most interesting.' Takes a long sip. SAME SETUP, 5 TAKES WITH WARDROBE CHANGES.",
+    actors: ["Chappy"],
+    props: ["Luxurious armchair", "Belle Meade Bourbon bottle", "Bourbon glass", "5 wardrobe changes"],
+    emotion: "Cool, self-aware, satisfied — the tagline moment",
+    blocking: "Chappy centered in chair among bourbon barrels, camera straight on. Pours bourbon, raises glass to camera, delivers line, sips. Reset wardrobe between each take.",
+    dialogue: 'CHAPPY: "Here\'s to those interested in not being the most interesting."',
+    script: "everyday-man", episode: "Episodes 1-5 (recurring ending)"
+  },
+  {
+    id: "farm-07", time: "9:30 AM", type: "video", section: "farm-outdoor",
+    location: "Creek", title: "Ep 3 - Play: Skipping Stones at the Creek",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy walks along the creek, stops when he spots the flattest skipping stone ever. Picks it up, reels back, fires it across the creek like a gold glove shortstop. A perfect skip. But Chappy slumps his shoulders, disappointed. Walks off pissed at himself.",
+    actors: ["Chappy"],
+    props: ["Flat skipping stone"],
+    emotion: "Competitive perfectionism — chasing a feeling he can never replicate",
+    blocking: "Chappy walks along creek, spots stone. Picks it up, winds up, fires it. Stone skips perfectly. But his shoulders slump — disappointed. Walks off frustrated.",
+    dialogue: 'NARRATOR (V.O.): "He once skipped a stone across the Mississippi. And has been chasing that feeling ever since."',
+    script: "everyday-man", episode: "Episode 3: Play"
+  },
+  {
+    id: "farm-02", time: "9:45 AM", type: "video", section: "farm-outdoor",
+    location: "Barn", title: "Ep 1 - Work: Barn",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy pushes a wheelbarrow with a hay bale in it. It's hard work.",
+    actors: ["Chappy"],
+    props: ["Wheelbarrow", "Hay bale"],
+    emotion: "Grit, manual labor — no complaints",
+    blocking: "Chappy pushes wheelbarrow across barn floor or yard. Show the effort.",
+    dialogue: 'NARRATOR (V.O.): "For him, a romp in the hay means something a little bit different."',
+    script: "everyday-man", episode: "Episode 1: Work"
+  },
+  {
+    id: "farm-06", time: "10:00 AM", type: "video", section: "farm-outdoor",
+    location: "Field", title: "Ep 3 - Play: Banjo in the Field",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy plays the banjo passionately. The cattle and goats across the street are his audience. He sings like a country star.",
+    actors: ["Chappy"],
+    props: ["Banjo"],
+    emotion: "Joyful, passionate — lost in the music",
+    blocking: "Chappy seated or standing in open field, playing banjo. Cattle/goats visible in background across fence line.",
+    dialogue: 'NARRATOR (V.O.): "He once turned down a record deal because his cattle needed feed."',
+    script: "everyday-man", episode: "Episode 3: Play"
+  },
+  {
+    id: "farm-11", time: "10:15 AM", type: "video", section: "farm-outdoor",
+    location: "Field", title: "Ep 5 - Family: Horse the Donkey",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy takes a picture of something with his camera. Smiles ear to ear. A donkey stands before him. Chappy pans his camera over to a horse. Takes its picture. Smiles ear to ear again.",
+    actors: ["Chappy"],
+    props: ["Camera", "Donkey", "Horse"],
+    emotion: "Proud, amused — simple pleasures",
+    blocking: "Chappy holds camera up taking photo. Reverse to donkey. Wide shot showing donkey, horse standing nearby looking confused.",
+    dialogue: 'NARRATOR (V.O.): "He has a donkey named Horse. And a horse named Kevin." / "He is The Most Everyday Man In The World."',
+    script: "everyday-man", episode: "Episode 5: Family"
+  },
+
+  // ===== FARM INDOOR - Everyday Man (Video) =====
+  {
+    id: "farm-14", time: "10:45 AM", type: "video", section: "farm-indoor",
+    location: "Kitchen", title: "Ep 4 - Routine: Eggs on the Go",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy mixes raw eggs in a frying pan. Looks at the cutting board — ham, mushrooms, peppers, spinach. Chuckles, shakes his head. Scrapes the veggies off the cutting board into the trash. Tosses the ham in with the eggs.",
+    actors: ["Chappy"],
+    props: ["Frying pan", "Cutting board", "Ham", "Mushrooms", "Peppers", "Spinach", "Trash can"],
+    emotion: "Amused defiance — vegetables are not welcome here",
+    blocking: "Chappy at stove with frying pan. Looks at veggies on cutting board, chuckles. Scrapes veggies into trash. Tosses ham into pan with eggs. Stirs.",
+    dialogue: 'NARRATOR (V.O.): "The only vegetable he\'ll touch is an onion ring."',
+    script: "everyday-man", episode: "Episode 4: Routine"
+  },
+  {
+    id: "farm-12", time: "11:00 AM", type: "video", section: "farm-indoor",
+    location: "Bedroom", title: "Ep 1 - Work: 4:59 AM",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy takes off work jacket, yawns, gets in bed. Sees 4:59 AM on digital alarm clock. Gets back out of bed, puts jacket on, and leaves.",
+    actors: ["Chappy"],
+    props: ["Bed", "Work jacket", "Digital alarm clock (set to 4:59 AM)"],
+    emotion: "Weary but unwavering — duty calls before rest",
+    blocking: "Chappy removes jacket, sits on bed, lies back. Eyes land on clock. Close-up: 4:59 AM. He sits up, puts jacket back on, exits frame.",
+    dialogue: 'NARRATOR (V.O.): "He clocks in early. Even when he clocked out late."',
+    script: "everyday-man", episode: "Episode 1: Work"
+  },
+  {
+    id: "farm-13", time: "11:15 AM", type: "video", section: "farm-indoor",
+    location: "Bedroom", title: "Ep 2 - Old School: The Hat",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy puts on work jacket. Turns to two baseball caps (no logos) on a hanging shelf. One brand new, one old and worn-in. Picks the old one.",
+    actors: ["Chappy"],
+    props: ["Work jacket", "2 baseball caps (no logos — one new, one worn)", "Hanging shelf or furniture"],
+    emotion: "Reliable, no-nonsense — if it ain't broke",
+    blocking: "Chappy zips/buttons jacket. Turns to shelf. Camera shows both hats. His hand passes over the new one, grabs the worn one. Puts it on.",
+    dialogue: 'NARRATOR (V.O.): "If it ain\'t broke, he doesn\'t fix it."',
+    script: "everyday-man", episode: "Episode 2: Old School"
+  },
+  {
+    id: "farm-15", time: "11:30 AM", type: "video", section: "farm-indoor",
+    location: "Sun Room", title: "Ep 4 - Routine: The Nap",
+    series: "The Most Everyday Man In The World",
+    description: "Chappy snores on a lounge chair, ball cap over his face. Work gloves in his lap. A wrench in his left hand, a hammer in his right. He twitches, smacking the hammer against the end table. It startles him awake.",
+    actors: ["Chappy"],
+    props: ["Lounge chair", "Ball cap", "Work gloves", "Wrench", "Hammer", "End table"],
+    emotion: "Exhausted but wired — even his dreams are manual labor",
+    blocking: "Chappy asleep in chair, cap over face, tools in hands. Twitches in sleep — hammer whacks end table. Jolts awake startled.",
+    dialogue: 'NARRATOR (V.O.): "When he takes a nap after a hard day\'s work... he dreams of a hard day\'s work."',
+    script: "everyday-man", episode: "Episode 4: Routine"
+  },
+
+  // ===== FARM PSBO (Photo, shot separately) =====
+  {
+    id: "farm-25", time: "11:45 AM", type: "photo", section: "farm-psb",
+    location: "Kitchen", title: "PSBO Farm T2: Coffee Grounds",
+    series: "Pour Some Bourbon On It",
+    description: "Farmer puts hand to forehead in disbelief. His coffee grounds are spilled all over the kitchen floor.",
+    actors: ["Farmer actor"],
+    props: ["Coffee grounds", "Kitchen floor"],
+    emotion: "Defeated — not even coffee is safe today",
+    blocking: "Wide shot of kitchen floor covered in coffee grounds. Farmer standing over the mess, hand on forehead.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-18", time: "11:50 AM", type: "photo", section: "farm-psb",
+    location: "Yard", title: "PSBO Farm T1: Mud Handprint",
+    series: "Pour Some Bourbon On It",
+    description: "Farmer looks at the back of his jeans. There's a double mud handprint on his ass.",
+    actors: ["Farmer actor"],
+    props: ["Jeans", "Mud (for handprints)"],
+    emotion: "Confused, annoyed — who did this?",
+    blocking: "Farmer twists to look at his own backside. Over-shoulder shot showing the mud prints clearly on his jeans.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-20", time: "11:55 AM", type: "photo", section: "farm-psb",
+    location: "Yard (Hose)", title: "PSBO Farm T1: Hose Spray",
+    series: "Pour Some Bourbon On It",
+    description: "Farmer goes to clean off his hands with the outdoor hose. Hose is kinked and sprays water all over his face and clothing.",
+    actors: ["Farmer actor"],
+    props: ["Garden hose (rigged to kink/spray)"],
+    emotion: "Shock, exasperation — can't catch a break",
+    blocking: "Farmer reaches for hose nozzle. Turns it on. Kink causes it to spray directly at him. Freeze the moment of impact.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-24", time: "12:00 PM", type: "photo", section: "farm-psb",
+    location: "Yard / Porch", title: "PSBO Farm T2: Stepping in It",
+    series: "Pour Some Bourbon On It",
+    description: "Farmer steps outside eager to start the work day. Immediately steps in animal shit.",
+    actors: ["Farmer actor"],
+    props: ["Animal droppings (practical prop)"],
+    emotion: "Eager to crushed in one step — comedy of farm life",
+    blocking: "Farmer pushes door open with energy. Steps out confidently. Foot lands in it. Freeze on the realization.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-17", time: "12:05 PM", type: "photo", section: "farm-psb",
+    location: "Grass / Yard", title: "PSBO Farm T1: Broken Eggs",
+    series: "Pour Some Bourbon On It",
+    description: "Farmer looking down at grass where 11 eggs are broken and splattered. 1 egg left in the carton.",
+    actors: ["Farmer actor"],
+    props: ["Egg carton", "12 eggs (11 to break/splatter)"],
+    emotion: "Disbelief, deflated — one of those days",
+    blocking: "High angle looking down past farmer's face to the egg carnage on the grass. Close-up of carton with the lone survivor.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-23", time: "12:15 PM", type: "photo", section: "farm-psb",
+    location: "Truck / Car", title: "PSBO Farm T2: Keys in the Seat",
+    series: "Pour Some Bourbon On It",
+    description: "Low angle shot of keys stuck between seat and console of a car. The face/eyes of the farmer and outstretched hand squeeze into the gap to reach for keys.",
+    actors: ["Farmer actor"],
+    props: ["Car/truck interior", "Keys"],
+    emotion: "Desperation, contortion — we've all been there",
+    blocking: "Low angle from passenger footwell looking up. Keys wedged in gap. Farmer's hand and squished face reaching desperately.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-22", time: "12:25 PM", type: "photo", section: "farm-psb",
+    location: "Barn / Shed", title: "PSBO Farm T2: Missing Tool",
+    series: "Pour Some Bourbon On It",
+    description: "The hammer/multi-bit screwdriver/the most important tool to a farmer is missing from his toolbox.",
+    actors: ["Farmer actor"],
+    props: ["Toolbox (with visible empty slot)"],
+    emotion: "Frustrated — the one tool you need is gone",
+    blocking: "Close-up of open toolbox with obvious empty slot. Pull back to farmer's face: disappointment.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+  {
+    id: "farm-21", time: "12:35 PM", type: "photo", section: "farm-psb",
+    location: "Field / Gate", title: "PSBO Farm T2: Open Gate",
+    series: "Pour Some Bourbon On It",
+    description: "The back of a farmer with his hands on his hips. A gate is wide open. No livestock in the field.",
+    actors: ["Farmer actor"],
+    props: ["Farm gate"],
+    emotion: "Dread, resignation — the livestock are gone",
+    blocking: "Camera behind farmer, centered. Hands on hips. Wide open gate in front of him. Empty field beyond.",
+    dialogue: "",
+    script: "psb-farm", episode: ""
+  },
+
+  // ===== BAR - Cocktail Recipes =====
+  {
+    id: "bar-01", time: "2:00 PM", type: "video", section: "bar-cocktails",
+    location: "Bar", title: "Cocktail Recipe Videos",
+    series: "Cocktail Recipes",
+    description: "Cocktail recipe videos — setups TBD. Block: 2:00 PM - 3:30 PM.",
+    actors: ["Bartender"],
+    props: ["Belle Meade Bourbon bottles", "Cocktail ingredients TBD", "Bar tools (jigger, shaker, strainer, muddler)", "Glassware"],
+    emotion: "Confident, skilled — craftsmanship on display",
+    blocking: "Bartender at bar station. Camera captures pour, mix, shake, garnish sequence for each recipe.",
+    dialogue: "",
+    script: "", episode: ""
+  },
+
+  // ===== BAR - Party Carousels =====
+  // Card Night
+  {
+    id: "bar-02", time: "3:30 PM", type: "video", section: "bar-carousels",
+    location: "Bar table", title: "Card Night: Slide 1 - The Deal",
+    series: "Party Carousels — Card Night",
+    description: 'Texas hold \'em. Drinks, folded cards, and money on a table. The dealer flips over the river card. Text: "Card night"',
+    actors: ["4-6 actors (mixed)", "Dealer"],
+    props: ["Card table", "Poker chips", "Playing cards", "Cash", "Bourbon drinks"],
+    emotion: "Anticipation, competitive energy — the stakes are real",
+    blocking: "Wide shot of table. Dealer's hand flips river card. Players react.",
+    dialogue: "",
+    script: "carousels", episode: "Card Night"
+  },
+  {
+    id: "bar-03", time: "3:33 PM", type: "video", section: "bar-carousels",
+    location: "Bar table", title: "Card Night: Slide 2 - Peeking",
+    series: "Party Carousels — Card Night",
+    description: "A man pretends to look at a woman's cards. She playfully shoos him away.",
+    actors: ["Man", "Woman"],
+    props: ["Cards", "Drinks"],
+    emotion: "Playful, flirtatious — the game within the game",
+    blocking: "Man leans over toward woman's cards. She catches him, pushes his face away laughing.",
+    dialogue: "",
+    script: "carousels", episode: "Card Night"
+  },
+  {
+    id: "bar-04", time: "3:36 PM", type: "video", section: "bar-carousels",
+    location: "Bar table", title: "Card Night: Slide 3 - All In",
+    series: "Party Carousels — Card Night",
+    description: 'A woman pushes a very small amount of money into the pot. "I\'m all in, baby." Everyone at the table laughs.',
+    actors: ["Woman", "3-5 others"],
+    props: ["Cash (small amount)", "Cards", "Drinks"],
+    emotion: "Comedic confidence — big energy, tiny bet",
+    blocking: "Close on woman's hands pushing a few coins/bills in. She delivers line. Cut to table erupting in laughter.",
+    dialogue: '"I\'m all in, baby."',
+    script: "carousels", episode: "Card Night"
+  },
+  {
+    id: "bar-05", time: "3:39 PM", type: "video", section: "bar-carousels",
+    location: "Bar table", title: "Card Night: Slide 4 - The Smirk",
+    series: "Party Carousels — Card Night",
+    description: "A man wearing sunglasses looks at his cards. Then he smirks.",
+    actors: ["Man in sunglasses"],
+    props: ["Sunglasses", "Cards"],
+    emotion: "Cocky, mysterious — poker face breaking",
+    blocking: "Close-up on man in sunglasses. Lifts cards to eye level. The corner of his mouth curls into a smirk.",
+    dialogue: "",
+    script: "carousels", episode: "Card Night"
+  },
+  {
+    id: "bar-06", time: "3:42 PM", type: "video", section: "bar-carousels",
+    location: "Bar table", title: "Card Night: Slide 5 - She Wins",
+    series: "Party Carousels — Card Night",
+    description: "A man and woman reveal their cards. The woman wins a huge pot. Everyone cheers for her.",
+    actors: ["Man", "Woman", "3-4 others"],
+    props: ["Cards", "Large cash pot"],
+    emotion: "Triumph, celebration — the underdog takes it all",
+    blocking: "Both flip cards. Beat of realization. Woman throws hands up. Table erupts. She rakes in the pot.",
+    dialogue: "",
+    script: "carousels", episode: "Card Night"
+  },
+  // Dinner Party
+  {
+    id: "bar-07", time: "3:50 PM", type: "video", section: "bar-carousels",
+    location: "Large table", title: "Dinner Party: Slide 1 - The Table",
+    series: "Party Carousels — Dinner Party",
+    description: 'A large table full of good-looking people and even better-looking food & drink. Lively conversation, electric atmosphere. Text: "Dinner party"',
+    actors: ["8-10 actors"],
+    props: ["Large table setting", "Food platters", "Bourbon drinks", "Place settings"],
+    emotion: "Warm, electric — the night is young and everyone's buzzing",
+    blocking: "Wide establishing shot of full table. Movement, gestures, laughter all happening simultaneously.",
+    dialogue: "",
+    script: "carousels", episode: "Dinner Party"
+  },
+  {
+    id: "bar-08", time: "3:54 PM", type: "video", section: "bar-carousels",
+    location: "Large table", title: "Dinner Party: Slide 2 - The Oof",
+    series: "Party Carousels — Dinner Party",
+    description: 'Man\'s food arrives. He "oofs" in satisfaction and does the finger purse 🤌 with both hands.',
+    actors: ["Man", "Server (optional)"],
+    props: ["Plated food"],
+    emotion: "Pure satisfaction — that first sight of a perfect plate",
+    blocking: "Plate set in front of man. His eyes widen. Both hands come up in the 🤌. Audible 'oof.'",
+    dialogue: "",
+    script: "carousels", episode: "Dinner Party"
+  },
+  {
+    id: "bar-09", time: "3:57 PM", type: "video", section: "bar-carousels",
+    location: "Large table", title: "Dinner Party: Slide 3 - OH MY GOD",
+    series: "Party Carousels — Dinner Party",
+    description: 'A woman takes the first sip of her drink. It\'s to die for. "OH MY GOD." She hands it to her friend to try.',
+    actors: ["2 Women"],
+    props: ["Bourbon cocktail"],
+    emotion: "Mind-blown, sharing the moment — this drink is everything",
+    blocking: "Woman lifts glass, sips. Eyes go wide. Exclaims. Turns and hands glass to friend.",
+    dialogue: '"OH MY GOD."',
+    script: "carousels", episode: "Dinner Party"
+  },
+  {
+    id: "bar-10", time: "4:00 PM", type: "video", section: "bar-carousels",
+    location: "Large table", title: "Dinner Party: Slide 4 - The Toast",
+    series: "Party Carousels — Dinner Party",
+    description: "A woman ends a toast. Everyone hoops and hollers, clinks glasses, and drinks.",
+    actors: ["Full group (8-10)"],
+    props: ["Glasses", "Drinks"],
+    emotion: "Euphoric, communal — the perfect toast",
+    blocking: "Woman standing at head of table, glass raised, finishing her words. Table erupts — glasses clink from all directions.",
+    dialogue: "",
+    script: "carousels", episode: "Dinner Party"
+  },
+  {
+    id: "bar-11", time: "4:03 PM", type: "video", section: "bar-carousels",
+    location: "Large table", title: "Dinner Party: Slide 5 - The Party",
+    series: "Party Carousels — Dinner Party",
+    description: "The drinks are flowing. Uproarious laughter. People standing to chat, taking pictures and selfies.",
+    actors: ["Full group (8-10)"],
+    props: ["Drinks", "Phones"],
+    emotion: "Peak energy — the night has hit its stride",
+    blocking: "Roaming, documentary-style capture. People up from seats, huddled in conversations, phone flashes going off.",
+    dialogue: "",
+    script: "carousels", episode: "Dinner Party"
+  },
+  // Pool Night
+  {
+    id: "bar-12", time: "4:10 PM", type: "video", section: "bar-carousels",
+    location: "Pool table", title: "Pool Night: Slide 1 - Chalking Up",
+    series: "Party Carousels — Pool Night",
+    description: 'Two men and two women chalk their pool sticks as they shoot the shit. Text: "Pool night"',
+    actors: ["2 Men", "2 Women"],
+    props: ["Pool table", "4 cue sticks", "Chalk", "Drinks"],
+    emotion: "Casual, competitive — friends talking trash before the game",
+    blocking: "Group standing around pool table. All chalking cues. Loose conversation, eye contact, laughs.",
+    dialogue: "",
+    script: "carousels", episode: "Pool Night"
+  },
+  {
+    id: "bar-13", time: "4:14 PM", type: "video", section: "bar-carousels",
+    location: "Pool table", title: "Pool Night: Slide 2 - The Break",
+    series: "Party Carousels — Pool Night",
+    description: "A wicked break shot.",
+    actors: ["1 actor"],
+    props: ["Pool table", "Cue ball", "Racked balls"],
+    emotion: "Power, precision — setting the tone",
+    blocking: "Low angle on the break. Cue strikes, balls scatter explosively.",
+    dialogue: "",
+    script: "carousels", episode: "Pool Night"
+  },
+  {
+    id: "bar-14", time: "4:17 PM", type: "video", section: "bar-carousels",
+    location: "Pool table", title: "Pool Night: Slide 3 - Time-Lapse",
+    series: "Party Carousels — Pool Night",
+    description: "Time-lapse video of a few shots from each player.",
+    actors: ["4 actors"],
+    props: ["Pool table", "Cues"],
+    emotion: "The game unfolds — rhythm and momentum",
+    blocking: "Fixed camera angle on table. Each player takes a shot in sequence, sped up in post.",
+    dialogue: "",
+    script: "carousels", episode: "Pool Night"
+  },
+  {
+    id: "bar-15", time: "4:20 PM", type: "video", section: "bar-carousels",
+    location: "Pool table", title: "Pool Night: Slide 4 - The Scratch",
+    series: "Party Carousels — Pool Night",
+    description: "Someone scratches in a very embarrassing way. Everyone laughs.",
+    actors: ["4 actors"],
+    props: ["Pool table", "Cues"],
+    emotion: "Comedic humiliation — laughing with you, not at you (mostly)",
+    blocking: "Player lines up shot confidently. Cue ball goes wildly wrong. Group reaction: disbelief into laughter.",
+    dialogue: "",
+    script: "carousels", episode: "Pool Night"
+  },
+  {
+    id: "bar-16", time: "4:23 PM", type: "video", section: "bar-carousels",
+    location: "Pool table", title: "Pool Night: Slide 5 - Trick Shot",
+    series: "Party Carousels — Pool Night",
+    description: "Someone hits a killer trick shot. Everyone is impressed. Their opponents even high-five them.",
+    actors: ["4 actors"],
+    props: ["Pool table", "Cues"],
+    emotion: "Awe, respect — even the competition has to give it up",
+    blocking: "Player sets up unusual shot. Nails it. Opponents' jaws drop. Cross-team high-fives.",
+    dialogue: "",
+    script: "carousels", episode: "Pool Night"
+  },
+  // Date Night
+  {
+    id: "bar-17", time: "4:30 PM", type: "video", section: "bar-carousels",
+    location: "Bar table / booth", title: "Date Night: Slide 1 - Push In",
+    series: "Party Carousels — Date Night",
+    description: 'Push in on the back of a man and a woman sitting side by side at a table. Text: "Date night"',
+    actors: ["Man", "Woman"],
+    props: ["Table", "Bourbon drinks", "Dinner plates"],
+    emotion: "Intimate, warm — we're entering their world",
+    blocking: "Camera slowly pushes in from behind the couple. Their shoulders touching. Ambient bar glow.",
+    dialogue: "",
+    script: "carousels", episode: "Date Night"
+  },
+  {
+    id: "bar-18", time: "4:34 PM", type: "video", section: "bar-carousels",
+    location: "Bar table / booth", title: "Date Night: Slide 2 - The Laugh",
+    series: "Party Carousels — Date Night",
+    description: "A nice dinner and bourbon on the table. A steamy convo with lingering eye contact. Then someone tells a joke. They laugh their heads off.",
+    actors: ["Man", "Woman"],
+    props: ["Dinner", "Bourbon"],
+    emotion: "Chemistry, tension breaking into joy — the spark is real",
+    blocking: "Close two-shot. Intense eye contact. One leans in to deliver the joke. Both crack up, tension released.",
+    dialogue: "",
+    script: "carousels", episode: "Date Night"
+  },
+  {
+    id: "bar-19", time: "4:38 PM", type: "video", section: "bar-carousels",
+    location: "Bar table / booth", title: "Date Night: Slide 3 - Under the Table",
+    series: "Party Carousels — Date Night",
+    description: "Below the table. Both knees already touching. The man places his hand on her thigh. She places her hand on his hand.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Sensual, tender — the unspoken connection",
+    blocking: "Camera under table level. Knees touching. His hand moves to her thigh. Her hand covers his.",
+    dialogue: "",
+    script: "carousels", episode: "Date Night"
+  },
+  {
+    id: "bar-20", time: "4:41 PM", type: "video", section: "bar-carousels",
+    location: "Bar table / booth", title: "Date Night: Slide 4 - The Feed",
+    series: "Party Carousels — Date Night",
+    description: "The woman feeds some of her meal to the man.",
+    actors: ["Man", "Woman"],
+    props: ["Fork", "Plated food"],
+    emotion: "Caring, comfortable — past the first-date nerves",
+    blocking: "Woman lifts fork to man's mouth. He leans in. Both smiling.",
+    dialogue: "",
+    script: "carousels", episode: "Date Night"
+  },
+  {
+    id: "bar-21", time: "4:44 PM", type: "video", section: "bar-carousels",
+    location: "Bar table / booth", title: "Date Night: Slide 5 - The Kiss",
+    series: "Party Carousels — Date Night",
+    description: "They kiss.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Romance, culmination — the moment lands",
+    blocking: "Close two-shot. They lean in. The kiss. Soft lighting.",
+    dialogue: "",
+    script: "carousels", episode: "Date Night"
+  },
+  // Birthday Bash
+  {
+    id: "bar-22", time: "4:50 PM", type: "video", section: "bar-carousels",
+    location: "Bar top", title: "Birthday Bash: Slide 1 - Cupcake & Shot",
+    series: "Party Carousels — Birthday Bash",
+    description: 'A mini cupcake with a lit candle and a shot of bourbon on the bar. A pair of hands grabs both. Text: "Birthday bash"',
+    actors: ["1 actor (hands)"],
+    props: ["Mini cupcake", "Candle", "Lighter", "Bourbon shot glass"],
+    emotion: "Festive anticipation — the party is about to start",
+    blocking: "Close-up on bar: cupcake with lit candle, shot glass beside it. Hands enter frame and grab both.",
+    dialogue: "",
+    script: "carousels", episode: "Birthday Bash"
+  },
+  {
+    id: "bar-23", time: "4:54 PM", type: "video", section: "bar-carousels",
+    location: "Bar area", title: "Birthday Bash: Slide 2 - Happy Birthday",
+    series: "Party Carousels — Birthday Bash",
+    description: "A group of friends sings 'Happy Birthday' as a woman walks toward the birthday girl with the mini cupcake and the shot of bourbon.",
+    actors: ["Birthday girl", "Friend with cupcake", "4-6 group"],
+    props: ["Cupcake", "Bourbon shot"],
+    emotion: "Love, celebration — her people showing up for her",
+    blocking: "Group singing, parting to make a path. Woman approaches birthday girl with cupcake and shot held up.",
+    dialogue: "Happy Birthday (sung)",
+    script: "carousels", episode: "Birthday Bash"
+  },
+  {
+    id: "bar-24", time: "4:58 PM", type: "video", section: "bar-carousels",
+    location: "Bar area", title: "Birthday Bash: Slide 3 - Rip the Shot",
+    series: "Party Carousels — Birthday Bash",
+    description: "The birthday girl rips the shot of bourbon and chases it with a bite of the cupcake. Her friends cheer her on.",
+    actors: ["Birthday girl", "4-6 group"],
+    props: ["Shot glass", "Cupcake"],
+    emotion: "Wild, uninhibited — this is her night",
+    blocking: "Birthday girl takes shot in one go, bites cupcake immediately. Friends around her cheering, clapping.",
+    dialogue: "",
+    script: "carousels", episode: "Birthday Bash"
+  },
+  {
+    id: "bar-25", time: "5:02 PM", type: "video", section: "bar-carousels",
+    location: "Bar floor", title: "Birthday Bash: Slide 4 - Dance Circle",
+    series: "Party Carousels — Birthday Bash",
+    description: "The birthday girl busts a move in a dance circle that only consists of her friends. They hype her up.",
+    actors: ["Birthday girl", "4-6 group"],
+    props: [],
+    emotion: "Main character energy — she owns the room",
+    blocking: "Friends form loose circle. Birthday girl in center dancing. Friends hyping, clapping, cheering.",
+    dialogue: "",
+    script: "carousels", episode: "Birthday Bash"
+  },
+  {
+    id: "bar-26", time: "5:06 PM", type: "video", section: "bar-carousels",
+    location: "Bathroom", title: "Birthday Bash: Slide 5 - Bathroom Selfie",
+    series: "Party Carousels — Birthday Bash",
+    description: "The birthday girl takes a bathroom selfie with her girlies. They're going to get at least 1,000 likes on IG.",
+    actors: ["Birthday girl", "3-4 women"],
+    props: ["Phones", "Bathroom mirror"],
+    emotion: "Peak girl energy — documenting the moment",
+    blocking: "Group squeezed into bathroom mirror frame. Birthday girl holds phone. Everyone poses. Flash goes off.",
+    dialogue: "",
+    script: "carousels", episode: "Birthday Bash"
+  },
+
+  // ===== BAR - Product Vignettes =====
+  // Last Cig
+  {
+    id: "bar-49", time: "5:00 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 1 - The Breather",
+    series: "Product Vignettes — Last Cig",
+    description: 'Man steps outside to the bar patio, catching a breather. Looking forward to a cigarette break. Text: "Last cig"',
+    actors: ["Man 1"],
+    props: [],
+    emotion: "Relief, anticipation — escaping the noise for a moment",
+    blocking: "Man pushes patio door open, steps out. Takes a deep breath. Reaches for pocket.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-50", time: "5:02 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 2 - Empty Pack",
+    series: "Product Vignettes — Last Cig",
+    description: "The man opens his pack of cigarettes, only to find it's completely empty.",
+    actors: ["Man 1"],
+    props: ["Empty cigarette pack"],
+    emotion: "Disappointment — the one thing he wanted, gone",
+    blocking: "Close on hands opening pack. Flip the lid: empty. His face falls.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-51", time: "5:04 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 3 - The Stranger",
+    series: "Product Vignettes — Last Cig",
+    description: "Another man on the patio makes his way over, same brand of cigarettes in hand.",
+    actors: ["Man 1", "Man 2"],
+    props: ["Cigarette pack (same brand)"],
+    emotion: "Unexpected kindness — strangers becoming friends",
+    blocking: "Man 2 approaches from background, pack visible in hand. Man 1 looks up hopefully.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-52", time: "5:06 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 4 - The Offer",
+    series: "Product Vignettes — Last Cig",
+    description: "Tight shot of the man handing the other a cigarette and his personal lighter.",
+    actors: ["Man 1 (hands)", "Man 2 (hands)"],
+    props: ["Cigarette", "Lighter"],
+    emotion: "Generosity, brotherhood — no words needed",
+    blocking: "Tight on hands. Man 2's hand extends cigarette and lighter. Man 1's hand receives.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  {
+    id: "bar-53", time: "5:08 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar patio", title: "Last Cig: Slide 5 - New Friends",
+    series: "Product Vignettes — Last Cig",
+    description: "The two men drag on their cigarettes, chatting about life. Belle Meade bottle on the outdoor table next to them.",
+    actors: ["Man 1", "Man 2"],
+    props: ["2 cigarettes (lit)", "Belle Meade bottle", "Outdoor table"],
+    emotion: "Easy connection — bourbon and a smoke with a new friend",
+    blocking: "Two-shot on patio. Both leaning on railing or seated. Smoke drifting. Belle Meade bottle on table between them.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Cig"
+  },
+  // 5:01 PM
+  {
+    id: "bar-27", time: "5:20 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "5:01 PM: Slide 1 - The Booth",
+    series: "Product Vignettes — 5:01 PM",
+    description: 'A group of coworkers shooting the shit in a booth. All drinking old fashioneds. A Belle Meade Bourbon bottle on the table. Text: "5:01 PM"',
+    actors: ["3 coworker actors"],
+    props: ["Booth", "3 old fashioneds", "Belle Meade bottle"],
+    emotion: "Relief, camaraderie — clock-out freedom",
+    blocking: "Three in booth, drinks in hand, mid-conversation. Belle Meade bottle centered on table.",
+    dialogue: "",
+    script: "vignettes", episode: "5:01 PM"
+  },
+  {
+    id: "bar-28", time: "5:22 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "5:01 PM: Slide 2 - The Phone",
+    series: "Product Vignettes — 5:01 PM",
+    description: "The three coworkers sit looking at the phone of the man in the middle. The phone casts a glow on their anxious faces.",
+    actors: ["3 coworker actors"],
+    props: ["Phone (screen glowing)"],
+    emotion: "Anxious, dread — the boss is texting",
+    blocking: "All three lean toward center man's phone. Phone glow on faces. Expressions tense.",
+    dialogue: "",
+    script: "vignettes", episode: "5:01 PM"
+  },
+  {
+    id: "bar-29", time: "5:24 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth (insert)", title: "5:01 PM: Slide 3 - The Text",
+    series: "Product Vignettes — 5:01 PM",
+    description: 'Close up of phone screen showing text/Slack/Teams message from boss: "Need all hands to hop on a working call."',
+    actors: [],
+    props: ["Phone with message on screen"],
+    emotion: "The universal dread — boss text after hours",
+    blocking: "Insert shot of phone screen. Message clearly readable.",
+    dialogue: "",
+    script: "vignettes", episode: "5:01 PM"
+  },
+  {
+    id: "bar-30", time: "5:26 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "5:01 PM: Slide 4 - Ignored",
+    series: "Product Vignettes — 5:01 PM",
+    description: "The phone sits face down on the table. All of them shooting the shit again. As if their boss just didn't text them.",
+    actors: ["3 coworker actors"],
+    props: ["Phone (face down)", "Drinks"],
+    emotion: "Defiant joy — choosing life over work",
+    blocking: "Phone face down on table. Group back to laughing, drinking. Zero acknowledgment of the text.",
+    dialogue: "",
+    script: "vignettes", episode: "5:01 PM"
+  },
+  // Something For The Nerves
+  {
+    id: "bar-31", time: "5:40 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 1 - The Spot",
+    series: "Product Vignettes — Something For The Nerves",
+    description: 'A guy at the bar, looking to his left/right. He\'s captivated by a beautiful woman at the other end. Text: "Something for the nerves"',
+    actors: ["Man", "Woman"],
+    props: ["Bar", "Bourbon drinks"],
+    emotion: "Longing, nervous — mustering up the courage",
+    blocking: "Man at one end of bar. POV shot toward woman at other end. She's luminous, unaware.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  {
+    id: "bar-32", time: "5:42 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 2 - The Smile",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "The woman looks over toward the man and smiles at him.",
+    actors: ["Woman"],
+    props: [],
+    emotion: "Warm, inviting — she noticed him",
+    blocking: "From man's POV: woman turns, makes eye contact, smiles.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  {
+    id: "bar-33", time: "5:44 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 3 - Scared Shitless",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "The man looks straight ahead, scared shitless.",
+    actors: ["Man"],
+    props: [],
+    emotion: "Frozen, terrified — she smiled and now he can't move",
+    blocking: "Close-up of man facing forward. Wide eyes. Deer in headlights.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  {
+    id: "bar-34", time: "5:46 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 4 - Liquid Courage",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "The man looks at the drink in his hand. A bourbon neat/on the rocks. Only a little bit left.",
+    actors: ["Man"],
+    props: ["Bourbon glass (nearly empty)"],
+    emotion: "Deciding — one more sip and he's going in",
+    blocking: "Man looks down at glass. Close-up of glass with a finger of bourbon left.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  {
+    id: "bar-35", time: "5:48 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Something For The Nerves: Slide 5 - He Did It",
+    series: "Product Vignettes — Something For The Nerves",
+    description: "Foreground (out of focus): empty drink on bar. Middle: Belle Meade bottle. Background: guy sitting next to the girl at the bar. Alt: close-up of two glasses clinking.",
+    actors: ["Man", "Woman"],
+    props: ["Empty glass", "Belle Meade bottle", "2 glasses"],
+    emotion: "Victory, connection — bourbon gave him the push",
+    blocking: "Rack focus shot: empty glass foreground, Belle Meade mid, couple together in background. Or: tight on two glasses clinking, hands at edge of frame.",
+    dialogue: "",
+    script: "vignettes", episode: "Something For The Nerves"
+  },
+  // Last Call
+  {
+    id: "bar-36", time: "6:00 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "Last Call: Slide 1 - The Spotlight",
+    series: "Product Vignettes — Last Call",
+    description: 'A man and a woman hitting it off in a booth, sitting close. Dark with one light shining down, isolating them from the bar. Text: "Last call"',
+    actors: ["Man", "Woman"],
+    props: ["Booth", "Drinks", "Overhead light (practical)"],
+    emotion: "Intimate, cinematic — their own world in a crowded bar",
+    blocking: "Overhead spot on booth. Everything around them dark. They're close, leaning in.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-37", time: "6:02 PM", type: "photo", section: "bar-vignettes",
+    location: "Booth", title: "Last Call: Slide 2 - Lights On",
+    series: "Product Vignettes — Last Call",
+    description: "The man looks up at the bar lights as they turn on. The woman looks over toward the bar.",
+    actors: ["Man", "Woman"],
+    props: ["Bar lights (practical)"],
+    emotion: "Jarring, bittersweet — reality breaking the spell",
+    blocking: "Man looks up as house lights flip on. Woman turns toward bar. The mood shifts.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-38", time: "6:04 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Last Call: Slide 3 - One More",
+    series: "Product Vignettes — Last Call",
+    description: "The woman grabs the man's hand and pulls him toward the bar for a final drink.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Spontaneous, defiant — not ready for the night to end",
+    blocking: "Woman slides out of booth, grabs his hand, pulls him. He follows willingly.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-39", time: "6:06 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Last Call: Slide 4 - Fingers Touch",
+    series: "Product Vignettes — Last Call",
+    description: "Man and woman look into each other's eyes with a flirtatious grin. Their fingers barely touch as they hold glasses up to one another.",
+    actors: ["Man", "Woman"],
+    props: ["2 bourbon glasses"],
+    emotion: "Electric, almost-touching — the tension is everything",
+    blocking: "Face to face at bar. Glasses raised. Fingers barely making contact on the glass stems. Eye lock.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  {
+    id: "bar-40", time: "6:08 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar top / entrance", title: "Last Call: Slide 5 - The Walk Out",
+    series: "Product Vignettes — Last Call",
+    description: "Long shot of bar top: half-empty Belle Meade bottle in foreground. Silhouettes of both holding hands walking out the bar entrance in background.",
+    actors: ["Man", "Woman"],
+    props: ["Belle Meade bottle (half-empty)"],
+    emotion: "Romantic, cinematic — the perfect exit",
+    blocking: "Foreground: Belle Meade bottle on bar, half-empty. Background: couple silhouetted against entrance light, hand in hand, walking out.",
+    dialogue: "",
+    script: "vignettes", episode: "Last Call"
+  },
+  // Corner Pocket
+  {
+    id: "bar-54", time: "6:20 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 1 - The Focus",
+    series: "Product Vignettes — Corner Pocket",
+    description: 'Woman hunched over the back left corner of a pool table. Belle Meade bourbon on the rocks beside her. Only her eyes visible, laser-focused. Text: "Corner Pocket"',
+    actors: ["Woman"],
+    props: ["Pool table", "Belle Meade bourbon on the rocks"],
+    emotion: "Intense focus, deadly confidence — she's about to end this",
+    blocking: "Low angle from across table. Woman's eyes peer over the rail, locked on target. Glass beside her on the rail.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-55", time: "6:22 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 2 - Chalking Up",
+    series: "Product Vignettes — Corner Pocket",
+    description: "Zoom out. Only the 8-ball is left on the table. The woman is chalking her pool cue. Eyes analyzing the shot.",
+    actors: ["Woman"],
+    props: ["Pool table", "8-ball", "Cue", "Chalk"],
+    emotion: "Calculating, composed — she sees the geometry",
+    blocking: "Wider shot showing table with only 8-ball remaining. Woman standing, chalking cue slowly, studying angles.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-56", time: "6:24 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 2.5 - The Assist",
+    series: "Product Vignettes — Corner Pocket",
+    description: "A man helps align her shot.",
+    actors: ["Woman", "Man"],
+    props: ["Pool cue"],
+    emotion: "Teamwork, flirtatious — he leans in to help",
+    blocking: "Man behind/beside her, guiding the cue angle. Close proximity.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-57", time: "6:26 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 3 - The Strike",
+    series: "Product Vignettes — Corner Pocket",
+    description: "She hits the cue ball and we see it in a blur effect, moving across the table.",
+    actors: ["Woman"],
+    props: ["Pool cue", "Cue ball"],
+    emotion: "Power, precision — the moment of truth",
+    blocking: "Action shot. Cue strikes ball. Motion blur across the felt.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  {
+    id: "bar-58", time: "6:28 PM", type: "photo", section: "bar-vignettes",
+    location: "Pool table", title: "Corner Pocket: Slide 4 - Victory",
+    series: "Product Vignettes — Corner Pocket",
+    description: "The 8-ball has disappeared into the pocket. Cue ball rests just shy of the same pocket. Woman holds pool cue like a sword in right hand, cold Belle Meade on the rocks in left.",
+    actors: ["Woman"],
+    props: ["Pool cue", "Belle Meade bourbon on the rocks"],
+    emotion: "Triumphant, badass — she called it and nailed it",
+    blocking: "Table with cue ball near pocket, 8-ball gone. Woman standing tall — cue in right hand like a sword, bourbon in left, owning the moment.",
+    dialogue: "",
+    script: "vignettes", episode: "Corner Pocket"
+  },
+  // The Mixologist
+  {
+    id: "bar-59", time: "6:40 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 1 - The Crowd",
+    series: "Product Vignettes — The Mixologist",
+    description: 'Bartender leans in to hear a customer\'s order. Bar packed with people pining for his attention. Text: "The Master of Mixology"',
+    actors: ["Bartender", "8-10 extras"],
+    props: ["Packed bar"],
+    emotion: "In demand, commanding — everyone wants his attention",
+    blocking: "Bartender leans across bar toward one customer. Others reaching, waving, trying to get his eye.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-60", time: "6:42 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 2 - The Pour",
+    series: "Product Vignettes — The Mixologist",
+    description: "Bartender grips a bottle of Belle Meade bourbon, precisely pouring 1 shot into the jigger.",
+    actors: ["Bartender"],
+    props: ["Belle Meade bottle", "Jigger"],
+    emotion: "Precision, craftsmanship — every drop counts",
+    blocking: "Close on bartender's hands. Belle Meade bottle angled into jigger. Steady, precise pour.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-61", time: "6:44 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 3 - The Shake",
+    series: "Product Vignettes — The Mixologist",
+    description: "Takes the shaker and vigorously shakes the concoction, looking like an interpretive dancer. Blur motion all over the frame.",
+    actors: ["Bartender"],
+    props: ["Cocktail shaker"],
+    emotion: "Showmanship, artistry — this is performance",
+    blocking: "Bartender shaking with full body. Motion blur on shaker/hands. His expression: focused, theatrical.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-62", time: "6:46 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 4 - The Stream",
+    series: "Product Vignettes — The Mixologist",
+    description: "Pours the drink from the shaker into the glass 2 feet below. Steady stream of bourbon flowing from the shaker.",
+    actors: ["Bartender"],
+    props: ["Shaker", "Glass"],
+    emotion: "Gravity-defying elegance — the payoff pour",
+    blocking: "Shaker held high, glass on bar. Continuous stream of liquid falling 2 feet. Capture the arc.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  {
+    id: "bar-63", time: "6:48 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "The Mixologist: Slide 5 - The Serve",
+    series: "Product Vignettes — The Mixologist",
+    description: "Bartender's hand outstretched with a fresh Buck & A Half cocktail garnished with a lime. Belle Meade bourbon bottle faintly in background.",
+    actors: ["Bartender"],
+    props: ["Buck & A Half cocktail", "Lime garnish", "Belle Meade bottle"],
+    emotion: "Pride, presentation — masterpiece complete",
+    blocking: "Bartender's arm extended toward camera with finished cocktail. Shallow depth of field. Belle Meade bottle soft in background.",
+    dialogue: "",
+    script: "vignettes", episode: "The Mixologist"
+  },
+  // Dance Off
+  {
+    id: "bar-41", time: "6:50 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 1 - The Line",
+    series: "Product Vignettes — Dance Off",
+    description: 'A group of 10-12 people line dancing in the middle of the bar floor. Shot from the back. Text: "Dance off"',
+    actors: ["10-12 actors"],
+    props: ["Drinks"],
+    emotion: "Communal energy — everyone moving together",
+    blocking: "Camera behind the group. All in sync (or trying). Movement filling the frame.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-42", time: "6:52 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 2 - She's On Fire",
+    series: "Product Vignettes — Dance Off",
+    description: "Flip camera to opposite side. Zoom into one woman in the crowd, holding her glass high and dancing like there's no tomorrow.",
+    actors: ["Featured woman", "Group"],
+    props: ["Bourbon glass"],
+    emotion: "Uninhibited joy — she's the star and she knows it",
+    blocking: "Reverse angle. Camera finds the woman in the crowd. She's elevated by her energy, glass held high.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-43", time: "6:54 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "Dance Off: Slide 3 - He Joins In",
+    series: "Product Vignettes — Dance Off",
+    description: "A man joins the line dancing, meeting her in stride. He holds a Belle Meade Bourbon glass.",
+    actors: ["Featured man", "Featured woman", "Group"],
+    props: ["Belle Meade bourbon glass"],
+    emotion: "Chemistry through movement — they match each other's energy",
+    blocking: "Man slides into line next to her. They lock into the same rhythm. His Belle Meade glass in hand.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  {
+    id: "bar-44", time: "6:56 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar", title: "Dance Off: Slide 4 - The Pour",
+    series: "Product Vignettes — Dance Off",
+    description: "The man and woman at the bar together. The bartender pours a bottle of Belle Meade Bourbon into two glasses.",
+    actors: ["Man", "Woman", "Bartender"],
+    props: ["Belle Meade bottle", "2 glasses"],
+    emotion: "Reward, connection — the dance led them here",
+    blocking: "Couple at bar, catching their breath. Bartender pours Belle Meade into two glasses between them.",
+    dialogue: "",
+    script: "vignettes", episode: "Dance Off"
+  },
+  // He's Got The Moves
+  {
+    id: "bar-45", time: "6:58 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 1 - The Dance",
+    series: "Product Vignettes — He's Got The Moves",
+    description: 'Man and woman dancing with one another. Both holding bourbon glasses. Woman is leading, he\'s just following along. Text: "He\'s got the moves"',
+    actors: ["Man", "Woman"],
+    props: ["2 bourbon glasses"],
+    emotion: "Fun, role-reversal — she leads, he vibes",
+    blocking: "Two-shot on dance floor. Woman clearly leading. Man happily along for the ride. Both holding glasses.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-46", time: "7:00 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 2 - The Spin",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The woman starts to spin the man as if she is the alpha.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Dominant feminine energy — she's in control",
+    blocking: "Woman grips his hand, spins him out. She's planted, he's rotating.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-47", time: "7:02 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 3 - Out of Control",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The man is spiraling out of control, hanging on by just one of the woman's hands. His face is shocked.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Comedic chaos — he's in over his head",
+    blocking: "Man extended at arm's length, centrifugal force pulling him out. One hand gripping hers. Face: pure shock.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  },
+  {
+    id: "bar-48", time: "7:04 PM", type: "photo", section: "bar-vignettes",
+    location: "Bar floor", title: "He's Got The Moves: Slide 4 - The Twerk",
+    series: "Product Vignettes — He's Got The Moves",
+    description: "The man reestablishes footing, returns from the twirl, and starts twerking on her. She laughs her head off.",
+    actors: ["Man", "Woman"],
+    props: [],
+    emotion: "Hilarious, confident — he recovered and doubled down",
+    blocking: "Man plants feet, immediately starts twerking. Woman doubled over laughing. Pure chaos.",
+    dialogue: "",
+    script: "vignettes", episode: "He's Got The Moves"
+  }
+];
+
+// Script content for modal
+const scripts = {
+  "everyday-man": `EPISODE 1: WORK
+FRONT PORCH - DAY
+Chappy walks out onto the front porch. He's shirtless in jeans, barefoot. He holds a full pot of coffee and takes a sip. Then yawns and raises his hands triumphantly.
+NARRATOR (V.O.): He is the rooster for his rooster.
+
+BARN - DAY
+Chappy pushes a wheelbarrow with a hay bale in it. It's hard work.
+NARRATOR (V.O.): For him, a "romp in the hay" means something a little bit different.
+
+BEDROOM - NIGHT
+Chappy takes off his work jacket. Yawns. Gets in bed. Sees 4:59 AM on alarm clock.
+NARRATOR (V.O.): He clocks in early. Even when he clocked out late.
+Chappy gets out of bed, puts jacket back on, leaves.
+NARRATOR (V.O.): He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+Chappy in armchair. Pours Belle Meade, raises glass.
+CHAPPY: Here's to those interested in not being the most interesting.
+
+─────────────────────────────
+
+EPISODE 2: OLD SCHOOL
+BEDROOM - DAY
+Chappy puts on work jacket. Two caps on shelf — one new, one worn. Picks the old one.
+NARRATOR (V.O.): If it ain't broke, he doesn't fix it.
+
+DRIVEWAY - DAY
+Chappy works on truck. Grimaces at elbow. Spots WD-40, sprays elbow, massages it in. Good as new.
+NARRATOR (V.O.): A little elbow grease goes a very long way for him.
+
+POOL / POND - DAY
+Chappy in swim trunks and Hawaiian shirt walks past pool. Drops towel at pond, takes off shirt, heads in.
+NARRATOR (V.O.): He cleans his own pool. But he has never swam in it.
+NARRATOR (V.O.): He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending)
+
+─────────────────────────────
+
+EPISODE 3: PLAY
+FIRE PIT - DAY
+Chappy on one knee, struggling to start a fire. Charlie brings lighter fluid. Chappy smacks it away, shoves Charlie out of view. Gets back on one knee.
+NARRATOR (V.O.): Absolutely not.
+
+FIELD - DAY
+Chappy plays banjo passionately. Cattle and goats are his audience.
+NARRATOR (V.O.): He has an artistic side.
+
+CREEK - DAY
+Chappy finds the flattest skipping stone. Fires it across the creek — perfect skip. But slumps his shoulders, disappointed. Walks off pissed.
+NARRATOR (V.O.): He once skipped a stone across the Mississippi. And has been chasing that feeling ever since.
+NARRATOR (V.O.): He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending)
+
+─────────────────────────────
+
+EPISODE 4: ROUTINE
+KITCHEN - DAY
+Chappy mixes eggs in frying pan. Sees veggies on cutting board. Chuckles, scrapes them into trash. Tosses ham in with eggs.
+NARRATOR (V.O.): The only vegetable he'll touch is an onion ring.
+
+PORCH - DAY
+June wags her tail. Chappy walks past, stops. Pats her hard on the ribs. Pets behind her ears.
+NARRATOR (V.O.): His dog has been sturdy for a decade straight.
+
+SUN ROOM - DAY
+Chappy snores in lounge chair, cap over face, work gloves in lap, wrench in left hand, hammer in right. Twitches — hammer smacks end table. Startles awake.
+NARRATOR (V.O.): When he takes a nap after a hard day's work... he dreams of a hard day's work.
+NARRATOR (V.O.): He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending)
+
+─────────────────────────────
+
+EPISODE 5: FAMILY
+CHICKEN COOP - DAY
+Chappy stares at empty chicken coop. Fights back tears.
+NARRATOR (V.O.): He hates coyotes.
+
+TRUCK - DAY
+Chappy flips sun visor — portrait of June. Turns to passenger seat where June sits.
+NARRATOR (V.O.): He's got that dog in him. But only when his dog isn't around.
+CHAPPY: You're such a sweet girl, you know that??
+
+FIELD - DAY
+Chappy photographs his donkey with a camera. Smiles. Pans to horse. Takes its picture.
+NARRATOR (V.O.): He has a donkey named Horse. And a horse named Kevin.
+NARRATOR (V.O.): He is The Most Everyday Man In The World.
+
+BASEMENT - DAY
+(Same ending)`,
+
+  "carousels": `CARD NIGHT
+Slide 1: Texas hold 'em. Drinks, folded cards, money on table. Dealer flips the river card. Text: "Card night"
+Slide 2: Man pretends to look at woman's cards. She playfully shoos him away.
+Slide 3: Woman pushes tiny amount of money into pot. "I'm all in, baby." Everyone laughs.
+Slide 4: Man in sunglasses looks at his cards. Smirks.
+Slide 5: Man and woman reveal cards. Woman wins huge pot. Everyone cheers.
+
+─────────────────────────────
+
+DINNER PARTY
+Slide 1: Large table, great food & drink. Electric atmosphere. Text: "Dinner party"
+Slide 2: Man's food arrives. "Oofs" in satisfaction. Double finger purse with both hands.
+Slide 3: Woman sips drink. "OH MY GOD." Hands it to friend.
+Slide 4: Woman ends toast. Everyone clinks glasses, drinks.
+Slide 5: Drinks flowing. Uproarious laughter. People taking selfies.
+
+─────────────────────────────
+
+POOL NIGHT
+Slide 1: Two men, two women chalk pool sticks. Text: "Pool night"
+Slide 2: Wicked break shot.
+Slide 3: Time-lapse of shots from each player.
+Slide 4: Someone scratches embarrassingly. Everyone laughs.
+Slide 5: Killer trick shot. Opponents high-five them.
+
+─────────────────────────────
+
+DATE NIGHT
+Slide 1: Push in on back of man and woman side by side. Text: "Date night"
+Slide 2: Nice dinner, bourbon. Steamy convo, lingering eye contact. Someone jokes, they laugh.
+Slide 3: Below table — knees touching. His hand on her thigh. Her hand on his.
+Slide 4: She feeds some of her meal to him.
+Slide 5: They kiss.
+
+─────────────────────────────
+
+BIRTHDAY BASH
+Slide 1: Mini cupcake with lit candle and bourbon shot on bar. Hands grab both. Text: "Birthday bash"
+Slide 2: Group sings Happy Birthday. Woman brings cupcake and shot to birthday girl.
+Slide 3: Birthday girl rips the shot, chases with cupcake bite. Friends cheer.
+Slide 4: Birthday girl busts a move in dance circle. Friends hype her up.
+Slide 5: Bathroom selfie with her girlies. 1,000 likes on IG.`,
+
+  "vignettes": `5:01 PM
+Slide 1: 3 coworkers in booth, old fashioneds. Belle Meade bottle on table. Text: "5:01 PM"
+Slide 2: All three look at middle man's phone. Anxious faces.
+Slide 3: Close up of phone — boss text: "Need all hands to hop on a working call."
+Slide 4: Phone face down. Back to shooting the shit. Boss ignored.
+
+─────────────────────────────
+
+SOMETHING FOR THE NERVES
+Slide 1: Guy at bar, captivated by woman at other end. Text: "Something for the nerves"
+Slide 2: She looks over and smiles.
+Slide 3: He looks straight ahead, scared shitless.
+Slide 4: Looks at his nearly empty bourbon.
+Slide 5: Empty glass foreground, Belle Meade mid, he's sitting next to her in background.
+
+─────────────────────────────
+
+LAST CALL
+Slide 1: Couple in booth, one light isolating them. Text: "Last call"
+Slide 2: Bar lights turn on. Spell broken.
+Slide 3: She grabs his hand, pulls him to bar.
+Slide 4: Eyes locked, glasses raised, fingers barely touching.
+Slide 5: Half-empty Belle Meade foreground. Couple silhouetted walking out hand in hand.
+
+─────────────────────────────
+
+DANCE OFF
+Slide 1: 10-12 people line dancing, shot from behind. Text: "Dance off"
+Slide 2: Flip angle. One woman holding glass high, dancing like no tomorrow.
+Slide 3: Man joins, meets her in stride. Belle Meade glass in hand.
+Slide 4: Both at bar. Bartender pours Belle Meade into two glasses.
+
+─────────────────────────────
+
+HE'S GOT THE MOVES
+Slide 1: Man and woman dancing, both with bourbon. She leads. Text: "He's got the moves"
+Slide 2: She spins him. She's the alpha.
+Slide 3: He's spiraling out of control, hanging on by one hand. Shocked face.
+Slide 4: He reestablishes footing, starts twerking. She laughs her head off.
+
+─────────────────────────────
+
+LAST CIG
+Slide 1: Man steps to patio for a cigarette break. Text: "Last cig"
+Slide 2: Opens pack — completely empty.
+Slide 3: Another man approaches with same brand.
+Slide 4: Tight shot — hands passing cigarette and lighter.
+Slide 5: Both smoking, chatting. Belle Meade on outdoor table.
+
+─────────────────────────────
+
+CORNER POCKET
+Slide 1: Woman at pool table corner. Belle Meade beside her. Eyes laser-focused. Text: "Corner Pocket"
+Slide 2: Only 8-ball left. She's chalking her cue.
+Slide 2.5: Man helps align her shot.
+Slide 3: She strikes. Cue ball blur across table.
+Slide 4: 8-ball sunk. She holds cue like a sword, bourbon in left hand.
+
+─────────────────────────────
+
+THE MIXOLOGIST
+Slide 1: Bartender leans in to hear order. Bar packed. Text: "The Master of Mixology"
+Slide 2: Grips Belle Meade, precisely pours into jigger.
+Slide 3: Vigorously shakes — interpretive dancer. Blur motion.
+Slide 4: Pours from shaker into glass 2 feet below. Steady stream.
+Slide 5: Hand outstretched with Buck & A Half cocktail, lime garnish. Belle Meade in background.`,
+
+  "psb-farm": `POUR SOME BOURBON ON IT — FARM
+
+TIER 1
+• Farmer looking down at 11 broken eggs on grass. 1 egg left in carton.
+• Farmer looks at back of jeans — double mud handprint on his ass.
+• Farmer at firepit with friends. Smoke only blows in his face.
+• Farmer cleans hands with hose. Hose is kinked, sprays water all over him.
+
+TIER 2
+• Back of farmer, hands on hips. Gate wide open. No livestock.
+• Most important tool missing from toolbox.
+• Low angle — keys stuck between seat and console. Farmer reaching desperately.
+• Farmer steps outside eager to start day. Steps in animal shit.
+• Farmer hand to forehead. Coffee grounds spilled all over kitchen floor.`,
+
+  "psb-bar": `POUR SOME BOURBON ON IT — BAR
+
+TIER 1
+• Two guys talk to a girl at the same time, one in each ear. She's in hell.
+• Girl waiting in the back of the 12-person bathroom line.
+• Aerial shot — man with drink looking down at white shoes with shoe prints on them.
+• Guy stares at freshly tattooed shoulder in horror. It reads "I Heart Burbon".
+
+TIER 2
+• Man taking pool shot, knocking drink out of girl's hand.
+• Guy gets bumped. Horror face as drink about to spill all over him.
+• Guy holds two old fashioneds, distraught. Girl in front making out with another guy.
+• Man outside bar with one cig left in his pack.`
+};
+
+// Section labels for list view
+const sectionLabels = {
+  'farm-outdoor': 'Farm — Outdoor',
+  'farm-indoor': 'Farm — Indoor',
+  'farm-psb': 'Farm — Pour Some Bourbon',
+  'bar-cocktails': 'Bar — Cocktail Recipes',
+  'bar-carousels': 'Bar — Party Carousels',
+  'bar-vignettes': 'Bar — Product Vignettes'
+};
+
+const sectionOrder = ['farm-outdoor','farm-indoor','farm-psb','bar-cocktails','bar-carousels','bar-vignettes'];
+
+// State
+let sortMode = 'time';
+let currentView = 'list'; // start on list
+let currentFilter = 'all';
+let filteredShots = [...shots];
+let currentIndex = 0;
+let doneShots = JSON.parse(localStorage.getItem('bellemeade-done') || '{}');
+let touchStartX = 0;
+let touchStartY = 0;
+let touchMoved = false;
+let openedFromList = false;
+
+function saveDone() {
+  localStorage.setItem('bellemeade-done', JSON.stringify(doneShots));
+}
+
+function applyFilter(filter) {
+  currentFilter = filter;
+  if (filter === 'all') {
+    filteredShots = [...shots];
+  } else if (filter === 'done') {
+    filteredShots = shots.filter(s => doneShots[s.id]);
+  } else if (filter === 'remaining') {
+    filteredShots = shots.filter(s => !doneShots[s.id]);
+  } else {
+    filteredShots = shots.filter(s => s.section === filter);
+  }
+  currentIndex = 0;
+  if (currentView === 'card') renderCard();
+  if (currentView === 'list') renderList();
+  updateProgress();
+
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === filter);
+  });
+}
+
+function renderCard() {
+  const wrapper = document.getElementById('cardsWrapper');
+  if (filteredShots.length === 0) {
+    wrapper.innerHTML = '<div class="card active" style="display:flex;align-items:center;justify-content:center;"><div style="text-align:center;color:var(--text-dim);"><p style="font-family:Cormorant,serif;font-size:24px;margin-bottom:8px;color:var(--text-secondary);">No shots</p><p style="font-size:13px;">Try a different filter</p></div></div>';
+    return;
+  }
+  const baseShot = filteredShots[currentIndex];
+  const shot = getShot(baseShot.id);
+  const isDone = doneShots[shot.id];
+  const shotNum = String(currentIndex + 1).padStart(2, '0');
+
+  wrapper.innerHTML = `
+    <div class="card active" id="activeCard">
+      <div class="card-inner">
+        <div class="card-hero">
+          <div class="card-meta">
+            <span class="card-number">${shotNum}</span>
+            <span class="badge badge-time">${shot.time}</span>
+            <span class="badge badge-${shot.type}">${shot.type.toUpperCase()}</span>
+            <span class="badge badge-location">${shot.location}</span>
+            ${isDone ? '<span class="badge badge-done">DONE</span>' : ''}
+          </div>
+          <div class="card-title">${shot.title}</div>
+          <div class="card-subtitle">${shot.series}</div>
+        </div>
+
+        <div class="card-body">
+          <div class="card-section">
+            <div class="meta-row">
+              <div class="meta-col">
+                <div class="section-label">Actors</div>
+                <div class="tag-list">
+                  ${shot.actors.length ? shot.actors.map(a => `<span class="tag tag-actor">${a}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
+                </div>
+              </div>
+              <div class="meta-col">
+                <div class="section-label">Props</div>
+                <div class="tag-list">
+                  ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-section description-section">
+            <div class="section-label">Shot Description</div>
+            <div class="section-text">${shot.description}</div>
+          </div>
+
+          ${shot.emotion ? `<div class="card-section">
+            <div class="section-label">Emotion / Tone</div>
+            <div class="section-text">${shot.emotion}</div>
+          </div>` : ''}
+
+          ${shot.blocking ? `<div class="card-section">
+            <div class="section-label">Blocking</div>
+            <div class="section-text">${shot.blocking}</div>
+          </div>` : ''}
+
+          ${shot.dialogue ? `<div class="card-section">
+            <div class="section-label">Dialogue</div>
+            <div class="dialogue-text">${shot.dialogue}</div>
+          </div>` : ''}
+
+          ${shot.script ? `<div class="card-section">
+            <a class="script-link" onclick="openModal('${shot.script}', '${shot.episode.replace(/'/g, "\\'")}')">
+              View Full Script <span class="script-link-arrow">&#8250;</span>
+            </a>
+          </div>` : ''}
+
+          <div class="done-section">
+            <button class="done-btn ${isDone ? 'is-done' : 'undone'}" onclick="toggleDone('${shot.id}')">
+              ${isDone ? 'COMPLETED' : 'MARK AS DONE'}
+            </button>
+            <div class="nav-hint">${currentIndex + 1} of ${filteredShots.length}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function updateProgress() {
+  const total = filteredShots.length;
+  const done = filteredShots.filter(s => doneShots[s.id]).length;
+  document.getElementById('progressText').textContent = total > 0
+    ? `${currentIndex + 1} / ${total} · ${done} done`
+    : '0 shots';
+  document.getElementById('progressFill').style.width = total > 0
+    ? `${(done / total) * 100}%`
+    : '0%';
+}
+
+function toggleDone(id) {
+  if (doneShots[id]) {
+    delete doneShots[id];
+  } else {
+    doneShots[id] = true;
+  }
+  saveDone();
+  if (currentView === 'card') renderCard();
+  renderList();
+  updateProgress();
+}
+
+function goNext() {
+  if (currentIndex < filteredShots.length - 1) {
+    currentIndex++;
+    renderCard();
+    updateProgress();
+  }
+}
+
+function goPrev() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderCard();
+    updateProgress();
+  }
+}
+
+function openModal(scriptKey, episode) {
+  const content = scripts[scriptKey] || 'Script not found.';
+  document.getElementById('modalTitle').textContent = episode || 'Full Script';
+  document.getElementById('modalBody').textContent = content;
+  document.getElementById('scriptModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('scriptModal').classList.remove('open');
+}
+
+// ── View Switching ──
+function showListView() {
+  currentView = 'list';
+  openedFromList = false;
+  document.getElementById('swipeContainer').style.display = 'none';
+  document.getElementById('listContainer').classList.add('visible');
+  document.getElementById('backBtn').classList.remove('visible');
+  document.getElementById('headerTitle').textContent = 'Bourbon Co.';
+  renderList();
+  updateProgress();
+}
+
+function showCardView(fromList) {
+  currentView = 'card';
+  if (fromList) openedFromList = true;
+  document.getElementById('swipeContainer').style.display = '';
+  document.getElementById('listContainer').classList.remove('visible');
+  document.getElementById('backBtn').classList.toggle('visible', !!fromList);
+  renderCard();
+  updateProgress();
+}
+
+function openShotFromList(shotId) {
+  const idx = filteredShots.findIndex(s => s.id === shotId);
+  if (idx >= 0) {
+    currentIndex = idx;
+    showCardView(true);
+  }
+}
+
+// ── Sort Toggle ──
+function toggleSort() {
+  sortMode = sortMode === 'time' ? 'scene' : 'time';
+  document.getElementById('sortBtnText').textContent = sortMode === 'time' ? 'Sort: Time' : 'Sort: Scene';
+  renderList();
+}
+
+// Scene order for "By Scene" mode
+const sceneOrder = [
+  "The Most Everyday Man In The World||Episode 1: Work",
+  "The Most Everyday Man In The World||Episode 2: Old School",
+  "The Most Everyday Man In The World||Episode 3: Play",
+  "The Most Everyday Man In The World||Episode 4: Routine",
+  "The Most Everyday Man In The World||Episode 5: Family",
+  "The Most Everyday Man In The World||Episodes 1-5 (recurring ending)",
+  "Pour Some Bourbon On It",
+  "Cocktail Recipes",
+  "Party Carousels — Card Night",
+  "Party Carousels — Dinner Party",
+  "Party Carousels — Pool Night",
+  "Party Carousels — Date Night",
+  "Party Carousels — Birthday Bash",
+  "Product Vignettes — Last Cig",
+  "Product Vignettes — 5:01 PM",
+  "Product Vignettes — Something For The Nerves",
+  "Product Vignettes — Last Call",
+  "Product Vignettes — Corner Pocket",
+  "Product Vignettes — The Mixologist",
+  "Product Vignettes — Dance Off",
+  "Product Vignettes — He's Got The Moves"
+];
+
+const sceneLabels = {
+  "The Most Everyday Man In The World||Episode 1: Work": "Everyday Man — Episode 1: Work",
+  "The Most Everyday Man In The World||Episode 2: Old School": "Everyday Man — Episode 2: Old School",
+  "The Most Everyday Man In The World||Episode 3: Play": "Everyday Man — Episode 3: Play",
+  "The Most Everyday Man In The World||Episode 4: Routine": "Everyday Man — Episode 4: Routine",
+  "The Most Everyday Man In The World||Episode 5: Family": "Everyday Man — Episode 5: Family",
+  "The Most Everyday Man In The World||Episodes 1-5 (recurring ending)": "Everyday Man — Episodes 1-5 (Armchair Toast)",
+  "Pour Some Bourbon On It": "Pour Some Bourbon On It",
+  "Cocktail Recipes": "Cocktail Recipes",
+  "Party Carousels — Card Night": "Party Carousels — Card Night",
+  "Party Carousels — Dinner Party": "Party Carousels — Dinner Party",
+  "Party Carousels — Pool Night": "Party Carousels — Pool Night",
+  "Party Carousels — Date Night": "Party Carousels — Date Night",
+  "Party Carousels — Birthday Bash": "Party Carousels — Birthday Bash",
+  "Product Vignettes — Last Cig": "Product Vignettes — Last Cig",
+  "Product Vignettes — 5:01 PM": "Product Vignettes — 5:01 PM",
+  "Product Vignettes — Something For The Nerves": "Product Vignettes — Something For The Nerves",
+  "Product Vignettes — Last Call": "Product Vignettes — Last Call",
+  "Product Vignettes — Corner Pocket": "Product Vignettes — Corner Pocket",
+  "Product Vignettes — The Mixologist": "Product Vignettes — The Mixologist",
+  "Product Vignettes — Dance Off": "Product Vignettes — Dance Off",
+  "Product Vignettes — He's Got The Moves": "Product Vignettes — He's Got The Moves"
+};
+
+function getSceneKey(shot) {
+  if (shot.series === "The Most Everyday Man In The World" && shot.episode) {
+    return shot.series + "||" + shot.episode;
+  }
+  return shot.series || shot.section;
+}
+
+// ── List Rendering ──
+function renderList() {
+  const container = document.getElementById('listContainer');
+  const active = filteredShots.filter(s => !doneShots[s.id]);
+  const done = filteredShots.filter(s => doneShots[s.id]);
+
+  let html = '';
+
+  if (sortMode === 'scene') {
+    // Group active shots by scene
+    const grouped = {};
+    active.forEach(s => {
+      const key = getSceneKey(s);
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(s);
+    });
+
+    sceneOrder.forEach(key => {
+      if (!grouped[key] || grouped[key].length === 0) return;
+      html += `<div class="list-section-header">${sceneLabels[key] || key}</div>`;
+      grouped[key].forEach(shot => {
+        html += renderListItem(shot, false);
+      });
+    });
+
+    // Any remaining groups not in sceneOrder
+    Object.keys(grouped).forEach(key => {
+      if (sceneOrder.includes(key)) return;
+      if (grouped[key].length === 0) return;
+      html += `<div class="list-section-header">${sceneLabels[key] || key}</div>`;
+      grouped[key].forEach(shot => {
+        html += renderListItem(shot, false);
+      });
+    });
+  } else {
+    // Group active shots by section (time mode - default)
+    const grouped = {};
+    active.forEach(s => {
+      if (!grouped[s.section]) grouped[s.section] = [];
+      grouped[s.section].push(s);
+    });
+
+    sectionOrder.forEach(section => {
+      if (!grouped[section] || grouped[section].length === 0) return;
+      html += `<div class="list-section-header">${sectionLabels[section] || section}</div>`;
+      grouped[section].forEach(shot => {
+        html += renderListItem(shot, false);
+      });
+    });
+  }
+
+  // Done section
+  if (done.length > 0) {
+    html += `<div class="list-done-header">Completed — ${done.length} shot${done.length !== 1 ? 's' : ''}</div>`;
+    done.forEach(shot => {
+      html += renderListItem(shot, true);
+    });
+  }
+
+  html += '<div class="list-spacer"></div>';
+  container.innerHTML = html;
+}
+
+function renderListItem(shot, isDone) {
+  const s = getShot(shot.id);
+  const actorStr = s.actors.length ? s.actors.join(', ') : '';
+  const meta = [s.location, actorStr].filter(Boolean).join(' · ');
+  return `
+    <div class="list-item ${isDone ? 'is-done' : ''}" onclick="openShotFromList('${s.id}')">
+      <div class="list-item-time">${s.time.replace(' AM','a').replace(' PM','p')}</div>
+      <div class="list-item-type list-item-type-${s.type}">${s.type === 'video' ? 'VID' : 'PH'}</div>
+      <div class="list-item-content">
+        <div class="list-item-title">${s.title}</div>
+        <div class="list-item-meta">${meta}</div>
+      </div>
+      <div class="list-item-chevron">&#8250;</div>
+    </div>
+  `;
+}
+
+// ── Spreadsheet ──
+function openSpreadsheet() {
+  document.getElementById('spreadsheetContainer').classList.add('visible');
+  renderSpreadsheet();
+}
+
+function closeSpreadsheet() {
+  document.getElementById('spreadsheetContainer').classList.remove('visible');
+  // Re-render list with any edits
+  applyFilter(currentFilter);
+}
+
+function renderSpreadsheet() {
+  const cols = [
+    { key: 'id', label: '#', editable: false },
+    { key: 'time', label: 'Time', editable: true },
+    { key: 'type', label: 'Type', editable: true },
+    { key: 'location', label: 'Location', editable: true },
+    { key: 'title', label: 'Title', editable: true },
+    { key: 'description', label: 'Description', editable: true },
+    { key: 'actors', label: 'Actors', editable: true },
+    { key: 'props', label: 'Props', editable: true },
+    { key: 'emotion', label: 'Emotion', editable: true },
+    { key: 'blocking', label: 'Blocking', editable: true },
+    { key: 'dialogue', label: 'Dialogue', editable: true }
+  ];
+
+  let html = '<table class="spreadsheet-table"><thead><tr>';
+  cols.forEach(c => { html += `<th>${c.label}</th>`; });
+  html += '</tr></thead><tbody>';
+
+  let lastSection = '';
+  shots.forEach((baseShot, i) => {
+    const s = getShot(baseShot.id);
+    // Section row
+    if (s.section !== lastSection) {
+      lastSection = s.section;
+      html += `<tr class="section-row"><td colspan="${cols.length}">${sectionLabels[s.section] || s.section}</td></tr>`;
+    }
+    html += '<tr>';
+    cols.forEach(c => {
+      const val = c.key === 'actors' ? (s.actors || []).join(', ')
+               : c.key === 'props' ? (s.props || []).join(', ')
+               : (s[c.key] || '');
+      const cls = `col-${c.key}`;
+      if (c.editable) {
+        html += `<td class="${cls}" contenteditable="true" data-shot-id="${s.id}" data-field="${c.key}" onblur="handleCellEdit(this)">${escapeHtml(val)}</td>`;
+      } else {
+        html += `<td class="${cls}">${escapeHtml(val)}</td>`;
+      }
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('spreadsheetScroll').innerHTML = html;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function handleCellEdit(td) {
+  const shotId = td.dataset.shotId;
+  const field = td.dataset.field;
+  let value = td.textContent.trim();
+
+  // Find the base shot
+  const base = shots.find(s => s.id === shotId);
+  if (!base) return;
+
+  // Get or create overrides for this shot
+  const overrides = JSON.parse(localStorage.getItem('bellemeade-overrides') || '{}');
+  if (!overrides[shotId]) overrides[shotId] = {};
+
+  // Convert arrays
+  if (field === 'actors' || field === 'props') {
+    const arr = value ? value.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const baseVal = (base[field] || []).join(', ');
+    if (value === baseVal) {
+      delete overrides[shotId][field];
+    } else {
+      overrides[shotId][field] = arr;
+    }
+  } else {
+    if (value === (base[field] || '')) {
+      delete overrides[shotId][field];
+    } else {
+      overrides[shotId][field] = value;
+    }
+  }
+
+  // Clean up empty override objects
+  if (Object.keys(overrides[shotId]).length === 0) {
+    delete overrides[shotId];
+  }
+
+  localStorage.setItem('bellemeade-overrides', JSON.stringify(overrides));
+
+  // Show save toast
+  const toast = document.getElementById('saveToast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1200);
+}
+
+// Get shot with overrides applied
+function getShot(shotId) {
+  const base = shots.find(s => s.id === shotId);
+  if (!base) return null;
+  const overrides = JSON.parse(localStorage.getItem('bellemeade-overrides') || '{}');
+  if (!overrides[shotId]) return base;
+  return { ...base, ...overrides[shotId] };
+}
+
+// ── Touch handling ──
+const wrapper = document.getElementById('cardsWrapper');
+
+wrapper.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchMoved = false;
+}, { passive: true });
+
+wrapper.addEventListener('touchmove', (e) => {
+  touchMoved = true;
+}, { passive: true });
+
+wrapper.addEventListener('touchend', (e) => {
+  if (!touchMoved) return;
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+    if (dx < 0) goNext();
+    else goPrev();
+  }
+});
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goPrev();
+  if (e.key === 'Escape' && openedFromList) showListView();
+});
+
+// Filter bar
+document.getElementById('filterBar').addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-btn')) {
+    applyFilter(e.target.dataset.filter);
+  }
+});
+
+// Modal close on overlay click
+document.getElementById('scriptModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('scriptModal')) closeModal();
+});
+
+// ── Init: start on list view ──
+showListView();
+</script>
+</body>
+</html>
