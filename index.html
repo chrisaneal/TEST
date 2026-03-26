@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Belle Meade - Shot List</title>
+<title>Bourbon Co. - Shot List</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -141,7 +141,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding-top: calc(var(--safe-top) + 88px);
+    padding-top: calc(var(--safe-top) + 100px);
     overflow: hidden;
   }
 
@@ -482,7 +482,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding-top: calc(var(--safe-top) + 88px);
+    padding-top: calc(var(--safe-top) + 100px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     display: none;
@@ -842,7 +842,7 @@
   <div class="header-top">
     <div style="display:flex;align-items:center;gap:12px;">
       <button class="back-btn" id="backBtn" onclick="showListView()"><span class="back-arrow">&#8249;</span> List</button>
-      <h1 id="headerTitle">Belle Meade</h1>
+      <h1 id="headerTitle">Bourbon Co.</h1>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="progress-text" id="progressText">1 / 80</span>
@@ -906,6 +906,20 @@
 
 <script>
 const shots = [
+  // ===== FARM INDOOR - Everyday Man (Video) =====
+  {
+    id: "farm-00", time: "7:00 AM", type: "video", section: "farm-indoor",
+    location: "Bathroom", title: "Ep 4 - Routine: Morning Soak",
+    series: "The Bourbon Man",
+    description: "Chap lies in a bathtub, fully at peace. One hand rests on the rim holding a glass of Bourbon on the rocks. He takes a slow sip, closes his eyes, exhales. The day hasn't started yet — and he's already won.",
+    actors: ["Chap"],
+    props: ["Bourbon bottle", "Bourbon glass (rocks)", "Towel draped over tub edge"],
+    emotion: "Relief — the only quiet moment before the world wakes up",
+    blocking: "Wide shot of bathroom. Chap sunk low in tub, only head and hand visible. Close-up of bourbon glass resting on porcelain rim. Cut to his face — eyes closed, slow exhale. He sips, sets the glass back down gently.",
+    dialogue: 'NARRATOR (V.O.): "His morning routine starts where most people\'s ends."',
+    script: "everyday-man", episode: "Episode 4: Routine"
+  },
+
   // ===== FARM OUTDOOR - Everyday Man (Video) =====
   {
     id: "farm-01", time: "7:30 AM", type: "video", section: "farm-outdoor",
@@ -2402,7 +2416,7 @@ function showListView() {
   document.getElementById('swipeContainer').style.display = 'none';
   document.getElementById('listContainer').classList.add('visible');
   document.getElementById('backBtn').classList.remove('visible');
-  document.getElementById('headerTitle').textContent = 'Belle Meade';
+  document.getElementById('headerTitle').textContent = 'Bourbon Co.';
   renderList();
   updateProgress();
 }
