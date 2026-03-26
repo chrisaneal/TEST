@@ -922,7 +922,7 @@ const shots = [
     description: "Chap lies in a bathtub, fully at peace. One hand rests on the rim holding a glass of Bourbon on the rocks. He takes a slow sip, closes his eyes, exhales. The day hasn't started yet — and he's already won.",
     actors: ["Chap"],
     props: ["Bourbon bottle", "Bourbon glass (rocks)", "Towel draped over tub edge"],
-    emotion: "Relief — the only quiet moment before the world wakes up",
+    emotion: "Relief — the only quiet moment before the world wakes",
     blocking: "Wide shot of bathroom. Chap sunk low in tub, only head and hand visible. Close-up of bourbon glass resting on porcelain rim. Cut to his face — eyes closed, slow exhale. He sips, sets the glass back down gently.",
     dialogue: 'NARRATOR (V.O.): "His morning routine starts where most people\'s ends."',
     script: "everyday-man", episode: "Episode 4: Routine"
@@ -2313,19 +2313,13 @@ function renderCard() {
 
         <div class="card-body">
           <div class="card-section">
-            <div class="meta-row">
-              <div class="meta-col">
-                <div class="section-label">Actors</div>
-                <div class="tag-list">
-                  ${shot.actors.length ? shot.actors.map(a => `<span class="tag tag-actor">${a}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
-                </div>
-              </div>
-              <div class="meta-col">
-                <div class="section-label">Props</div>
-                <div class="tag-list-props">
-                  ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
-                </div>
-              </div>
+            <div class="section-label">Actors</div>
+            <div class="tag-list" style="margin-bottom:6px;">
+              ${shot.actors.length ? shot.actors.map(a => `<span class="tag tag-actor">${a}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
+            </div>
+            <div class="section-label">Props</div>
+            <div class="tag-list-props">
+              ${shot.props.length ? shot.props.map(p => `<span class="tag">${p}</span>`).join('') : '<span class="tag" style="opacity:0.3;">None</span>'}
             </div>
           </div>
 
